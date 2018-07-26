@@ -10,11 +10,20 @@ def articles_index():
 def articles_form():
     return render_template("/articles/new.html")
 
+@app.route("/articles/<article_id>/", methods=["POST"])
+def articles_set_ready(article_id):
+
+    a = Article.query.get(article_id)
+    a.ready = True
+    db.session().commit()
+
+    return redirect(url_for("articles_index"))
+
 @app.route("/articles/", methods=["POST"])
 def articles_create():
-    t = Article(request.form.get("name"))
+    a = Article(request.form.get("name"))
 
-    db.session().add(t)
+    db.session().add(a)
     db.session().commit()
 
     return redirect(url_for("articles_index"))
