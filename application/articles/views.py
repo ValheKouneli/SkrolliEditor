@@ -23,7 +23,10 @@ def articles_set_ready(article_id):
 
 @app.route("/articles/", methods=["POST"])
 def articles_create():
-    a = Article(request.form.get("name"))
+    form = ArticleForm(request.form)
+
+    a = Article(form.name.data)
+    a.writer = form.writer.data
 
     db.session().add(a)
     db.session().commit()
