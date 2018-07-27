@@ -9,7 +9,6 @@ class Article(db.Model):
    writer = db.Column(db.String(144), nullable=True)
    ready = db.Column(db.Boolean, nullable=False)
 
-   editor_in_charge = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
    created_by = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 
    def __init__(self, name):
