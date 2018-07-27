@@ -2,6 +2,8 @@
 
 Web application to help the editorial process of Skrolli
 
+https://skrollieditor.herokuapp.com/
+
 ## Project definition
 
 The aim of this project is to create a web application for the editorial team of Skrolli magazine that can eventually replace the current system for managing the editorial process of Skrolli.
