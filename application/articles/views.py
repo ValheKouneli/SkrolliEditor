@@ -25,6 +25,9 @@ def articles_set_ready(article_id):
 def articles_create():
     form = ArticleForm(request.form)
 
+    if not form.validate():
+        return render_template("articles/new.html", form = form)
+
     a = Article(form.name.data)
     a.writer = form.writer.data
 
