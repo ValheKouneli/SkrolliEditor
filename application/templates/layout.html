@@ -1,0 +1,19 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>SkrolliEditor</title>
+    </head>
+
+    <body>
+      <ul>
+        <li><a href="{{ url_for('articles_index') }}">Articles</a></li>
+        <li><a href="{{ url_for('articles_form') }}">Add an article</a></li>
+      </ul>
+      {% block body %}
+      <p>
+        Plop!
+      </p>
+      {% endblock %}
+    </body>
+  </html>
