@@ -4,11 +4,13 @@
   <table>
     <tr>
       <th>Article</th>
+      <th>Writer</th>
       <th>Ready</th>
     </tr>
     {% for article in articles %}
     <tr>
       <td>{{ article.name }}</td>
+      <td>{{ article.writer }}</td>
       <td>{{ article.ready }}</td>
       <td>
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
