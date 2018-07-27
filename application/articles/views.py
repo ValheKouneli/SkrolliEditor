@@ -1,5 +1,5 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article
@@ -35,6 +35,7 @@ def articles_create():
 
     a = Article(form.name.data)
     a.writer = form.writer.data
+    a.created_by = current_user.id
 
     db.session().add(a)
     db.session().commit()
