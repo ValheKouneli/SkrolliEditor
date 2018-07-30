@@ -43,13 +43,6 @@ def load_user(user_id):
 
 try:
     db.create_all()
-    #create test data
-    #insert users
-    test_user = User('hello world', 'hello', 'world')
-    db.session().add(test_user)
-    
-    #commit changes
-    value = db.session().commit()
 except Exception as err:
     print(err)
     pass
