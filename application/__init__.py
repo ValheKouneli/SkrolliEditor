@@ -1,5 +1,8 @@
 from flask import Flask
+from flask_bcrypt import Bcrypt
+
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -40,5 +43,6 @@ def load_user(user_id):
 
 try:
     db.create_all()
-except:
+except Exception as err:
+    print(err)
     pass

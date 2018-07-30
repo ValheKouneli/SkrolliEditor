@@ -2,8 +2,10 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user
 
 from application import app
+from application import bcrypt
 from application.auth.models import User
 from application.auth.forms import LoginForm
+
 
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
@@ -11,10 +13,9 @@ def auth_login():
         return render_template("auth/loginform.html", form = LoginForm())
 
     form = LoginForm(request.form)
-    # mahdolliset validoinnit
 
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
-    if not user:
+    user = User.query.filter_by(username=form.username.data).first()
+    if (not user) or (not user.is_correct_password(form.password.data)):
         return render_template("auth/loginform.html", form = form,
                                error = "No such username or password")
 
