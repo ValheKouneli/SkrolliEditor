@@ -11,7 +11,7 @@ class User(db.Model):
 
    name = db.Column(db.String(144), nullable=False)
    username = db.Column(db.String(144), nullable=False)
-   password = db.Column(db.String(5000), nullable=False)
+   password = db.Column(db.String(144), nullable=False)
 
    articles_created = db.relationship("Article", backref='account', lazy=True)
 
