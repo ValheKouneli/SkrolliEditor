@@ -23,6 +23,7 @@ from application.articles import models
 from application.articles import views
 
 from application.people import models
+from application.people import views
 
 from application.auth import models
 from application.auth import views

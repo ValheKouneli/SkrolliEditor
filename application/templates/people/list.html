@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Person</th>
+      <th>Account</th>
+      <th>Names</th>
+    </tr>
+    {% for person in people %}
+    <tr>
+      <td>{{ person.name }}</td>
+      <td>{{ person.account }}</td>
+      <td>
+          {% for name in person.names %}
+          <tr>{{ name }}</tr>
+          {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
