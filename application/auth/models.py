@@ -1,6 +1,8 @@
 from application import db
 from application.models import Base
 from application import bcrypt
+from application.people.models import Person
+from application.articles.models import Article
 
 class User(Base):
 
@@ -10,12 +12,18 @@ class User(Base):
    username = db.Column(db.String(144), nullable=False)
    password = db.Column(db.String(144), nullable=False)
 
+   person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+
    articles_created = db.relationship("Article", backref='account', lazy=True)
 
    def __init__(self, name, username, plaintext_password):
        self.name = name
        self.username = username
        self.password = bcrypt.generate_password_hash(plaintext_password)
+       new_person = Person(name, self.id)
+       db.session().add(new_person)
+       db.session().commit()
+       self.person_id = new_person.id
 
    def get_id(self):
        return self.id

@@ -22,8 +22,12 @@ from application import views
 from application.articles import models
 from application.articles import views
 
+from application.people import models
+
 from application.auth import models
 from application.auth import views
+
+
 
 # authentication
 from application.auth.models import User
