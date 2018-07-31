@@ -8,10 +8,8 @@ class Person(Base):
     names = db.relationship("Name", backref="person", lazy=True)
     user = db.relationship("User", backref="user", lazy=True, uselist=False)
 
-    def __init__(self, name):
-        new_name = Name(name, self.id)
-        db.session().add(new_name)
-        db.session().commit()
+    def __init__(self):
+        i = 1
 
     def add_name(self, name):
         new_name = Name(name, self.id)

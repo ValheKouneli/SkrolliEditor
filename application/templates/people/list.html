@@ -12,9 +12,13 @@
       <td>{{ person.name }}</td>
       <td>{{ person.account }}</td>
       <td>
-          {% for name in person.names %}
-          <tr>{{ name }}</tr>
-          {% endfor %}
+          <table>
+              <ul>
+                {% for name in person.names %}
+                <li>{{ name.name }}</li>
+                {% endfor %}
+              </ul>
+          </table>
       </td>
     </tr>
     {% endfor %}

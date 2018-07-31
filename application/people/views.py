@@ -12,10 +12,30 @@ def people_index():
     for person in ppl:
         account = ""
         name = ""
-        if person.user is not null:
+        if person.user:
             account = person.user.username
             name = person.user.name
         names = Name.query.filter_by(person_id=person.id)
         people.append({'account': account, 'name': name, 'names': names})
     
     return render_template("/people/list.html", people = people)
+
+@app.route("/people/new/")
+@login_required
+def people_form():
+    return render_template("/people/new.html", form = NewPersonForm())
+
+@app.route("/people/", methods=["POST"])
+@login_required
+def people_create():
+    form = NewPersonForm(request.form)
+
+    if not form.validate():
+        return render_template("people/new.html", form = form)
+
+    p = Person()
+    db.session().add(p)
+    db.session().commit()
+    p.add_name(form.name.data)
+
+    return redirect(url_for("people_index"))
