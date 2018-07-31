@@ -19,3 +19,15 @@ Daily time usage
 * Fri 3h
   * following the tutorial coding
 
+## Week 2, 30.-34.7.2018
+
+**Total: 9h**
+
+* Mon 4h
+  * hashing passwords
+* Tue 5h
+  * trying to make tests and failing
+  * adding tables to database
+  * coding new functionality
+  * getting to know the language and libraries
+
