@@ -3,11 +3,11 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.people.models import Person, Name
-from application.people.forms import NewPersonForm
+from application.people.forms import PersonForm
 
 @app.route("/people/", methods=["GET"])
 def people_index():
-    people = [{}]
+    people = []
     ppl = Person.query.all()
     for person in ppl:
         account = ""
@@ -16,19 +16,22 @@ def people_index():
             account = person.user.username
             name = person.user.name
         names = Name.query.filter_by(person_id=person.id)
-        people.append({'account': account, 'name': name, 'names': names})
-    
+        people.append({'id': person.id, 'account': account, 'name': name, 'names': names})
+    print()
+    print(people)
+    print()
     return render_template("/people/list.html", people = people)
 
 @app.route("/people/new/")
 @login_required
 def people_form():
-    return render_template("/people/new.html", form = NewPersonForm())
+    form = PersonForm()
+    return render_template("/people/new.html", form = form)
 
 @app.route("/people/", methods=["POST"])
 @login_required
 def people_create():
-    form = NewPersonForm(request.form)
+    form = PersonForm(request.form)
 
     if not form.validate():
         return render_template("people/new.html", form = form)
@@ -39,3 +42,43 @@ def people_create():
     p.add_name(form.name.data)
 
     return redirect(url_for("people_index"))
+
+@app.route("/people/<person_id>/", methods=["GET"])
+@login_required
+def person_edit(person_id):
+    form = PersonForm()
+    name = ""
+    username = ""
+    prsn = Person.query.filter_by(id = person_id).first()
+
+    if prsn.user:
+        username = prsn.user.username
+        name = prsn.user.name
+
+    names = list(map(lambda name: {"name":name.name, "id":name.id}, prsn.names))
+    person = {"id": person_id, "name": name, "username": username, "names": names}
+
+    return render_template("/people/edit.html", person = person, form = form)
+
+@app.route("/people/<person_id>/delete_name/<name_id>", methods=["POST"])
+@login_required
+def delete_name(name_id, person_id):
+    name_to_delete = Name.query.filter_by(id = name_id).first()
+    db.session.delete(name_to_delete)
+    db.session.commit()
+    return redirect(url_for("person_edit", person_id=person_id))
+
+@app.route("/people/<person_id>", methods=["POST"])
+@login_required
+def names_create(person_id):
+    form = PersonForm(request.form)
+
+    if not form.validate():
+        return render_template("/people/edit.html", person=eval(request.form["person"]), form = form)
+
+    n = Name(form.name.data, person_id)
+
+    db.session().add(n)
+    db.session().commit()
+
+    return redirect(url_for("person_edit", person_id=person_id))

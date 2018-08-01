@@ -3,22 +3,24 @@
 {% block body %}
   <table>
     <tr>
+      <th>Edit</th>
       <th>Person</th>
       <th>Account</th>
       <th>Names</th>
     </tr>
     {% for person in people %}
     <tr>
+      <td>
+          <a href="{{ url_for('person_edit', person_id=person.id) }}">Edit</a>
+      </td>
       <td>{{ person.name }}</td>
       <td>{{ person.account }}</td>
       <td>
-          <table>
-              <ul>
-                {% for name in person.names %}
-                <li>{{ name.name }}</li>
-                {% endfor %}
-              </ul>
-          </table>
+          <ul>
+            {% for name in person.names %}
+            <li>{{ name.name }}</li>
+            {% endfor %}
+          </ul>
       </td>
     </tr>
     {% endfor %}

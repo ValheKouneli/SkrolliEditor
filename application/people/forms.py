@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, validators
   
-class NewPersonForm(FlaskForm):
-    name = StringField("name")
+class PersonForm(FlaskForm):
+    name = StringField("Name", [validators.Length(min=1)])
   
     class Meta:
         csrf = False
