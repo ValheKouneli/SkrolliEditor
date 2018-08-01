@@ -30,7 +30,8 @@ Daily time usage
   * adding tables to database
   * getting to know the language and libraries
   * feature: adding people
-* Wed 2h
+* Wed 4h
   * learning how the forms are supposed to work
   * feature: listing people and editing their names
+  * making a database diagram
 
