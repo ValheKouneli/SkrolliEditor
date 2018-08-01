@@ -1,0 +1,39 @@
+Account
+-
+id PK integer
+username string
+name string
+pwd_hash string
+person_id: FK >- Person.id
+editor boolean
+
+Person
+-
+id PK integer
+artist boolean
+
+Name
+-
+id PK integer
+name string
+person_id: FK >- Person.id
+
+Article
+-
+id PK integer
+issue: FK >- Issue.id
+name string
+writer: FK >- Person.id
+editor-in-charge: FK >- Person.id
+
+PictureUnit
+-
+id PK integer
+article_id: FK >- Article.id
+artist: FK >- Person.id
+description string
+
+Issue
+-
+id PK integer
+number integer
