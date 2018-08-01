@@ -28,6 +28,9 @@ Daily time usage
 * Tue 5h
   * trying to make tests and failing
   * adding tables to database
-  * coding new functionality
   * getting to know the language and libraries
+  * feature: adding people
+* Wed 2h
+  * learning how the forms are supposed to work
+  * feature: listing people and editing their names
 
