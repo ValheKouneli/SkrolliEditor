@@ -30,7 +30,7 @@ def username_uniqueness_check(form, field):
     else:
         raise ValidationError('Account is taken.')
 
-class RegisterForm(FlaskForm):
+class AccountForm(FlaskForm):
     username = StringField("Username", [username_uniqueness_check, validators.Length(min=5)])
     name = StringField("Name", [validators.Length(min=1)])
     password = PasswordField("Password", [validators.InputRequired(), password_strength_check])
