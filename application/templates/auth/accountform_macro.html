@@ -1,6 +1,4 @@
-{% macro accountform(action_url, form, button_text) -%}
-<form method="POST" action="{{ action_url }}">
-    <table>
+{% macro accountform(form) -%}
       <tr>
         <td>
       {{ form.username.label }}
@@ -61,10 +59,4 @@
                 {% endfor %}
             </ul>
         </td>
-      <tr>
-        <td colspan="2">
-      <input type="submit" value="{{ button_text }}"/>
-        </td>
-      </tr>
-  </form>
   {%- endmacro %}
