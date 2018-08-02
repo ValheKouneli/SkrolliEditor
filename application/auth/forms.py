@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, validators, ValidationError
 import re
+
+from application.auth.models import User
   
 class LoginForm(FlaskForm):
     username = StringField("Username")
@@ -19,8 +21,17 @@ def password_strength_check(form, field):
     #     not bool(re.search('[!@#$%^&*()_+\\-=\\[\\]\\{\\};\':\"\\\\|,.<>\\/?]', field.data)):
     #     raise ValidationError('Password must contain letters, numbers and special characters.')
 
+def username_uniqueness_check(form, field):
+    user_by_same_name = User.query.filter_by(username = field.data).first()
+    # todo: make it case-insensitive
+    
+    if user_by_same_name is None:
+        return
+    else:
+        raise ValidationError('Account is taken.')
+
 class RegisterForm(FlaskForm):
-    username = StringField("Username", [validators.Length(min=5)])
+    username = StringField("Username", [username_uniqueness_check, validators.Length(min=5)])
     name = StringField("Name", [validators.Length(min=1)])
     password = PasswordField("Password", [validators.InputRequired(), password_strength_check])
     confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
