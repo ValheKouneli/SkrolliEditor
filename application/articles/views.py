@@ -12,6 +12,9 @@ def articles_index():
 @app.route("/articles/new/")
 @login_required
 def articles_form():
+    if not current_user.editor:
+        return render_template("articles/list.html")
+
     return render_template("/articles/new.html", form = ArticleForm())
 
 @app.route("/articles/<article_id>/", methods=["POST"])
@@ -28,6 +31,10 @@ def articles_set_ready(article_id):
 @app.route("/articles/", methods=["POST"])
 @login_required
 def articles_create():
+
+    if not current_user.editor:
+        return render_template("articles/list.html")
+
     form = ArticleForm(request.form)
 
     if not form.validate():

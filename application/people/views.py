@@ -7,30 +7,23 @@ from application.people.forms import PersonForm
 
 @app.route("/people/", methods=["GET"])
 def people_index():
-    people = []
-    ppl = Person.query.all()
-    for person in ppl:
-        account = ""
-        name = ""
-        if person.user:
-            account = person.user.username
-            name = person.user.name
-        names = Name.query.filter_by(person_id=person.id)
-        people.append({'id': person.id, 'account': account, 'name': name, 'names': names})
-    print()
-    print(people)
-    print()
-    return render_template("/people/list.html", people = people)
+    return render_template("/people/list.html", people = get_people())
 
 @app.route("/people/new/")
 @login_required
 def people_form():
+    if not current_user.editor:
+        return render_template("/people/list.html", people = get_people())
+
     form = PersonForm()
     return render_template("/people/new.html", form = form)
 
 @app.route("/people/", methods=["POST"])
 @login_required
 def people_create():
+    if not current_user.editor:
+        return render_template("/people/list.html", people = get_people())
+
     form = PersonForm(request.form)
 
     if not form.validate():
@@ -63,6 +56,9 @@ def person_edit(person_id):
 @app.route("/people/<person_id>/delete_name/<name_id>", methods=["POST"])
 @login_required
 def delete_name(name_id, person_id):
+    if not current_user.editor:
+        return render_template("/people/list.html", people = get_people())
+
     name_to_delete = Name.query.filter_by(id = name_id).first()
     db.session.delete(name_to_delete)
     db.session.commit()
@@ -71,6 +67,9 @@ def delete_name(name_id, person_id):
 @app.route("/people/<person_id>", methods=["POST"])
 @login_required
 def names_create(person_id):
+    if not current_user.editor:
+        return render_template("/people/list.html", people = get_people())
+
     form = PersonForm(request.form)
 
     if not form.validate():
@@ -82,3 +81,16 @@ def names_create(person_id):
     db.session().commit()
 
     return redirect(url_for("person_edit", person_id=person_id))
+
+def get_people():
+    people = []
+    ppl = Person.query.all()
+    for person in ppl:
+        account = ""
+        name = ""
+        if person.user:
+            account = person.user.username
+            name = person.user.name
+        names = Name.query.filter_by(person_id=person.id)
+        people.append({'id': person.id, 'account': account, 'name': name, 'names': names})
+    return people
