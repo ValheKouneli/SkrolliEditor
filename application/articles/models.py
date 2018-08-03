@@ -17,13 +17,10 @@ class Article(Base):
 
    @staticmethod
    def find_articles_not_ready():
-      stmt = text(""
-         "SELECT Article.id, Article.name, Article.writer FROM Article"
-         " WHERE (Article.ready = 0)")
-      res = db.engine.execute(stmt)
+      res = Article.query.filter_by(ready = False)
 
       response = []
       for row in res:
-         response.append({"id":row[0], "name":row[1], "writer":row[2]})
+         response.append({"id":row.id, "name":row.name, "writer":row.writer})
 
       return response
