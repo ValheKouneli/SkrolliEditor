@@ -64,7 +64,7 @@ class User(Base):
     def is_correct_password(self, plaintext_password):
         if not self.password:
             return False
-        return bcrypt.check_password_hash(self.password.decode('utf-8'), plaintext_password)
+        return bcrypt.check_password_hash(self.password, plaintext_password)
     
     def add_name(self, name):
         new_name = Name(name, self.id)
