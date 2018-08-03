@@ -1,7 +1,7 @@
 from application import db
 from application.models import Base
 from application import bcrypt
-from application.people.models import Person
+from application.people.models import Name
 from application.articles.models import Article
 
 class User(Base):
@@ -9,18 +9,20 @@ class User(Base):
     __tablename__ = "account"
 
     name = db.Column(db.String(144), nullable=False)
-    username = db.Column(db.String(144), nullable=False)
-    password = db.Column(db.String(144), nullable=False)
-    editor = db.Column(db.Boolean(), nullable=False)
+    username = db.Column(db.String(144), nullable=True)
+    password = db.Column(db.String(144), nullable=True)
+    editor = db.Column(db.Boolean(), nullable=True)
 
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
-
+    names = db.relationship("Name", backref='account', lazy=True)
     articles_created = db.relationship("Article", backref='account', lazy=True)
 
     def __init__(self, name, username, plaintext_password):
         self.name = name
         self.username = username
-        self.password = bcrypt.generate_password_hash(plaintext_password)
+        if plaintext_password:
+            self.password = bcrypt.generate_password_hash(plaintext_password)
+        else:
+            self.password = 0
         self.editor = False
 
     def get_id(self):
@@ -60,4 +62,11 @@ class User(Base):
             return False
 
     def is_correct_password(self, plaintext_password):
+        if not self.password:
+            return False
         return bcrypt.check_password_hash(self.password, plaintext_password)
+    
+    def add_name(self, name):
+        new_name = Name(name, self.id)
+        db.session().add(new_name)
+        db.session().commit()

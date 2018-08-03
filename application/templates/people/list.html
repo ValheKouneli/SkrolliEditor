@@ -4,17 +4,17 @@
   <table>
     <tr>
       <th>Edit</th>
-      <th>Person</th>
-      <th>Account</th>
-      <th>Names</th>
+      <th>Name</th>
+      <th>Username</th>
+      <th>All names</th>
     </tr>
     {% for person in people %}
     <tr>
       <td>
-          <a href="{{ url_for('person_edit', person_id=person.id) }}">Edit</a>
+          <a href="{{ url_for('person_edit', user_id=person.id) }}">Edit</a>
       </td>
       <td>{{ person.name }}</td>
-      <td>{{ person.account }}</td>
+      <td>{{ person.username }}</td>
       <td>
           <ul>
             {% for name in person.names %}

@@ -41,6 +41,7 @@ def auth_register():
     u = User(form.name.data, form.username.data, form.password.data)
     db.session().add(u)
     db.session().commit()
+    u.add_name(form.name.data)
 
     login_user(u)
     return redirect(url_for("index")) 
@@ -63,6 +64,8 @@ def auth_update():
 
     if form.password.data:
         current_user.set_password(form.password.data)
-    current_user.set_name(form.name.data)
+    if current_user.name != form.name.data:
+        current_user.add_name(form.name.data)
+        current_user.set_name(form.name.data)
 
     return redirect(url_for("index"))

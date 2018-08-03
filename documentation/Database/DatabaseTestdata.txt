@@ -1,0 +1,3 @@
+INSERT INTO name (name, user_id) VALUES ('Testeri', 1);
+INSERT INTO name (name, user_id) VALUES ('Testi Käyttäjä', 1);
+INSERT INTO account (id, name, username, password, editor) VALUES (1, 'Hello World', 'hello', '$2a$12$kEadZ8RHygj48IeAsmAjT.C9B6XjK6YKzXzFKikbyczwpEHBr0KPm', 1);

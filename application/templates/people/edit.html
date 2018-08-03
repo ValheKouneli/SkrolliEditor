@@ -9,13 +9,13 @@
     <tr>
       <td>{{ name.name }}</td>
       <td>
-          <form method="POST" action="{{ url_for('delete_name', name_id=name.id, person_id=person.id) }} ">
+          <form method="POST" action="{{ url_for('delete_name', name_id=name.id, user_id=person.id) }} ">
             <input type="submit" value="x"/>    
           </form>
       </td>
     </tr>
     {% endfor %}
-    <form method="POST" action="{{ url_for('names_create', person_id=person.id) }}">
+    <form method="POST" action="{{ url_for('names_create', user_id=person.id) }}">
     <tr>
         <td colspan=2>
             {{ form.name }}
