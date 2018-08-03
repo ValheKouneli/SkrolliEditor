@@ -20,7 +20,7 @@ class User(Base):
         self.name = name
         self.username = username
         if plaintext_password:
-            self.password = bcrypt.hashpw(plaintext_password, bcrypt.gensalt())
+            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt())
         else:
             self.password = ""
         self.editor = False
@@ -34,9 +34,9 @@ class User(Base):
     def is_authenticated(self):
         return True
 
-    def set_password(self, plaintext_password):
+    def set_password(self, plaintext_password: str) -> bool:
         try:
-            self.password = bcrypt.hashpw(plaintext_password, bcrypt.gensalt())
+            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt())
             db.session().commit()
             return True
         except Exception:
@@ -61,10 +61,10 @@ class User(Base):
         except Exception:
             return False
 
-    def is_correct_password(self, plaintext_password):
+    def is_correct_password(self, plaintext_password: str) -> bool:
         if not self.password:
             return False
-        return bcrypt.checkpw(plaintext_password, self.password.encode('utf-8'))
+        return bcrypt.checkpw(bytes(plaintext_password, encoding='utf-8'), bytes(self.password, encoding='utf-8'))
     
     def add_name(self, name):
         new_name = Name(name, self.id)
