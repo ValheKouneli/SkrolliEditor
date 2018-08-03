@@ -3,13 +3,13 @@
 {% from 'formfield_macro.html' import formfield %}
 {% block body %}
 {{ error }}
-<form method="POST" action="{{ url_for('auth_register') }}">
+<form method="POST" action="{{ url_for('auth_update') }}">
     <table>
-    {{ formfield(form.username) }}
     {{ accountform(form=form) }}
+    {{ formfield(field=form.oldpassword) }}
     <tr>
         <td colspan="2">
-            <input type="submit" value="Register"/>
+            <input type="submit" value="Update"/>
         </td>
   </tr>
 </form>

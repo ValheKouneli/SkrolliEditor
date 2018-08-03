@@ -33,10 +33,20 @@ class User(Base):
         return True
 
     def set_password(self, plaintext_password):
-        self.password = bcrypt.generate_password_hash(plaintext_password)
+        try:
+            self.password = bcrypt.generate_password_hash(plaintext_password)
+            db.session().commit()
+            return True
+        except Exception:
+            return False
 
     def set_editor(self, editor):
-        self.editor = editor
+        try:
+            self.editor = editor
+            db.session().commit()
+            return True
+        except Exception:
+            return False
 
     def get_editor(self):
         return self.editor
@@ -44,6 +54,7 @@ class User(Base):
     def set_name(self, name):
         try:
             self.name = name
+            db.session().commit()
             return True
         except Exception:
             return False
