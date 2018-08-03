@@ -19,7 +19,15 @@ A **picture editor** is always an **editor** as well.
 ## As a logged-in user
 
 - [x] I can change the name and password associated to my account.
-- [x] I can view articles in the system.
+- [ ] I can see articles in the system.
+  - [x] I can see the article's name
+  - [ ] I can see the article's title, subtitle and table-of-contents text
+  - [ ] I can see the writer of the article
+  - [ ] I can see the editor-in-charge of the article
+  - [ ] I can see the language consultant of the article
+  - [ ] I can see the layout artist of the article
+  - [ ] I can see the writing status, editing status, language consultation status and all-around (layout) status of the article
+  - [ ] I can see the amount of pages of the article
 - [ ] I can add names related to my account.
 - [ ] I can remove names related to my account.
 - [ ] I can see the unfinished tasks I am related to, so that I know what I have yet to be done.
