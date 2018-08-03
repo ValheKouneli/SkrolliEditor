@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from 'auth/accountform_macro.html' import accountform %}
+{% from 'formfield_macro.html' import formfield %}
+{% block body %}
+{{ error }}
+<form method="POST" action="{{ url_for('auth_register') }}">
+    <table>
+    {{ formfield(form.username) }}
+    {{ accountform(form=form) }}
+    <tr>
+        <td colspan="2">
+            <input type="submit" value="Register"/>
+        </td>
+  </tr>
+</form>
+{% endblock %}

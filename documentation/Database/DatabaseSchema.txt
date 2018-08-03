@@ -4,36 +4,32 @@ id PK integer
 username string
 name string
 pwd_hash string
-person_id: FK >- Person.id
 editor boolean
-
-Person
--
-id PK integer
-artist boolean
 
 Name
 -
 id PK integer
 name string
-person_id: FK >- Person.id
+account_id: FK >- Account.id
 
 Article
 -
 id PK integer
 issue: FK >- Issue.id
 name string
-writer: FK >- Person.id
-editor-in-charge: FK >- Person.id
+writer: FK >- Account.id
+editor-in-charge: FK >- Account.id
+created_by: FK >- Account.id
 
 PictureUnit
 -
 id PK integer
+artist: FK >- Account.id
 article_id: FK >- Article.id
-artist: FK >- Person.id
 description string
 
 Issue
 -
 id PK integer
 number integer
+

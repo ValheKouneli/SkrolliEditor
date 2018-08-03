@@ -2,6 +2,19 @@
 
 {% block body %}
 <p>
-  Hello world!
+  Unfinished articles
 </p>
+
+{% if unfinished_articles is defined %}
+
+<ul>
+  {% for article in unfinished_articles %}
+  <li>
+    {{article.name}} (writer: {{article.writer}})
+  </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+
 {% endblock %}
