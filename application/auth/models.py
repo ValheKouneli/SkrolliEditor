@@ -1,36 +1,63 @@
 from application import db
+from application.models import Base
 from application import bcrypt
+from application.people.models import Person
+from application.articles.models import Article
 
-class User(db.Model):
+class User(Base):
 
-   __tablename__ = "account"
+    __tablename__ = "account"
 
-   id = db.Column(db.Integer, primary_key=True)
-   date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-   date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    name = db.Column(db.String(144), nullable=False)
+    username = db.Column(db.String(144), nullable=False)
+    password = db.Column(db.String(144), nullable=False)
+    editor = db.Column(db.Boolean(), nullable=False)
 
-   name = db.Column(db.String(144), nullable=False)
-   username = db.Column(db.String(144), nullable=False)
-   password = db.Column(db.String(144), nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=True)
 
-   articles_created = db.relationship("Article", backref='account', lazy=True)
+    articles_created = db.relationship("Article", backref='account', lazy=True)
 
-   def __init__(self, name, username, plaintext_password):
-       self.name = name
-       self.username = username
-       self.password = bcrypt.generate_password_hash(plaintext_password)
+    def __init__(self, name, username, plaintext_password):
+        self.name = name
+        self.username = username
+        self.password = bcrypt.generate_password_hash(plaintext_password)
+        self.editor = False
 
-   def get_id(self):
-       return self.id
+    def get_id(self):
+        return self.id
 
-   def is_active(self):
-       return True
+    def is_active(self):
+        return True
 
-   def is_authenticated(self):
-       return True
+    def is_authenticated(self):
+        return True
 
-   def set_password(self, plaintext_password):
-      self.password = bcrypt.generate_password_hash(plaintext_password)
+    def set_password(self, plaintext_password):
+        try:
+            self.password = bcrypt.generate_password_hash(plaintext_password)
+            db.session().commit()
+            return True
+        except Exception:
+            return False
 
-   def is_correct_password(self, plaintext_password):
-      return bcrypt.check_password_hash(self.password, plaintext_password)
+    def set_editor(self, editor):
+        try:
+            self.editor = editor
+            db.session().commit()
+            return True
+        except Exception:
+            return False
+
+    def get_editor(self):
+        return self.editor
+
+    def set_name(self, name):
+        try:
+            self.name = name
+            db.session().commit()
+            return True
+        except Exception:
+            return False
+
+    def is_correct_password(self, plaintext_password):
+        return bcrypt.check_password_hash(self.password, plaintext_password)

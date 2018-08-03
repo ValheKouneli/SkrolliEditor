@@ -1,0 +1,6 @@
+{% from 'formfield_macro.html' import formfield %}
+{% macro accountform(form) -%}
+      {{ formfield(form.name) }}
+      {{ formfield(form.password) }}
+      {{ formfield(form.confirm) }}
+{%- endmacro %}
