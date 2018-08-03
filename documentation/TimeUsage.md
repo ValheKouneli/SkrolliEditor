@@ -21,7 +21,7 @@ Daily time usage
 
 ## Week 2, 30.-34.7.2018
 
-**Total: 20h 30 min**
+**Total: 23h 30 min**
 
 * Mon 4h
   * hashing passwords
@@ -37,9 +37,10 @@ Daily time usage
 * Thu 3h 30 min
   * getting to know jinja and macros
   * feature: register an account and change account info
-* Fri 4h
+* Fri 7h
   * refactoring
   * updating database diagram
   * merge to master
   * wondering why heroku crashes if I add a test user to its database
   * writing user stories
+  * 3 hours: fighting with things working locally but not on server
