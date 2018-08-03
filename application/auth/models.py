@@ -20,7 +20,7 @@ class User(Base):
         self.name = name
         self.username = username
         if plaintext_password:
-            self.password = bcrypt.generate_password_hash(plaintext_password.encode('utf-8'))
+            self.password = bcrypt.generate_password_hash(plaintext_password).encode('utf-8')
         else:
             self.password = ""
         self.editor = False
@@ -36,7 +36,7 @@ class User(Base):
 
     def set_password(self, plaintext_password):
         try:
-            self.password = bcrypt.generate_password_hash(plaintext_password.encode('utf-8'))
+            self.password = bcrypt.generate_password_hash(plaintext_password).encode('utf-8')
             db.session().commit()
             return True
         except Exception:
@@ -64,7 +64,7 @@ class User(Base):
     def is_correct_password(self, plaintext_password):
         if not self.password:
             return False
-        return bcrypt.check_password_hash(self.password.encode('utf-8'), plaintext_password.encode('utf-8'))
+        return bcrypt.check_password_hash(self.password.decode('utf-8'), plaintext_password)
     
     def add_name(self, name):
         new_name = Name(name, self.id)
