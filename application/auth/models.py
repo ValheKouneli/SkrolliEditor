@@ -20,7 +20,7 @@ class User(Base):
         self.name = name
         self.username = username
         if plaintext_password:
-            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt())
+            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt()).decode('utf-8')
         else:
             self.password = ""
         self.editor = False
