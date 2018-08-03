@@ -30,7 +30,7 @@ def people_create():
     if not form.validate():
         return render_template("people/new.html", form = form)
 
-    u = User(form.name.data, 0, 0)
+    u = User(form.name.data, "", "")
     db.session().add(u)
     db.session().commit()
     u.add_name(form.name.data)
@@ -45,8 +45,7 @@ def person_edit(user_id):
     username = ""
     prsn = User.query.filter_by(id = user_id).first()
 
-    username = ""
-    if prsn.username:
+    if prsn.username != "":
         username = prsn.username
 
     name = prsn.name

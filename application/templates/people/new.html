@@ -1,25 +1,12 @@
 {% extends "layout.html" %}
+{% from 'formfield_macro.html' import formfield %}
 
 {% block body %}
 <form method="POST" action="{{ url_for('people_create') }}">
    <table>
+       {{ formfield(form.name) }}
        <tr>
-           <td>
-               {{ form.name.label }}
-           </td>
-           <td>
-               {{ form.name }}
-           </td>
-           <td>
-                <ul>
-                    {% for error in form.name.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-       </tr>
-       <tr>
-           <td colspan="1">
+           <td colspan="2">
                <input type="submit" value="Add a person" />
            </td>
        </tr>
