@@ -21,7 +21,7 @@ Daily time usage
 
 ## Week 2, 30.-34.7.2018
 
-**Total: 9h**
+**Total: 20h 30 min**
 
 * Mon 4h
   * hashing passwords
@@ -34,4 +34,12 @@ Daily time usage
   * learning how the forms are supposed to work
   * feature: listing people and editing their names
   * making a database diagram
-
+* Thu 3h 30 min
+  * getting to know jinja and macros
+  * feature: register an account and change account info
+* Fri 4h
+  * refactoring
+  * updating database diagram
+  * merge to master
+  * wondering why heroku crashes if I add a test user to its database
+  * writing user stories
