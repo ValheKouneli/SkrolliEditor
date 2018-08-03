@@ -36,7 +36,7 @@ class User(Base):
 
     def set_password(self, plaintext_password: str) -> bool:
         try:
-            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt())
+            self.password = bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt()).decode('utf-8')
             db.session().commit()
             return True
         except Exception:
@@ -64,7 +64,9 @@ class User(Base):
     def is_correct_password(self, plaintext_password: str) -> bool:
         if not self.password:
             return False
-        return bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt()) == self.password
+        print(bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), bcrypt.gensalt()).decode('utf-8'))
+        print(self.password)
+        return bcrypt.hashpw(bytes(plaintext_password, encoding='utf-8'), self.password.encode('utf-8')).decode('utf-8') == self.password
     
     def add_name(self, name):
         new_name = Name(name, self.id)
