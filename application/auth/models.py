@@ -22,7 +22,7 @@ class User(Base):
         if plaintext_password:
             self.password = bcrypt.generate_password_hash(plaintext_password)
         else:
-            self.password = 0
+            self.password = ""
         self.editor = False
 
     def get_id(self):
