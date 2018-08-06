@@ -44,3 +44,14 @@ Daily time usage
   * wondering why heroku crashes if I add a test user to its database
   * writing user stories
   * 3 hours: fighting with things working locally but not on server
+
+## Week 3, 6.-10.8.2018
+
+**Total: 5h**
+
+* Mon: 5h
+  * helping others
+  * refactoring
+  * no links to unpermitted features
+  * importing things in the corrent order can be hard!
+  * learning more complicated flask sqlalchemy use
