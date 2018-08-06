@@ -14,18 +14,10 @@ else:
 
 db = SQLAlchemy(app)
 
-# basic functionality
-from application import views
-
-from application.articles import models
-from application.articles import views
-
+# import models
 from application.people import models
-from application.people import views
-
 from application.auth import models
-from application.auth import views
-
+from application.articles import models
 
 
 # authentication
@@ -49,3 +41,10 @@ try:
 except Exception as err:
     print(err)
     pass
+
+
+# import views
+from application import views
+from application.people import views
+from application.auth import views
+from application.articles import views

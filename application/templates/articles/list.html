@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+{% if articles %}
   <table>
     <tr>
       <th>Article</th>
@@ -20,4 +21,9 @@
     </tr>
     {% endfor %}
   </table>
+{% else %}
+<p>
+  No articles in the system
+</p>
+{% endif %}
 {% endblock %}

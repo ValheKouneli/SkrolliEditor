@@ -17,15 +17,19 @@
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('articles_index') }} ">List articles</a>
                       </li>
+                      <!-- {% if current_user.editor %} -->
                       <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('articles_form') }} ">Add an article</a>
                       </li>
+                      <!-- {% endif %} -->
                       <li class="nav-item">
                           <a class="nav-link" href="{{ url_for('people_index') }} ">List people</a>
                       </li>
+                      <!-- {% if current_user.editor %} -->
                       <li class="nav-item">
                           <a class="nav-link" href="{{ url_for('people_form') }} ">Add a person</a>
                       </li>
+                      <!-- {% endif %} -->
                     </ul>
                     <div class="form-inline mt-2 mt-md-0">
                       {% if current_user.is_authenticated %}
