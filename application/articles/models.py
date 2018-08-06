@@ -1,6 +1,5 @@
 from application import db
 from application.models import Base
-
 from sqlalchemy.sql import text
 
 class Article(Base):
@@ -18,10 +17,4 @@ class Article(Base):
 
    @staticmethod
    def find_articles_not_ready():
-      res = Article.query.filter_by(ready = False)
-
-      response = []
-      for row in res:
-         response.append({"id":row.id, "name":row.name, "writer":row.writer})
-
-      return response
+      return Article.query.filter_by(ready = False)

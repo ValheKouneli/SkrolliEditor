@@ -14,7 +14,8 @@ def people_index():
 @login_required
 def people_form():
     if not current_user.editor:
-        return render_template("/people/list.html", people = get_people())
+        people = get_people()
+        return render_template("/people/list.html", people = people if people.count() > 0 else 0)
 
     form = NameForm()
     return render_template("/people/new.html", form = form)

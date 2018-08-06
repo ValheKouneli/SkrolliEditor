@@ -5,6 +5,7 @@ from application import app, db
 from application.articles.models import Article
 from application.articles.forms import ArticleForm
 from application.auth.models import User
+from application.help import getPeopleOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
@@ -18,7 +19,7 @@ def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
 
-    return render_template("/articles/new.html", form = ArticleForm())
+    return render_template("/articles/new.html", form = ArticleForm(getPeopleOptions()))
 
 @app.route("/articles/<article_id>/", methods=["POST"])
 @login_required

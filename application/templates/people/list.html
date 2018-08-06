@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+{% if people %}
   <table>
     <tr>
       <th>Edit</th>
@@ -25,4 +26,9 @@
     </tr>
     {% endfor %}
   </table>
+{% else %}
+<p>
+  No people in the system
+</p>
+{% endif %}
 {% endblock %}

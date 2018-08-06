@@ -1,9 +1,8 @@
 {% extends "layout.html" %}
+{% from "articles/articlelist_macro.html" import articlelist %}
 
 {% block body %}
 
-
-{% if unfinished_articles is defined %}
 {% if unfinished_articles %}
 
 <p>
@@ -23,7 +22,6 @@
 <p>
   No unfinished articles
 </p>
-{% endif %}
 {% endif %}
 
 {% endblock %}
