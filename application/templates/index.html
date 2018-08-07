@@ -3,31 +3,36 @@
 
 {% block body %}
 
-{% if unfinished_articles %}
+{% if not logged_in %}
 
-<p>
-  Unfinished articles
-</p>
+  {% if unfinished_articles %}
 
-<ul>
-  {% for article in unfinished_articles %}
-  <li>
-    {{article.name}} (writer: {{article.writer}})
-  </li>
-  {% endfor %}
-</ul>
+  <p>
+    Unfinished articles
+  </p>
+
+  <ul>
+    {% for article in unfinished_articles %}
+    <li>
+      {{article.name}} (writer: {{article.writer}})
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% else %}
+
+  <p>
+    No unfinished articles
+  </p>
+
+  {% endif %}
 
 {% else %}
-
-<p>
-  No unfinished articles
-</p>
+<p></p>
 {% endif %}
 
 {% if articles_writing %}
-<p>
-  {{ articles_writing }}
-</p>
+{{ articlelist(articles_writing) }}
 {% endif %}
 
 {% endblock %}
