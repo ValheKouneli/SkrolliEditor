@@ -19,7 +19,10 @@ def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
 
-    return render_template("/articles/new.html", form = ArticleForm(getPeopleOptions()))
+    form = ArticleForm()
+    form.writer.choices = getPeopleOptions()
+       
+    return render_template("/articles/new.html", form=form)
 
 @app.route("/articles/<article_id>/", methods=["POST"])
 @login_required
@@ -40,6 +43,7 @@ def articles_create():
         return render_template("articles/list.html")
 
     form = ArticleForm(request.form)
+    form.writer.choices = getPeopleOptions()
 
     if not form.validate():
         return render_template("articles/new.html", form = form)

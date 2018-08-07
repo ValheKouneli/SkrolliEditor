@@ -1,38 +1,11 @@
 {% extends "layout.html" %}
+{% from 'formfield_macro.html' import formfield %}
 
 {% block body %}
 <form method="POST" action="{{ url_for('articles_create') }}">
    <table>
-       <tr>
-           <td>
-               {{ form.name.label }}
-           </td>
-           <td>
-               {{ form.name }}
-           </td>
-           <td>
-               <ul>
-                   {% for error in form.name.errors %}
-                   <li>{{ error }}</li>
-                   {% endfor %}
-               </ul>
-           </td>
-       </tr>
-       <tr>
-           <td>
-               {{ form.writer.label }}
-           </td>
-           <td>
-               {{ form.writer }}
-           </td>
-           <td>
-                <ul>
-                    {% for error in form.writer.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-       </tr>
+       {{ formfield(form.name) }}
+       {{ formfield(form.writer) }}
        <tr>
            <td colspan="3">
                <input type="submit" value="Add a new article" />
