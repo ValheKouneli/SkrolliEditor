@@ -47,7 +47,7 @@ Daily time usage
 
 ## Week 3, 6.-10.8.2018
 
-**Total: 5h**
+**Total: 8h**
 
 * Mon: 5h
   * helping others
@@ -55,3 +55,8 @@ Daily time usage
   * no links to unpermitted features
   * importing things in the corrent order can be hard!
   * learning more complicated flask sqlalchemy use
+* Tue: 3h
+  * figuring out how to make a form with dynamic select field
+  * figuring out how to show different content depending on if user is logged in or not
+  * realizing these are easy things to do if you don't try to do them in the wrong way
+  * feature: show articles the logged-in user is writing on the index page (writer's name still showing only as an id number)
