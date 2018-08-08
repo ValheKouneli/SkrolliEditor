@@ -4,20 +4,24 @@
       <th>Article</th>
       <th>Writer</th>
       <th>Editor-in-charge</th>
-      <th>Ready</th>
+      <th></th>
     </tr>
     {% for article in articles %}
-    <tr>
+    {% if article.ready %}
+    <tr style="background-color:green">
+    {% else %}
+    <tr style="background-color:red">
+    {% endif %}
       <td>{{ article.name }}</td>
       <td>{{ article.writer }}</td>
       <td>{{ article.editor_in_charge }}</td>
-      <td>{{ article.ready }}</td>
       <td>
+      {% if not article.ready %}
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
-            <input type="submit" value="Change status"/>    
+            <input type="submit" value="Mark as ready"/>    
           </form>
+      {% endif %}
       </td>
     </tr>
     {% endfor %}
-</table>
 {%- endmacro %}

@@ -9,7 +9,7 @@ from application.help import getPeopleOptions, getEditorOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
-    articles = Article.get_all_articles()
+    articles = Article.get_all_articles().fetchall()
     return render_template("/articles/list.html", articles = articles)
 
 @app.route("/articles/new/")
