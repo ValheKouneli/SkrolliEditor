@@ -16,6 +16,7 @@ class User(Base):
     names = db.relationship("Name", backref='account', lazy=True)
     articles_writing = db.relationship("Article", foreign_keys=[Article.writer], lazy=True)
     articles_created = db.relationship("Article", foreign_keys=[Article.created_by], lazy=True)
+    articles_in_charge_of = db.relationship("Article", foreign_keys=[Article.editor_in_charge], lazy=True)
 
     def __init__(self, name, username, plaintext_password):
         self.name = name

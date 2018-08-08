@@ -1,11 +1,27 @@
-from application.auth.models import User
-from application.people.models import Name
+from application import db
+from sqlalchemy.sql import text
+
+def sort_and_format(people):
+    options = sorted(people, key=lambda person: person["alias"])
+    formatted = [(0, None)]
+    for item in options:
+        formatted.append((item.id, item.alias + " (" + item.name + ")"))
+    return formatted
 
 def getPeopleOptions():
-    choices = []
-    names = Name.query.all()
-    for name in names:
-        user = User.query.filter_by(id = name.user_id).first()
-        choices.append((name.user_id, name.name + ' (' + user.name + ')'))
-    print("choises: ", choices)
-    return sorted(choices, key=lambda choice: choice[0], reverse=True)
+    query = text(
+        "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
+        " LEFT JOIN Account ON Account.id = Name.user_id"
+        " GROUP BY Name.id"
+    )
+    return sort_and_format(db.engine.execute(query))
+
+def getEditorOptions():
+    query = text(
+        "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
+        " LEFT JOIN Account ON Account.id = Name.user_id"
+        " WHERE Account.editor = 1"
+        " GROUP BY Name.id"
+    )
+    return sort_and_format(db.engine.execute(query))
+

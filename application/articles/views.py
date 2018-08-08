@@ -5,7 +5,7 @@ from application import app, db
 from application.articles.models import Article
 from application.articles.forms import ArticleForm
 from application.auth.models import User
-from application.help import getPeopleOptions
+from application.help import getPeopleOptions, getEditorOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
@@ -20,6 +20,7 @@ def articles_form():
 
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
+    form.editorInCharge.choices = getEditorOptions()
        
     return render_template("/articles/new.html", form=form)
 
@@ -43,13 +44,15 @@ def articles_create():
         return render_template("articles/list.html")
 
     form = ArticleForm(request.form)
-    form.writer.choices = getPeopleOptions()
+    form.writer.choices = getPeopleOptions() # todo: keep old selection
+    form.editorInCharge.choices = getEditorOptions() # todo: keep old selection
 
     if not form.validate():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data)
     a.writer = int(form.writer.data)
+    a.editor_in_charge = int(form.editorInCharge.data)
     a.created_by = current_user.id
 
     db.session().add(a)
