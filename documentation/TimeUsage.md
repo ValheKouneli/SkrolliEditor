@@ -47,7 +47,7 @@ Daily time usage
 
 ## Week 3, 6.-10.8.2018
 
-**Total: 8h**
+**Total: 11h**
 
 * Mon: 5h
   * helping others
