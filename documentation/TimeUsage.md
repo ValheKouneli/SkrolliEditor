@@ -47,7 +47,7 @@ Daily time usage
 
 ## Week 3, 6.-10.8.2018
 
-**Total: 11h**
+**Total: 12h 30 min**
 
 * Mon: 5h
   * helping others
@@ -60,9 +60,12 @@ Daily time usage
   * figuring out how to show different content depending on if user is logged in or not
   * realizing these are easy things to do if you don't try to do them in the wrong way
   * feature: show articles the logged-in user is writing on the index page (writer's name still showing only as an id number)
-* Wed: 3h
+* Wed: 4h 30 min
   * Making article writer's name appear in the article listing
   * feature: assign an editor-in-charge for an article
   * learning about more complicated sql queries
   * feature: show editor-in-charge in the article listing
   * refactoring
+  * do not show empty tables
+  * do not show mark-as-ready button for ready articles
+  * show ready status as a color
