@@ -25,3 +25,12 @@ def getEditorOptions():
     )
     return sort_and_format(db.engine.execute(query))
 
+def getArticlesWithCondition(condition="(0 = 0)"):
+    query = text(
+            "SELECT Article.id AS id, Article.ready AS ready, Article.name AS name, Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
+            " LEFT JOIN Account Writer ON Article.writer = Writer.id"
+            " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
+            " WHERE %s" % condition +\
+            " GROUP BY Article.id"
+    )
+    return db.engine.execute(query)

@@ -1,8 +1,10 @@
 from application import db
+from application.help import getArticlesWithCondition
 from application.models import Base
 from application.people.models import Name
 from application.articles.models import Article
 import bcrypt
+from sqlalchemy.sql import text
 
 class User(Base):
 
@@ -76,10 +78,9 @@ class User(Base):
         db.session().commit()
 
     def find_articles_writing(self):
-        query = \
-            "SELECT Article.name AS name, Article.id AS id, Account.name AS writer, Article.ready AS ready FROM Article" +\
-            " LEFT JOIN Account ON Account.id = Article.writer" +\
-            " WHERE (Article.ready = 0 AND Article.writer = %s)" % self.id +\
-            " GROUP BY Article.id"
-        return db.engine.execute(query)
-        
+        condition = "(Article.ready = 0 AND Article.writer = %s)" % self.id
+        return getArticlesWithCondition(condition)
+
+    def find_articles_editing(self):
+        condition = "(Article.ready = 0 AND Article.editor_in_charge = %s)" % self.id
+        return getArticlesWithCondition(condition)

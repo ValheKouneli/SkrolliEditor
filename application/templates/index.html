@@ -36,4 +36,9 @@
 {{ articlelist(articles_writing) }}
 {% endif %}
 
+{% if articles_editing %}
+<h1>I am editing</h1>
+{{ articlelist(articles_editing) }}
+{% endif %}
+
 {% endblock %}
