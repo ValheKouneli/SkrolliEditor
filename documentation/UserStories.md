@@ -23,7 +23,7 @@ A **picture editor** is always an **editor** as well.
   - [x] I can see the article's name
   - [ ] I can see the article's title, subtitle and table-of-contents text
   - [ ] I can see the writer of the article
-  - [ ] I can see the editor-in-charge of the article
+  - [x] I can see the editor-in-charge of the article
   - [ ] I can see the language consultant of the article
   - [ ] I can see the layout artist of the article
   - [ ] I can see the writing status, editing status, language consultation status and all-around (layout) status of the article
@@ -48,8 +48,8 @@ A **picture editor** is always an **editor** as well.
 - [x] I can add names to the people in the system, so that searches using those names will find the right person.
 - [x] I can remove names of the people in the system, so that a name that was typoed or that is wrong will not stay in the system.
 - [x] I can add an article in the system, provided that I give it a name, so that other editors will know what articles are coming in the future issues.
-  - [ ] I can associate an editor as the editor-in-charge of the new article.
-  - [ ] I can associate a person as the writer of the new article.
+  - [x] I can associate an editor as the editor-in-charge of the new article.
+  - [x] I can associate a person as the writer of the new article.
   - [ ] I can associate a person as the language consultant of the new article.
   - [ ] I can associate an editor as the layout artist of the new article.
   - [ ] I can give the new article a title, subtitle and a table-of-contents text.

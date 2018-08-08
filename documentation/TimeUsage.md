@@ -60,3 +60,9 @@ Daily time usage
   * figuring out how to show different content depending on if user is logged in or not
   * realizing these are easy things to do if you don't try to do them in the wrong way
   * feature: show articles the logged-in user is writing on the index page (writer's name still showing only as an id number)
+* Wed: 3h
+  * Making article writer's name appear in the article listing
+  * feature: assign an editor-in-charge for an article
+  * learning about more complicated sql queries
+  * feature: show editor-in-charge in the article listing
+  * refactoring
