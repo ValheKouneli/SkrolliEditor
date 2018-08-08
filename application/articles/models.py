@@ -24,5 +24,13 @@ class Article(Base):
             " GROUP BY Article.id"
       )
       res = db.engine.execute(query)
-      print("res: ", res.fetchone())
+      return db.engine.execute(query)
+
+   @staticmethod
+   def get_all_articles():
+      query = text(
+            "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
+            " LEFT JOIN Account ON Account.id = Article.writer"
+            " GROUP BY Article.id"
+      )
       return db.engine.execute(query)
