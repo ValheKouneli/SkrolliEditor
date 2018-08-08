@@ -13,8 +13,19 @@
     <tr style="background-color:red">
     {% endif %}
       <td>{{ article.name }}</td>
-      <td>{{ article.writer }}</td>
-      <td>{{ article.editor_in_charge }}</td>
+
+      {% if article.writer is not none %}
+        <td>{{ article.writer }}</td>
+      {% else %}
+        <td></td>
+      {% endif %}
+
+      {% if article.editor_in_charge is not none %}
+        <td>{{ article.editor_in_charge }}</td>
+      {% else %}
+        <td></td>
+      {% endif %}
+      
       <td>
       {% if not article.ready %}
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
