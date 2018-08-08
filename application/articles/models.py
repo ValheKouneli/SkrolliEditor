@@ -18,7 +18,7 @@ class Article(Base):
    @staticmethod
    def find_articles_not_ready():
       query = text(
-            "SELECT Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
+            "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
             " LEFT JOIN Account ON Account.id = Article.writer"
             " WHERE (Article.ready = 0)"
             " GROUP BY Article.id"
