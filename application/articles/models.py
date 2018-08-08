@@ -17,4 +17,12 @@ class Article(Base):
 
    @staticmethod
    def find_articles_not_ready():
-      return Article.query.filter_by(ready = False)
+      query = text(
+            "SELECT Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
+            " LEFT JOIN Account ON Account.id = Article.writer"
+            " WHERE (Article.ready = 0)"
+            " GROUP BY Article.id"
+      )
+      res = db.engine.execute(query)
+      print("res: ", res.fetchone())
+      return db.engine.execute(query)

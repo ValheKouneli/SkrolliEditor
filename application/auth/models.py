@@ -73,3 +73,12 @@ class User(Base):
         new_name = Name(name, self.id)
         db.session().add(new_name)
         db.session().commit()
+
+    def find_articles_writing(self):
+        query = \
+            "SELECT Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article" +\
+            " LEFT JOIN Account ON Account.id = Article.writer" +\
+            " WHERE (Article.ready = 0 AND Article.writer = %s)" % self.id +\
+            " GROUP BY Article.id"
+        return db.engine.execute(query)
+        
