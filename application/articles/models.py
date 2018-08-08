@@ -1,4 +1,5 @@
 from application import db
+from application.help import getArticlesWithCondition
 from application.models import Base
 from sqlalchemy.sql import text
 
@@ -36,20 +37,5 @@ class Article(Base):
       self.layout_status = 0.0
 
    @staticmethod
-   def find_articles_not_ready():
-      query = text(
-            "SELECT Article.id AS id, Article.name AS name, Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
-            " LEFT JOIN Account Writer ON Article.writer = Writer.id"
-            " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
-            " WHERE Article.ready = 0"
-      )
-      return db.engine.execute(query)
-
-   @staticmethod
    def get_all_articles():
-      query = text(
-            "SELECT Article.id AS id, Article.name AS name, Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
-            " LEFT JOIN Account Writer ON Article.writer = Writer.id"
-            " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
-      )
-      return db.engine.execute(query)
+      return getArticlesWithCondition("0=0")
