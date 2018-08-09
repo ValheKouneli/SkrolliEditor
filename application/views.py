@@ -15,3 +15,7 @@ def index():
     else:
         articles = getArticlesWithCondition("Article.ready = 0").fetchall()
         return render_template("index.html", logged_in=False, unfinished_articles = articles)
+
+@app.route("/404")
+def error404():
+    render_template("error404.html")
