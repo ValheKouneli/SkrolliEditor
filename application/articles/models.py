@@ -6,6 +6,7 @@ from sqlalchemy.sql import text
 class Article(Base):
 
    name = db.Column(db.String(144), nullable=False)
+   issue = db.Column(db.Integer, db.ForeignKey('issue.id'), nullable=True)
    pages = db.Column(db.Integer, nullable=True)
    editor_in_charge = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
    editing_status = db.Column(db.Float, nullable=False)
