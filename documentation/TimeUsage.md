@@ -69,3 +69,9 @@ Daily time usage
   * do not show empty tables
   * do not show mark-as-ready button for ready articles
   * show ready status as a color
+* Thu: 4h 15 min
+  * Making tables appear prettier
+  * Feature: there are magazine issues
+  * Feature: articles belong to an issue
+  * Feature: you can see all the articles of a certain issue
+  * Trying to figure out how to show the current issue on the nav bar. Failing.
