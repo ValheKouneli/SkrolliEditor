@@ -1,5 +1,5 @@
 {% macro articlelist(articles) -%}
-<table>
+<table class="table table-hover table-sm">
     <tr>
       <th>Article</th>
       <th>Writer</th>
@@ -8,9 +8,9 @@
     </tr>
     {% for article in articles %}
     {% if article.ready %}
-    <tr style="background-color:green">
+    <tr class="table-success">
     {% else %}
-    <tr style="background-color:red">
+    <tr class="table-danger">
     {% endif %}
       <td>{{ article.name }}</td>
 
