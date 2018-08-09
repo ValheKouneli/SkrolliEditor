@@ -4,5 +4,6 @@ from application.articles.models import Article
 
 class Issue(Base):
     name = db.Column(db.String(144), nullable=False)
+    current = db.Column(db.Boolean, nullable=False)
 
-    articles_writing = db.relationship("Article", foreign_keys=[Article.issue], lazy=True)
+    articles = db.relationship("Article", foreign_keys=[Article.issue], lazy=True)
