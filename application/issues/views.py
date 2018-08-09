@@ -10,7 +10,7 @@ def issues_index():
     issues = Issue.query.all()
     return render_template("/issues/list.html", issues = issues)
 
-@app.route("/<issue>/articles", methods=["GET"])
+@app.route("/<issue>/articles/", methods=["GET"])
 def articles_in_issue(issue):
     try:
         issueid = Issue.query.filter_by(name=issue).first().id
