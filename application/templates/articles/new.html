@@ -5,6 +5,7 @@
 <form method="POST" action="{{ url_for('articles_create') }}">
    <table>
        {{ formfield(form.name) }}
+       {{ formfield(form.issue) }}
        {{ formfield(form.writer) }}
        {{ formfield(form.editorInCharge) }}
        <tr>
