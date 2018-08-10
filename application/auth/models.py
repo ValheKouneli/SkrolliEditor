@@ -78,7 +78,7 @@ class User(Base):
         query = \
             "SELECT Article.name AS name, Article.id AS id, Account.name AS writer, Article.ready AS ready FROM Article" +\
             " LEFT JOIN Account ON Account.id = Article.writer" +\
-            " WHERE (Article.ready = 0 AND Article.writer = %s)" % self.id +\
-            " GROUP BY Article.id"
+            " WHERE (Article.ready = 0 AND Article.writer = %d)" % self.id +\
+            " GROUP BY Article.id, Article.name, Account.name, Article.ready"
         return db.engine.execute(query)
         
