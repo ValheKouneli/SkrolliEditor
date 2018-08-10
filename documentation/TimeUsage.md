@@ -47,7 +47,7 @@ Daily time usage
 
 ## Week 3, 6.-10.8.2018
 
-**Total: 12h 30 min**
+**Total: 16h 45 min**
 
 * Mon: 5h
   * helping others
@@ -75,3 +75,9 @@ Daily time usage
   * Feature: articles belong to an issue
   * Feature: you can see all the articles of a certain issue
   * Trying to figure out how to show the current issue on the nav bar. Failing.
+* Friday: 4h 15 min
+  * Merging feature branches to master. Fixing code when it broke on server.
+  * Finally figuring out how to show the current issue on the nav bar. It was never not-working.
+  * Feature: link for adding an article to an issue.
+  * Learning about ways to use Bootstrap. Making add article form prettier with flask-bootstrap.
+  * TODO: Queries need "False/True" on server and "0/1" locally. Make different cases depending on environment.
