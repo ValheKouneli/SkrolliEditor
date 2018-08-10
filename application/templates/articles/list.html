@@ -7,9 +7,9 @@
 {% endif %}
 
 {% if issue %}
-<button type="button" class="btn btn-link btn-primary"><a href="{{ url_for('articles_create_for_issue', issue=issue) }}">Add an article</a></button>
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_create_for_issue', issue=issue) }}" role="button">Add an article</a>
 {% else %}
-<button type="button" class="btn btn-link btn-primary"><a href="{{ url_for('articles_form') }}">Add an article</a></button>
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_form') }}" role="button">Add an article</a>
 {% endif %}
 
 {% if articles %}
