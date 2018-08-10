@@ -12,5 +12,4 @@ class ArticleForm(FlaskForm):
             csrf = False
 
 
-
         

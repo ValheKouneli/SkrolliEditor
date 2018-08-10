@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article
-from application.articles.forms import ArticleForm
+from application.articles.forms import ArticleForm, getPeopleOptions
 from application.auth.models import User
 from application.help import getPeopleOptions
 
@@ -17,11 +17,11 @@ def articles_index():
 def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
-
+    
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
-       
-    return render_template("/articles/new.html", form=form)
+
+    return render_template("/articles/new.html", form = form)
 
 @app.route("/articles/<article_id>/", methods=["POST"])
 @login_required

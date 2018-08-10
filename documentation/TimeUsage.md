@@ -44,3 +44,34 @@ Daily time usage
   * wondering why heroku crashes if I add a test user to its database
   * writing user stories
   * 3 hours: fighting with things working locally but not on server
+
+## Week 3, 6.-10.8.2018
+
+**Total: 12h 30 min**
+
+* Mon: 5h
+  * helping others
+  * refactoring
+  * no links to unpermitted features
+  * importing things in the corrent order can be hard!
+  * learning more complicated flask sqlalchemy use
+* Tue: 3h
+  * figuring out how to make a form with dynamic select field
+  * figuring out how to show different content depending on if user is logged in or not
+  * realizing these are easy things to do if you don't try to do them in the wrong way
+  * feature: show articles the logged-in user is writing on the index page (writer's name still showing only as an id number)
+* Wed: 4h 30 min
+  * Making article writer's name appear in the article listing
+  * feature: assign an editor-in-charge for an article
+  * learning about more complicated sql queries
+  * feature: show editor-in-charge in the article listing
+  * refactoring
+  * do not show empty tables
+  * do not show mark-as-ready button for ready articles
+  * show ready status as a color
+* Thu: 4h 15 min
+  * Making tables appear prettier
+  * Feature: there are magazine issues
+  * Feature: articles belong to an issue
+  * Feature: you can see all the articles of a certain issue
+  * Trying to figure out how to show the current issue on the nav bar. Failing.

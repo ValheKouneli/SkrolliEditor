@@ -80,3 +80,8 @@ There are people in the system, and some of them are also users. There is some i
 * what tasks they are assigned to
 
 The information about what has to be paid and to whom is important, and the initial version of the application will have some functionality related to that.
+
+
+## User stories
+
+[link](/documentation/UserStories.md)
