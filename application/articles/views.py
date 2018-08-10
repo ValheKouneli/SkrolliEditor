@@ -3,13 +3,13 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article
-from application.articles.forms import ArticleForm, getPeopleOptions
+from application.articles.forms import ArticleForm
 from application.auth.models import User
+from application.help import getPeopleOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
-    data = Article.query.all()
-    articles = [{'name': article.name, 'writer': User.query.get(article.writer).name, 'ready': article.ready} for article in data]
+    articles = Article.get_all_articles()
     return render_template("/articles/list.html", articles = articles)
 
 @app.route("/articles/new/")
@@ -28,6 +28,7 @@ def articles_form():
 
 def articles_set_ready(article_id):
 
+    #todo: give redirect address as a parameter
     a = Article.query.get(article_id)
     a.ready = True
     db.session().commit()

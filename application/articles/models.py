@@ -1,6 +1,5 @@
 from application import db
 from application.models import Base
-
 from sqlalchemy.sql import text
 
 class Article(Base):
@@ -18,10 +17,20 @@ class Article(Base):
 
    @staticmethod
    def find_articles_not_ready():
-      res = Article.query.filter_by(ready = False)
+      query = text(
+            "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
+            " LEFT JOIN Account ON Account.id = Article.writer"
+            " WHERE (Article.ready = 0)"
+            " GROUP BY Article.id"
+      )
+      res = db.engine.execute(query)
+      return db.engine.execute(query)
 
-      response = []
-      for row in res:
-         response.append({"id":row.id, "name":row.name, "writer":row.writer})
-
-      return response
+   @staticmethod
+   def get_all_articles():
+      query = text(
+            "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
+            " LEFT JOIN Account ON Account.id = Article.writer"
+            " GROUP BY Article.id"
+      )
+      return db.engine.execute(query)
