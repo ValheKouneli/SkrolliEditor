@@ -6,8 +6,16 @@
 <h1>{{ title }}</h1>
 {% endif %}
 
+{% if issue %}
+<button type="button" class="btn btn-link btn-primary"><a href="{{ url_for('articles_create_for_issue', issue=issue) }}">Add an article</a></button>
+{% else %}
+<button type="button" class="btn btn-link btn-primary"><a href="{{ url_for('articles_form') }}">Add an article</a></button>
+{% endif %}
+
 {% if articles %}
+<p>
   {{ articlelist(articles=articles) }}
+</p>
 {% else %}
 <p>
   No articles in the system
