@@ -16,7 +16,7 @@ def getPeopleOptions():
 
 class ArticleForm(FlaskForm):
     name = StringField("Article name", [validators.Length(min=1)])
-    writer = SelectField("Writer", choices=getPeopleOptions(), validators=[validators.Required()])
+    writer = SelectField("Writer", validators=[validators.Required()])
     ready = BooleanField("Done")
 
     class Meta:
