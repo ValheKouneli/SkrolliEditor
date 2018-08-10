@@ -81,3 +81,4 @@ Daily time usage
   * Feature: link for adding an article to an issue.
   * Learning about ways to use Bootstrap. Making add article form prettier with flask-bootstrap.
   * TODO: Queries need "False/True" on server and "0/1" locally. Make different cases depending on environment.
+  * TODO: Don't show the add article link to non-editors on the article listing pages. Add title to all article listing pages.
