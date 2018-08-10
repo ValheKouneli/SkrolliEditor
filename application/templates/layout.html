@@ -15,7 +15,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('articles_index') }} ">List articles</a>
+                        <a class="nav-link" href="{{ url_for('articles_in_issue', issue=current)  }} ">Articles {{ current }}</a>
                       </li>
                       {% if current_user.editor %}
                       <li class="nav-item">

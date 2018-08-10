@@ -14,7 +14,7 @@ def articles_index():
 
 @app.route("/articles/new/")
 @login_required
-def articles_form():
+def articles_form(issue=0):
     if not current_user.editor:
         return render_template("articles/list.html")
 
@@ -22,7 +22,8 @@ def articles_form():
     form.writer.choices = getPeopleOptions()
     form.editorInCharge.choices = getEditorOptions()
     form.issue.choices = getIssueOptions()
-       
+    form.issue.data = issue
+    
     return render_template("/articles/new.html", form=form)
 
 @app.route("/articles/<article_id>/", methods=["POST"])

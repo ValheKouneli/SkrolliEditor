@@ -45,7 +45,7 @@ except Exception as err:
 
 from application.issues.models import Issue
 @app.context_processor
-def test():
+def set_global_current():
     try:
         current = Issue.query.filter_by(current=True).first().name
     except:
