@@ -4,10 +4,13 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.articles.models import Article
 from application.articles.forms import ArticleForm
+from application.auth.models import User
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
-    return render_template("/articles/list.html", articles = Article.query.all())
+    data = Article.query.all()
+    articles = [{'name': article.name, 'writer': User.query.get(article.writer).name, 'ready': article.ready} for article in data]
+    return render_template("/articles/list.html", articles = articles)
 
 @app.route("/articles/new/")
 @login_required
@@ -41,7 +44,7 @@ def articles_create():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data)
-    a.writer = form.writer.data
+    a.writer = int(form.writer.data)
     a.created_by = current_user.id
 
     db.session().add(a)

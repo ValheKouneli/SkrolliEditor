@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 
 {% block body %}
+
+{% if unfinished_articles %}
+
 <p>
   Unfinished articles
 </p>
-
-{% if unfinished_articles is defined %}
 
 <ul>
   {% for article in unfinished_articles %}
@@ -15,6 +16,10 @@
   {% endfor %}
 </ul>
 
-{% endif %}
+{% else %}
 
+<p>
+  No unfinished articles
+</p>
+{% endif %}
 {% endblock %}
