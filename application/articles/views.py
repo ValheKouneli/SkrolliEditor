@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article
-from application.articles.forms import ArticleForm, getPeopleOptions
+from application.articles.forms import ArticleForm
 from application.auth.models import User
 from application.help import getPeopleOptions
 
