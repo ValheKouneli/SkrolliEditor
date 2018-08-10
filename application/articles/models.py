@@ -21,7 +21,7 @@ class Article(Base):
             "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
             " LEFT JOIN Account ON Account.id = Article.writer"
             " WHERE (Article.ready = 0)"
-            " GROUP BY Article.id, Article.name"
+            " GROUP BY Article.id, Article.name, Account.name, Article.ready"
       )
       res = db.engine.execute(query)
       return db.engine.execute(query)
@@ -31,6 +31,6 @@ class Article(Base):
       query = text(
             "SELECT Article.id AS id, Article.name AS name, Account.name AS writer, Article.ready AS ready FROM Article"
             " LEFT JOIN Account ON Account.id = Article.writer"
-            " GROUP BY Article.id, Article.name"
+            " GROUP BY Article.id, Article.name, Account.name, Article.ready"
       )
       return db.engine.execute(query)
