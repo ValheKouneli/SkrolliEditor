@@ -43,6 +43,14 @@ except Exception as err:
     print(err)
     pass
 
+from application.issues.models import Issue
+@app.context_processor
+def test():
+    try:
+        current = Issue.query.filter_by(current=True).first().name
+    except:
+        current = ""
+    return dict(current=current)
 
 # import views
 from application import views
