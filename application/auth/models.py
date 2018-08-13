@@ -13,7 +13,8 @@ class User(Base):
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=True)
     password = db.Column(db.String(144), nullable=True)
-    editor = db.Column(db.Boolean(), nullable=True)
+    editor = db.Column(db.Boolean(), nullable=False)
+    admin = db.Column(db.Boolean(), nullable=False)
 
     names = db.relationship("Name", backref='account', lazy=True)
     articles_writing = db.relationship("Article", foreign_keys=[Article.writer], lazy=True)
@@ -28,6 +29,7 @@ class User(Base):
         else:
             self.password = ""
         self.editor = False
+        self.admin = False
 
     def get_id(self):
         return self.id
@@ -56,6 +58,9 @@ class User(Base):
 
     def is_editor(self):
         return self.editor
+
+    def is_admin(self):
+        return self.admin
 
     def set_name(self, name):
         try:

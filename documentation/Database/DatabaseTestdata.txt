@@ -1,4 +1,4 @@
 INSERT INTO name (name, user_id) VALUES ('Testeri', 1);
 INSERT INTO name (name, user_id) VALUES ('Testi Käyttäjä', 1);
-INSERT INTO account (id, name, username, password, editor) VALUES (1, 'Hello World', 'hello', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', 1);
+INSERT INTO account (id, name, username, password, editor, admin) VALUES (1, 'Hello World', 'hello', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', 1, 1);
 INSERT INTO issue (name, current) VALUES ('2018.3', 1);

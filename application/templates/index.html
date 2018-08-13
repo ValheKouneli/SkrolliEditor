@@ -31,12 +31,12 @@
 
 {% if articles_writing %}
 <h1>I am writing</h1>
-{{ articlelist(articles_writing) }}
+{{ articlelist(articles=articles_writing, current_user=current_user) }}
 {% endif %}
 
 {% if articles_editing %}
 <h1>I am editing</h1>
-{{ articlelist(articles_editing) }}
+{{ articlelist(articles=articles_editing, current_user=current_user) }}
 {% endif %}
 
 {% endif %}

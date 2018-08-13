@@ -14,7 +14,7 @@
 
 {% if articles %}
 <p>
-  {{ articlelist(articles=articles) }}
+  {{ articlelist(current_user=current_user, articles=articles) }}
 </p>
 {% else %}
 <p>

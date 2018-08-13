@@ -51,6 +51,16 @@ def show_article(article_id):
 
     return render_template("/articles/article.html", article=article)
 
+@app.route("/article/<article_id>/delete/", methods=["POST"])
+@login_required
+def delete_article(article_id):
+    if current_user.is_admin:
+        article_to_delete = Article.query.filter_by(id = article_id).first()
+        db.session.delete(article_to_delete)
+        db.session.commit()
+
+    return render_template("/articles/list.html") # todo: change this to where the request came from
+
 @app.route("/articles/", methods=["POST"])
 @login_required
 def articles_create():
