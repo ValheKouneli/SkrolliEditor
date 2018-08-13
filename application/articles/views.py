@@ -53,9 +53,12 @@ def articles_create():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data)
-    a.issue = int(form.issue.data)
-    a.writer = int(form.writer.data)
-    a.editor_in_charge = int(form.editorInCharge.data)
+    if form.issue.data != 0:
+        a.issue = int(form.issue.data)
+    if form.writer.data != 0:
+        a.writer = int(form.writer.data)
+    if form.editorInCharge.data != 0:
+        a.editor_in_charge = int(form.editorInCharge.data)
     a.created_by = current_user.id
 
     db.session().add(a)
