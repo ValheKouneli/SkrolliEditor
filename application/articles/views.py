@@ -17,7 +17,7 @@ def articles_index():
 def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
-
+    
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
     form.editorInCharge.choices = getEditorOptions()
@@ -60,5 +60,4 @@ def articles_create():
 
     db.session().add(a)
     db.session().commit()
-
     return redirect(url_for("articles_index"))

@@ -4,6 +4,10 @@ Web application to help the editorial process of Skrolli
 
 https://skrollieditor.herokuapp.com/
 
+**Test user**
+* username: [the same as in the course material]
+* [the Finnish word for test repeated twice in lower case]
+
 ## Project definition
 
 The aim of this project is to create a web application for the editorial team of Skrolli magazine that can eventually replace the current system for managing the editorial process of Skrolli.
@@ -80,3 +84,8 @@ There are people in the system, and some of them are also users. There is some i
 * what tasks they are assigned to
 
 The information about what has to be paid and to whom is important, and the initial version of the application will have some functionality related to that.
+
+
+## User stories
+
+[link](/documentation/UserStories.md)
