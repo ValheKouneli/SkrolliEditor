@@ -81,4 +81,18 @@ Daily time usage
   * Feature: link for adding an article to an issue.
   * Learning about ways to use Bootstrap. Making add article form prettier with flask-bootstrap.
   * TODO: Queries need "False/True" on server and "0/1" locally. Make different cases depending on environment.
-  * TODO: Don't show the add article link to non-editors on the article listing pages. Add title to all article listing pages.
+
+## Week 4, 13.-17.8.2018
+
+**Total: 3h 25 min**
+
+* Mon: 3h 25 min
+  * feature: showing one article's info on a single page
+  * feature: user can be an admin and admin can delete articles
+  * feature: new table synopsis. Article can have a synopsis. Synopsis is shown on article's own page. 
+  Synopsis is deleted when article is deleted.
+  * do not show add article button to non-editors
+  * merging brances to master and fixing bugs
+  * TODO: finetune (apply flask bootstrap formatting to) all pages
+  * TODO: the add article form's 'ready' checkbox does nothing, fix this.
+  * TODO: link to all existing pages from somewhere
