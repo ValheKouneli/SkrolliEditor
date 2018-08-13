@@ -6,10 +6,11 @@
 <h1>{{ title }}</h1>
 {% endif %}
 
-{% if issue %}
+{% if issue and current_user and current_user.editor %}
 <a class="btn btn-link btn-primary" href="{{ url_for('articles_create_for_issue', issue=issue) }}" role="button">Add an article</a>
-{% else %}
+{% elif current_user and current_user.editor %}
 <a class="btn btn-link btn-primary" href="{{ url_for('articles_form') }}" role="button">Add an article</a>
+{% else %}
 {% endif %}
 
 {% if articles %}

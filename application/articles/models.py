@@ -27,16 +27,26 @@ class Article(Base):
    ready = db.Column(db.Boolean, nullable=False)
 
    created_by = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+   synopsis = db.Column(db.Integer, db.ForeignKey('synopsis.id'), nullable=True)
 
 
-   def __init__(self, name):
+   def __init__(self, name, created_by):
       self.name = name
       self.ready = False
       self.editing_status = 0.0
       self.writing_status = 0.0
       self.language_consultation_status = 0.0
       self.layout_status = 0.0
+      self.created_by = created_by
 
    @staticmethod
    def get_all_articles():
       return getArticlesWithCondition("0=0")
+
+class Synopsis(Base):
+   article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+   content = db.Column(db.String(288), nullable=True)
+
+   def __init__(self, article_id, content):
+      self.article_id = article_id
+      self.content = content

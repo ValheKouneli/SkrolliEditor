@@ -9,6 +9,7 @@ class ArticleForm(FlaskForm):
         writer = SelectField("Writer", coerce=int)
         ready = BooleanField("Done")
         editorInCharge = SelectField("Editor-in-charge", coerce=int)
+        synopsis = StringField("Synopsis")
 
 
         class Meta:

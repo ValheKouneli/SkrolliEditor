@@ -2,7 +2,7 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.articles.models import Article
+from application.articles.models import Article, Synopsis
 from application.articles.forms import ArticleForm
 from application.auth.models import User
 from application.help import getArticleWithId, getPeopleOptions, getEditorOptions, getIssueOptions
@@ -49,17 +49,28 @@ def show_article(article_id):
     if article is None:
         return redirect(url_for("error404"))
 
-    return render_template("/articles/article.html", article=article)
+    synopsis = ""
+    try:
+        synopsis = Synopsis.query.filter_by(article_id=id).first().content
+    except:
+        pass
+
+    return render_template("/articles/article.html", article=article, synopsis=synopsis)
 
 @app.route("/article/<article_id>/delete/", methods=["POST"])
 @login_required
 def delete_article(article_id):
     if current_user.is_admin:
-        article_to_delete = Article.query.filter_by(id = article_id).first()
-        db.session.delete(article_to_delete)
+        try:
+            article_to_delete = Article.query.filter_by(id = article_id).first()
+            db.session.delete(article_to_delete)
+            synopsis_to_delete = Synopsis.query.filter_by(article_id = article_id).first()
+            db.session.delete(synopsis_to_delete)
+        except:
+            pass
         db.session.commit()
 
-    return render_template("/articles/list.html") # todo: change this to where the request came from
+    return redirect(url_for("articles_index")) # todo: change this to where the request came from
 
 @app.route("/articles/", methods=["POST"])
 @login_required
@@ -76,13 +87,18 @@ def articles_create():
     if not form.validate():
         return render_template("articles/new.html", form = form)
 
-    a = Article(form.name.data)
+    a = Article(form.name.data, current_user.id)
     a.issue = int(form.issue.data)
     a.writer = int(form.writer.data)
     a.editor_in_charge = int(form.editorInCharge.data)
-    a.created_by = current_user.id
 
     db.session().add(a)
     db.session().commit()
+    
+    if len(form.synopsis.data) > 0:
+        s = Synopsis(article_id = a.id, content=form.synopsis.data)
+        db.session().add(s)
+        db.session().commit()
+    
 
     return redirect(url_for("articles_index"))
