@@ -20,7 +20,7 @@ def getEditorOptions():
     query = text(
         "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
         " LEFT JOIN Account ON Account.id = Name.user_id"
-        " WHERE Account.editor = True"
+        " WHERE Account.editor = true"
         " GROUP BY Name.id, Account.name, Account.id"
     )
     return sort_and_format(db.engine.execute(query))

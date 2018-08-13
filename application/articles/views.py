@@ -57,5 +57,4 @@ def articles_create():
 
     db.session().add(a)
     db.session().commit()
-
     return redirect(url_for("articles_index"))
