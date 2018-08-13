@@ -56,7 +56,7 @@ A **picture editor** is always an **editor** as well.
   - [ ] I can give the new article a title, subtitle and a table-of-contents text.
   - [ ] I can give the new article an amount of pages.
   - [ ] I can give the new article a writing status.
-  - [ ] I can give the new article a synopsis.
+  - [x] I can give the new article a synopsis.
 - [x] I can see the unfinished articles whose editor-in-charge I am, so that I can keep track of their progress.
   - [ ] I can add picture units to those articles, so that I can let the picture editor know that pictures are provided or needed.
     - [ ] I can associate myself as the artist of those picture units.
