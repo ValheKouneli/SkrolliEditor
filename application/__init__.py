@@ -18,6 +18,7 @@ db = SQLAlchemy(app)
 from application.people import models
 from application.auth import models
 from application.articles import models
+from application.issues import models
 
 
 # authentication
@@ -42,9 +43,18 @@ except Exception as err:
     print(err)
     pass
 
+from application.issues.models import Issue
+@app.context_processor
+def set_global_current():
+    try:
+        current = Issue.query.filter_by(current=True).first().name
+    except:
+        current = ""
+    return dict(current=current)
 
 # import views
 from application import views
 from application.people import views
 from application.auth import views
 from application.articles import views
+from application.issues import views

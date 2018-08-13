@@ -25,6 +25,16 @@ def getEditorOptions():
     )
     return sort_and_format(db.engine.execute(query))
 
+def getIssueOptions():
+    query = text(
+        "SELECT id, name FROM Issue"
+    )
+    issues = db.engine.execute(query)
+    formatted = [(0, None)]
+    for issue in issues:
+        formatted.append((issue.id, issue.name))
+    return formatted
+
 def getArticlesWithCondition(condition="(0 = 0)"):
     query = text(
             "SELECT Article.id AS id, Article.ready AS ready, Article.name AS name, Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"

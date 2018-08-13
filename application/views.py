@@ -4,6 +4,8 @@ from application.help import getArticlesWithCondition
 from application.articles.models import Article
 from flask_login import current_user
 
+
+
 @app.route("/")
 def index():
     if current_user.is_authenticated:
@@ -13,5 +15,9 @@ def index():
             articles_writing = articles_writing,
             articles_editing = articles_editing)
     else:
-        articles = getArticlesWithCondition("Article.ready = False").fetchall()
+        articles = getArticlesWithCondition("Article.ready = false").fetchall()
         return render_template("index.html", logged_in=False, unfinished_articles = articles)
+
+@app.route("/404/")
+def error404():
+    return render_template("error404.html")

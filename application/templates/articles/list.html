@@ -2,8 +2,20 @@
 {% from "articles/articlelist_macro.html" import articlelist %}
 
 {% block body %}
+{% if title %}
+<h1>{{ title }}</h1>
+{% endif %}
+
+{% if issue %}
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_create_for_issue', issue=issue) }}" role="button">Add an article</a>
+{% else %}
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_form') }}" role="button">Add an article</a>
+{% endif %}
+
 {% if articles %}
+<p>
   {{ articlelist(articles=articles) }}
+</p>
 {% else %}
 <p>
   No articles in the system
