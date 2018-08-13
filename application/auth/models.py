@@ -78,9 +78,9 @@ class User(Base):
         db.session().commit()
 
     def find_articles_writing(self):
-        condition = "(Article.ready = 0 AND Article.writer = %s)" % self.id
+        condition = "(Article.ready = 0 AND Article.writer = %d)" % self.id
         return getArticlesWithCondition(condition)
 
     def find_articles_editing(self):
-        condition = "(Article.ready = 0 AND Article.editor_in_charge = %s)" % self.id
+        condition = "(Article.ready = 0 AND Article.editor_in_charge = %d)" % self.id
         return getArticlesWithCondition(condition)

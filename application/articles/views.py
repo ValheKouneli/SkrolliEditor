@@ -17,7 +17,7 @@ def articles_index():
 def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
-
+    
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
     form.editorInCharge.choices = getEditorOptions()

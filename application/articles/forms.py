@@ -9,10 +9,5 @@ class ArticleForm(FlaskForm):
         ready = BooleanField("Done")
         editorInCharge = SelectField("Editor-in-charge", coerce=int)
 
-
-        class Meta:
-            csrf = False
-
-
-
-        
+    class Meta:
+        csrf = False
