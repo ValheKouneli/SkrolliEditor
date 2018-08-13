@@ -13,5 +13,5 @@ def index():
             articles_writing = articles_writing,
             articles_editing = articles_editing)
     else:
-        articles = getArticlesWithCondition("Article.ready = 0").fetchall()
+        articles = getArticlesWithCondition("Article.ready = False").fetchall()
         return render_template("index.html", logged_in=False, unfinished_articles = articles)
