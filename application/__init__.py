@@ -14,6 +14,9 @@ else:
 
 db = SQLAlchemy(app)
 
+from flask_bootstrap import Bootstrap
+Bootstrap(app)
+
 # import models
 from application.people import models
 from application.auth import models
