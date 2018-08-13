@@ -1,21 +1,38 @@
 {% macro articlelist(articles) -%}
-<table>
+<table class="table table-hover table-sm">
     <tr>
       <th>Article</th>
       <th>Writer</th>
-      <th>Ready</th>
+      <th>Editor-in-charge</th>
+      <th></th>
     </tr>
     {% for article in articles %}
-    <tr>
+    {% if article.ready %}
+    <tr class="table-success">
+    {% else %}
+    <tr class="table-danger">
+    {% endif %}
       <td>{{ article.name }}</td>
-      <td>{{ article.writer }}</td>
-      <td>{{ article.ready }}</td>
+
+      {% if article.writer is not none %}
+        <td>{{ article.writer }}</td>
+      {% else %}
+        <td></td>
+      {% endif %}
+
+      {% if article.editor_in_charge is not none %}
+        <td>{{ article.editor_in_charge }}</td>
+      {% else %}
+        <td></td>
+      {% endif %}
+      
       <td>
+      {% if not article.ready %}
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
-            <input type="submit" value="Change status"/>    
+            <input type="submit" value="Mark as ready"/>    
           </form>
+      {% endif %}
       </td>
     </tr>
     {% endfor %}
-</table>
 {%- endmacro %}
