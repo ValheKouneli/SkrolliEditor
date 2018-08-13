@@ -12,7 +12,7 @@ def getPeopleOptions():
     query = text(
         "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
         " LEFT JOIN Account ON Account.id = Name.user_id"
-        " GROUP BY Name.id"
+        " GROUP BY Name.id, Account.name, Account.id"
     )
     return sort_and_format(db.engine.execute(query))
 
@@ -21,7 +21,7 @@ def getEditorOptions():
         "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
         " LEFT JOIN Account ON Account.id = Name.user_id"
         " WHERE Account.editor = True"
-        " GROUP BY Name.id"
+        " GROUP BY Name.id, Account.name, Account.id"
     )
     return sort_and_format(db.engine.execute(query))
 
@@ -31,6 +31,6 @@ def getArticlesWithCondition(condition="(0 = 0)"):
             " LEFT JOIN Account Writer ON Article.writer = Writer.id"
             " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
             " WHERE %s" % condition +\
-            " GROUP BY Article.id"
+            " GROUP BY Article.id, Article.ready, Article.name, Writer.name, Editor.name"
     )
     return db.engine.execute(query)
