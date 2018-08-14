@@ -1,8 +1,8 @@
-INSERT INTO account (id, name, username, password, editor) VALUES (1, 'Hello World', 'hello', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', t);
+INSERT INTO account (id, name, username, password, editor, admin) VALUES (1, 'Hello World', 'hello', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, True);
 INSERT INTO name (name, user_id) VALUES ('Testeri', 1);
 INSERT INTO name (name, user_id) VALUES ('Testi Käyttäjä', 1);
-INSERT INTO issue (name, current) VALUES ('2018.3', 1);
-INSERT INTO account (id, name, username, editor) VALUES (2, 'Jari Jamppa', 'jartsa', f)
-INSERT INTO name (name, user_id) VALUES ('Jari Jamppa', 2)
-INSERT INTO article (name, issue, writer, editor) VALUES ('Rakentelujuttu', 1, 2, 1)
-INSERT INTO article (name, issue, writer) VALUES ('Retrojuttu', 1, 1)
+INSERT INTO issue (name, current) VALUES ('2018.3', True);
+INSERT INTO account (id, name, username, editor, admin) VALUES (2, 'Jari Jamppa', 'jartsa', False, False);
+INSERT INTO name (name, user_id) VALUES ('Jari Jamppa', 2);
+INSERT INTO article (name, issue, writer, editor_in_charge, editing_status, writing_status, language_consultation_status, layout_status, ready, created_by) VALUES ('Rakentelujuttu', 1, 2, 1, 0.0, 0.0, 0.0, 0.0, False, 1);
+INSERT INTO article (name, issue, writer, editing_status, writing_status, language_consultation_status, layout_status, ready, created_by) VALUES ('Retrojuttu', 1, 1, 0.0, 0.0, 0.0, 0.0, False, 1);
