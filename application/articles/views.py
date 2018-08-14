@@ -16,7 +16,7 @@ def articles_index():
 @login_required
 def articles_form():
     if not current_user.editor:
-        return render_template("articles/list.html")
+        return redirect(url_for("error403"))
     
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
@@ -25,7 +25,7 @@ def articles_form():
 
     return render_template("/articles/new.html", form=form)
 
-@app.route("/articles/<article_id>/", methods=["POST"])
+@app.route("/articles/set_ready/<article_id>/", methods=["POST"])
 @login_required
 def articles_set_ready(article_id):
 
@@ -76,7 +76,7 @@ def delete_article(article_id):
 @login_required
 def article_update(article_id):
     if not current_user.is_editor:
-        return redirect(url_for("articles_index")) # todo: create an 'unauthenticated' page
+        return redirect(url_for("error403"))
 
     article = Article.query.get(int(article_id))
     if not article:
@@ -143,7 +143,7 @@ def article_update(article_id):
 def articles_create():
 
     if not current_user.editor:
-        return render_template("articles/list.html")
+        return redirect(url_for("error403"))
 
     form = ArticleForm(request.form)
     form.writer.choices = getPeopleOptions()

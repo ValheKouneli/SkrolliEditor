@@ -22,3 +22,7 @@ def index():
 @app.route("/404/")
 def error404():
     return render_template("error404.html")
+
+@app.route("/403/")
+def error403():
+    return render_template("error403.html")
