@@ -82,6 +82,8 @@ def article_update(article_id):
     if not article:
         return redirect(url_for("error404"))
 
+    synopsises = Synopsis.query.filter_by(article_id=int(article_id))
+
     if request.method == "GET":
         # create form
         form = ArticleForm()
@@ -94,7 +96,10 @@ def article_update(article_id):
         form.writer.data = article.writer if article.writer is not None else 0
         form.issue.data = article.issue if article.issue is not None else 0
         form.editorInCharge.data = article.editor_in_charge if article.editor_in_charge is not None else 0
-        
+        try:
+            form.synopsis.data = synopsises.first().content
+        except:
+            pass
         return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
     
     # create form and preselect eveything according to what was selected when form was sent
@@ -115,7 +120,7 @@ def article_update(article_id):
         article.set_editor(form.editorInCharge.data)
 
     try:
-        synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
+        synopsis = synopsises.first()
         if synopsis and len(form.synopsis.data) > 0:
             synopsis.set_content(form.synopsis.data)
         elif synopsis and len(form.synopsis.data) == 0:
@@ -123,9 +128,12 @@ def article_update(article_id):
             db.session.commit()
         else:
             new_synopsis = Synopsis(article_id=int(article_id), content=form.synopsis.data)
-            db.session.commit(new_synopsis)
+            db.session.add(new_synopsis)
+            db.session.commit()
     except:
-        pass
+        new_synopsis = Synopsis(article_id=int(article_id), content=form.synopsis.data)
+        db.session.add(new_synopsis)
+        db.session.commit()
 
     return redirect(url_for('show_article', article_id=article_id))
 

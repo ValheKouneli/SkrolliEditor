@@ -8,5 +8,7 @@
 <p>Ready: {{ article.ready }}</p>
 <p>Synopsis: {{ synopsis }}</p>
 
+{% if current_user.editor %}
 <a href="{{ url_for('article_update', article_id=article.id) }}">Edit article info</a>
+{% endif %}
 {% endblock %}
