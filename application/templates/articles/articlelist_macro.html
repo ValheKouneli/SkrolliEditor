@@ -12,7 +12,7 @@
     {% else %}
     <tr class="table-danger">
     {% endif %}
-      <td>{{ article.name }}</td>
+      <td><a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a></td>
 
       {% if article.writer is not none %}
         <td>{{ article.writer }}</td>
