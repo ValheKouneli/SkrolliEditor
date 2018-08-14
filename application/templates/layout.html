@@ -15,7 +15,16 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('articles_in_issue', issue=current)  }} ">Articles {{ current }}</a>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Articles
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for issuename in issuenames %}
+                                <a class="dropdown-item" href="{{ url_for('articles_in_issue', issue=issuename) }}">{{ issuename }}</a>
+                                {% endfor %}
+                              </div>
+                            </div>
                       </li>
                       {% if current_user.editor %}
                       <li class="nav-item">
