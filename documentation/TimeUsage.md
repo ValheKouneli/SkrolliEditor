@@ -103,3 +103,6 @@ Daily time usage
   * TODO: own css that makes conditional usage of flask bootstrap easier?
   * TODO: figure out how to implement the different statuses
   * TODO: refactoring, more macros etc. to make coding faster
+  * TODO: adding issues (validate name format and uniqueness )
+  * TODO: update username ( validate uniqueness )
+  * TODO: list dummy users separately
