@@ -50,6 +50,7 @@ def show_article(article_id):
 
     return render_template("/articles/article.html", article=article)
 
+  
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
 @login_required
 def article_update(article_id):
@@ -94,7 +95,7 @@ def article_update(article_id):
 
     return render_template("articles/article.html", article=getArticleWithId(int(article_id)))
 
-
+  
 @app.route("/articles/", methods=["POST"])
 @login_required
 def articles_create():
