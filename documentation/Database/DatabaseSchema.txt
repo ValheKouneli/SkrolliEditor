@@ -33,3 +33,9 @@ Issue
 id PK integer
 number integer
 
+Synopsis
+-
+id PK integer
+article: FK >- Article.id
+content string
+

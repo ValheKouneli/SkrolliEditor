@@ -1,39 +1,33 @@
-from application import db
+from application import db, os
 from sqlalchemy.sql import text
 
-def sort_and_format(people):
-    options = sorted(people, key=lambda person: person["alias"])
+def format_as_pair_id_name_and_alphabetize(query_result):
+    options = sorted(query_result, key=lambda option: option["name"])
     formatted = [(0, None)]
     for item in options:
-        formatted.append((item.id, item.alias + " (" + item.name + ")"))
+        formatted.append((item.id, item.name))
     return formatted
 
 def getPeopleOptions():
     query = text(
-        "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
-        " LEFT JOIN Account ON Account.id = Name.user_id"
-        " GROUP BY Name.id"
+        "SELECT Account.name AS name, Account.id AS id FROM Account"
+        " GROUP BY Account.name, Account.id"
     )
-    return sort_and_format(db.engine.execute(query))
+    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
 
 def getEditorOptions():
     query = text(
-        "SELECT Name.name AS alias, Account.name AS name, Account.id AS id FROM Name"
-        " LEFT JOIN Account ON Account.id = Name.user_id"
-        " WHERE Account.editor = 1"
-        " GROUP BY Name.id"
+        "SELECT Account.name AS name, Account.id AS id FROM Account"
+        " WHERE Account.editor = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
+        " GROUP BY Account.name, Account.id"
     )
-    return sort_and_format(db.engine.execute(query))
+    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
 
 def getIssueOptions():
     query = text(
         "SELECT id, name FROM Issue"
     )
-    issues = db.engine.execute(query)
-    formatted = [(0, None)]
-    for issue in issues:
-        formatted.append((issue.id, issue.name))
-    return formatted
+    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
 
 def getArticlesWithCondition(condition="(0 = 0)"):
     return getArticlesAmountCondition(condition=condition)
@@ -50,7 +44,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
         " WHERE %s" % condition +\
-        " GROUP BY Article.id" + howmany
+        " GROUP BY Article.id, Article.ready, Article.name, Writer.name, Editor.name" + howmany
     )
     return db.engine.execute(query)
 

@@ -44,3 +44,55 @@ Daily time usage
   * wondering why heroku crashes if I add a test user to its database
   * writing user stories
   * 3 hours: fighting with things working locally but not on server
+
+## Week 3, 6.-10.8.2018
+
+**Total: 21h**
+
+* Mon: 5h
+  * helping others
+  * refactoring
+  * no links to unpermitted features
+  * importing things in the corrent order can be hard!
+  * learning more complicated flask sqlalchemy use
+* Tue: 3h
+  * figuring out how to make a form with dynamic select field
+  * figuring out how to show different content depending on if user is logged in or not
+  * realizing these are easy things to do if you don't try to do them in the wrong way
+  * feature: show articles the logged-in user is writing on the index page (writer's name still showing only as an id number)
+* Wed: 4h 30 min
+  * Making article writer's name appear in the article listing
+  * feature: assign an editor-in-charge for an article
+  * learning about more complicated sql queries
+  * feature: show editor-in-charge in the article listing
+  * refactoring
+  * do not show empty tables
+  * do not show mark-as-ready button for ready articles
+  * show ready status as a color
+* Thu: 4h 15 min
+  * Making tables appear prettier
+  * Feature: there are magazine issues
+  * Feature: articles belong to an issue
+  * Feature: you can see all the articles of a certain issue
+  * Trying to figure out how to show the current issue on the nav bar. Failing.
+* Friday: 4h 15 min
+  * Merging feature branches to master. Fixing code when it broke on server.
+  * Finally figuring out how to show the current issue on the nav bar. It was never not-working.
+  * Feature: link for adding an article to an issue.
+  * Learning about ways to use Bootstrap. Making add article form prettier with flask-bootstrap.
+  * TODO: Queries need "False/True" on server and "0/1" locally. Make different cases depending on environment.
+
+## Week 4, 13.-17.8.2018
+
+**Total: 3h 25 min**
+
+* Mon: 3h 25 min
+  * feature: showing one article's info on a single page
+  * feature: user can be an admin and admin can delete articles
+  * feature: new table synopsis. Article can have a synopsis. Synopsis is shown on article's own page. 
+  Synopsis is deleted when article is deleted.
+  * do not show add article button to non-editors
+  * merging brances to master and fixing bugs
+  * TODO: finetune (apply flask bootstrap formatting to) all pages
+  * TODO: the add article form's 'ready' checkbox does nothing, fix this.
+  * TODO: link to all existing pages from somewhere

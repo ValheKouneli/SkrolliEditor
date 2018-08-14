@@ -17,7 +17,7 @@ def articles_index():
 def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
-
+    
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
     form.editorInCharge.choices = getEditorOptions()
@@ -59,20 +59,22 @@ def articles_create():
         return render_template("articles/list.html")
 
     form = ArticleForm(request.form)
-    form.issue.choices = getIssueOptions() # todo: keep old selection
-    form.writer.choices = getPeopleOptions() # todo: keep old selection
-    form.editorInCharge.choices = getEditorOptions() # todo: keep old selection
+    form.writer.choices = getPeopleOptions()
+    form.editorInCharge.choices = getEditorOptions()
+    form.issue.choices = getIssueOptions()
 
     if not form.validate():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data)
-    a.issue = int(form.issue.data)
-    a.writer = int(form.writer.data)
-    a.editor_in_charge = int(form.editorInCharge.data)
+    if form.issue.data != 0:
+        a.issue = int(form.issue.data)
+    if form.writer.data != 0:
+        a.writer = int(form.writer.data)
+    if form.editorInCharge.data != 0:
+        a.editor_in_charge = int(form.editorInCharge.data)
     a.created_by = current_user.id
 
     db.session().add(a)
     db.session().commit()
-
     return redirect(url_for("articles_index"))

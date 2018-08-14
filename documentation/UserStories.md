@@ -22,8 +22,8 @@ A **picture editor** is always an **editor** as well.
 - [ ] I can see articles in the system.
   - [x] I can see the article's name
   - [ ] I can see the article's title, subtitle and table-of-contents text
-  - [ ] I can see the writer of the article
-  - [ ] I can see the editor-in-charge of the article
+  - [x] I can see the writer of the article
+  - [x] I can see the editor-in-charge of the article
   - [ ] I can see the language consultant of the article
   - [ ] I can see the layout artist of the article
   - [ ] I can see the writing status, editing status, language consultation status and all-around (layout) status of the article
@@ -31,7 +31,7 @@ A **picture editor** is always an **editor** as well.
 - [ ] I can add names related to my account.
 - [ ] I can remove names related to my account.
 - [ ] I can see the unfinished tasks I am related to, so that I know what I have yet to be done.
-  - [ ] I can see the unfinished articles whose writer I am.
+  - [x] I can see the unfinished articles whose writer I am.
   - [ ] I can see the unfinished articles whose language consultant I am.
   - [ ] I can see the unfinished picture units whose artist I am.
 - [ ] I can edit the status of a task I am related to, so that I can let other people know of my progress.
@@ -43,20 +43,21 @@ A **picture editor** is always an **editor** as well.
 
 ## As a logged-in user who is an editor
 
-- [ ] I can add an issue to the system, provided that there is no issue with the same number already in the system, so that articles can be associated with it.
+- [x] I can add an issue to the system, provided that there is no issue with the same number already in the system, so that articles can be associated with it.
 - [x] I can add people in the system, so that they can be associated with tasks such as writing or editing an article or creating a  picture unit.
 - [x] I can add names to the people in the system, so that searches using those names will find the right person.
 - [x] I can remove names of the people in the system, so that a name that was typoed or that is wrong will not stay in the system.
 - [x] I can add an article in the system, provided that I give it a name, so that other editors will know what articles are coming in the future issues.
-  - [ ] I can associate an editor as the editor-in-charge of the new article.
-  - [ ] I can associate a person as the writer of the new article.
+  - [x] I can associate the article to an issue
+  - [x] I can associate an editor as the editor-in-charge of the new article.
+  - [x] I can associate a person as the writer of the new article.
   - [ ] I can associate a person as the language consultant of the new article.
   - [ ] I can associate an editor as the layout artist of the new article.
   - [ ] I can give the new article a title, subtitle and a table-of-contents text.
   - [ ] I can give the new article an amount of pages.
   - [ ] I can give the new article a writing status.
-  - [ ] I can give the new article a synopsis.
-- [ ] I can see the unfinished articles whose editor-in-charge I am, so that I can keep track of their progress.
+  - [x] I can give the new article a synopsis.
+- [x] I can see the unfinished articles whose editor-in-charge I am, so that I can keep track of their progress.
   - [ ] I can add picture units to those articles, so that I can let the picture editor know that pictures are provided or needed.
     - [ ] I can associate myself as the artist of those picture units.
 - [ ] I can see the articles whose layout artist I am, so that I can keep track of their progress and I will know when they are ready for layout phase.
