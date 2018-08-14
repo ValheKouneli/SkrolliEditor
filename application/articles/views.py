@@ -41,7 +41,6 @@ def articles_set_ready(article_id):
 def show_article(article_id):
     try:
         id = int(article_id)
-        print("id: ", id)
     except:
         return redirect(url_for("error404"))
     article = getArticleWithId(id)
