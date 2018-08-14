@@ -5,7 +5,7 @@ from application import app, db
 from application.articles.models import Article
 from application.articles.forms import ArticleForm
 from application.auth.models import User
-from application.help import getPeopleOptions, getEditorOptions, getIssueOptions
+from application.help import getArticleWithId, getPeopleOptions, getEditorOptions, getIssueOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
@@ -27,7 +27,6 @@ def articles_form():
 
 @app.route("/articles/<article_id>/", methods=["POST"])
 @login_required
-
 def articles_set_ready(article_id):
 
     #todo: give redirect address as a parameter
@@ -36,6 +35,21 @@ def articles_set_ready(article_id):
     db.session().commit()
 
     return redirect(url_for("articles_index"))
+
+
+@app.route("/article/<article_id>/", methods=["GET"])
+def show_article(article_id):
+    try:
+        id = int(article_id)
+        print("id: ", id)
+    except:
+        return redirect(url_for("error404"))
+    article = getArticleWithId(id)
+    
+    if article is None:
+        return redirect(url_for("error404"))
+
+    return render_template("/articles/article.html", article=article)
 
 @app.route("/articles/", methods=["POST"])
 @login_required
