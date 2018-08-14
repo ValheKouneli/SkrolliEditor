@@ -37,6 +37,45 @@ class Article(Base):
       self.language_consultation_status = 0.0
       self.layout_status = 0.0
 
+   def set_writer(self, writer_id):
+      try:
+            self.writer = writer_id
+            db.session().commit()
+            return True
+      except Exception:
+            return False
+
+   def set_editor(self, editor_id):
+      try:
+            if editor_id == 0:
+                  self.editor_in_charge = None
+            else:
+                  self.editor_in_charge = editor_id
+            db.session().commit()
+            return True
+      except Exception:
+            return False 
+
+   def set_issue(self, issue_id):
+      try:
+            if issue_id == 0:
+                  self.issue = None
+            else:
+                  self.issue = issue_id
+            db.session().commit()
+            return True
+      except Exception:
+            return False
+
+   def set_name(self, name):
+      try:
+            self.name = name
+            db.session().commit()
+            return True
+      except Exception:
+            return False 
+
+
    @staticmethod
    def get_all_articles():
       return getArticlesWithCondition("0=0")

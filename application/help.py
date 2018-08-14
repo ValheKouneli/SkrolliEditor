@@ -39,12 +39,13 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     if amount > 0:
         howmany = " LIMIT %d" % int(amount)
     query = text(
-        "SELECT Article.id AS id, Article.ready AS ready, Article.name AS name,"
+        "SELECT Article.id AS id, Issue.name AS issue, Article.ready AS ready, Article.name AS name,"
         " Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
+        " LEFT JOIN Issue ON Article.issue = Issue.id"
         " WHERE %s" % condition +\
-        " GROUP BY Article.id, Article.ready, Article.name, Writer.name, Editor.name" + howmany
+        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + howmany
     )
     return db.engine.execute(query)
 
