@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<h1>Add aliases to user {{ person.name }}</h1>
   <table>
     <tr>
-      <th>Names</th>
+      <th>Aliases</th>
     </tr>
     {% for name in person.names %}
     <tr>

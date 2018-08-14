@@ -2,6 +2,7 @@
 {% from 'formfield_macro.html' import formfield %}
 
 {% block body %}
+<h1>Add a dummy user</h1>
 <form method="POST" action="{{ url_for('people_create') }}">
    <table>
        {{ formfield(form.name) }}

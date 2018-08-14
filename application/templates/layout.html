@@ -28,7 +28,16 @@
                       </li>
                       {% if current_user.editor %}
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('articles_form') }} ">Add an article</a>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ url_for('articles_form') }}"> Add articles </a>
+                                <a class="dropdown-item" href="{{ url_for('people_form') }}"> Add a dummy user </a>
+                                <a class="dropdown-item" href="{{ url_for('people_index') }}"> Show all users </a>
+                              </div>
+                            </div>
                       </li>
                       {% endif %}
                     </ul>
