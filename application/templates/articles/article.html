@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<p>
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_in_issue', issue=article.issue) }}" role="button">Show all articles in {{ article.issue }}</a>
+</p>
+
 <h2>{{ article.name }}</h2>
 <p>Issue: {{ article.issue }}</p>
 <p>Writer: {{ article.writer }}</p>
@@ -9,6 +13,8 @@
 <p>Synopsis: {{ synopsis }}</p>
 
 {% if current_user.editor %}
-<a href="{{ url_for('article_update', article_id=article.id) }}">Edit article info</a>
+<p>
+<a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
+</p>
 {% endif %}
 {% endblock %}
