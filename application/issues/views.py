@@ -33,7 +33,7 @@ def articles_create_for_issue(issue):
         return redirect(url_for("error404"))
     
     if not current_user.editor:
-        return render_template("articles/list.html")
+        return redirect(url_for("error403"))
 
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()

@@ -8,26 +8,37 @@
 
     <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-            <a class="navbar-brand" href="{{ url_for('index') }}">SkrolliEditor {{ current }}</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">SkrolliEditor</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('articles_in_issue', issue=current)  }} ">Articles {{ current }}</a>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Articles
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for issuename in issuenames %}
+                                <a class="dropdown-item" href="{{ url_for('articles_in_issue', issue=issuename) }}">{{ issuename }}</a>
+                                {% endfor %}
+                              </div>
+                            </div>
                       </li>
                       {% if current_user.editor %}
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('articles_form') }} ">Add an article</a>
-                      </li>
-                      {% endif %}
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('people_index') }} ">List people</a>
-                      </li>
-                      {% if current_user.editor %}
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('people_form') }} ">Add a person</a>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ url_for('articles_form') }}"> Add articles </a>
+                                <a class="dropdown-item" href="{{ url_for('people_form') }}"> Add a dummy user </a>
+                                <a class="dropdown-item" href="{{ url_for('issues_index') }}"> Show all issues </a>
+                                <a class="dropdown-item" href="{{ url_for('people_index') }}"> Show all users </a>
+                              </div>
+                            </div>
                       </li>
                       {% endif %}
                     </ul>

@@ -2,6 +2,7 @@
 {% from 'auth/accountform_macro.html' import accountform %}
 {% from 'formfield_macro.html' import formfield %}
 {% block body %}
+<h1>Update your account</h1>
 {{ error }}
 <form method="POST" action="{{ url_for('auth_update') }}">
     <table>

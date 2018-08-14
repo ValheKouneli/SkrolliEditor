@@ -55,6 +55,18 @@ def set_global_current():
         current = ""
     return dict(current=current)
 
+@app.context_processor
+def set_global_issues():
+    issuenames = []
+    try:
+        issues = Issue.query.all()
+        for issue in issues:
+            issuenames.append(issue.name)
+    except:
+        pass
+    return dict(issuenames=issuenames)
+        
+
 # import views
 from application import views
 from application.people import views
