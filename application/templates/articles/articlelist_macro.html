@@ -1,10 +1,13 @@
-{% macro articlelist(articles) -%}
+{% macro articlelist(articles, current_user) -%}
 <table class="table table-hover table-sm">
     <tr>
       <th>Article</th>
       <th>Writer</th>
       <th>Editor-in-charge</th>
       <th></th>
+      {% if current_user and current_user.admin %}
+      <th></th>
+      {% endif %}
     </tr>
     {% for article in articles %}
     {% if article.ready %}
@@ -33,6 +36,13 @@
           </form>
       {% endif %}
       </td>
+      {% if current_user and current_user.admin %}
+      <td>
+        <form method="POST" action="{{ url_for('delete_article', article_id=article.id) }}">
+          <input type="submit" value="Delete"/>
+        </form>
+      </td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>
