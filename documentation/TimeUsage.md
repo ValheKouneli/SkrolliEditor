@@ -80,11 +80,10 @@ Daily time usage
   * Finally figuring out how to show the current issue on the nav bar. It was never not-working.
   * Feature: link for adding an article to an issue.
   * Learning about ways to use Bootstrap. Making add article form prettier with flask-bootstrap.
-  * TODO: Queries need "False/True" on server and "0/1" locally. Make different cases depending on environment.
 
 ## Week 4, 13.-17.8.2018
 
-**Total: 3h 25 min**
+**Total: 7h 55 min**
 
 * Mon: 3h 25 min
   * feature: showing one article's info on a single page
@@ -93,6 +92,14 @@ Daily time usage
   Synopsis is deleted when article is deleted.
   * do not show add article button to non-editors
   * merging brances to master and fixing bugs
-  * TODO: finetune (apply flask bootstrap formatting to) all pages
   * TODO: the add article form's 'ready' checkbox does nothing, fix this.
-  * TODO: link to all existing pages from somewhere
+* Tue: 4h 40 min
+  * merged a lot of branches to master
+  * more test data; separate test data to local db and to heroku db
+  * simple solution to different db syntax locally and on heroku
+  * feature: article info can be edited
+  * dropdown menus on navbar
+  * small improvements here and there
+  * TODO: own css that makes conditional usage of flask bootstrap easier?
+  * TODO: figure out how to implement the different statuses
+  * TODO: refactoring, more macros etc. to make coding faster
