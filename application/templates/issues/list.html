@@ -5,7 +5,7 @@
 <ul>
     {% for issue in issues %}
     <li>
-        {{ issue.name }}
+        <a href="{{ url_for('articles_in_issue', issue=issue.name) }}">{{ issue.name }}</a>
     </li>
     {% endfor %}
 </ul>
