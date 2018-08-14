@@ -45,9 +45,9 @@ def articles_create():
         return render_template("articles/list.html")
 
     form = ArticleForm(request.form)
-    form.issue.choices = getIssueOptions() # todo: keep old selection
-    form.writer.choices = getPeopleOptions() # todo: keep old selection
-    form.editorInCharge.choices = getEditorOptions() # todo: keep old selection
+    form.writer.choices = getPeopleOptions()
+    form.editorInCharge.choices = getEditorOptions()
+    form.issue.choices = getIssueOptions()
 
     if not form.validate():
         return render_template("articles/new.html", form = form)

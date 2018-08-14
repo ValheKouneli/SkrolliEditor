@@ -1,5 +1,5 @@
 from flask import render_template
-from application import app
+from application import app, os
 from application.help import getArticlesWithCondition
 from application.articles.models import Article
 from flask_login import current_user
@@ -15,7 +15,8 @@ def index():
             articles_writing = articles_writing,
             articles_editing = articles_editing)
     else:
-        articles = getArticlesWithCondition("Article.ready = false").fetchall()
+        condition = "Article.ready = %s" % ("false" if os.environ.get("HEROKU") else "0")
+        articles = getArticlesWithCondition(condition).fetchall()
         return render_template("index.html", logged_in=False, unfinished_articles = articles)
 
 @app.route("/404/")
