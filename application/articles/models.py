@@ -89,3 +89,11 @@ class Synopsis(Base):
    def __init__(self, article_id, content):
       self.article_id = article_id
       self.content = content
+
+   def set_content(self, content):
+      try:
+            self.content = content
+            db.session().commit()
+            return True
+      except Exception:
+            return False

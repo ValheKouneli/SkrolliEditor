@@ -114,7 +114,20 @@ def article_update(article_id):
     if form.editorInCharge.data is not article.editor_in_charge:
         article.set_editor(form.editorInCharge.data)
 
-    return render_template("articles/article.html", article=getArticleWithId(int(article_id)))
+    try:
+        synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
+        if synopsis and len(form.synopsis.data) > 0:
+            synopsis.set_content(form.synopsis.data)
+        elif synopsis and len(form.synopsis.data) == 0:
+            db.session.delete(synopsis)
+            db.session.commit()
+        else:
+            new_synopsis = Synopsis(article_id=int(article_id), content=form.synopsis.data)
+            db.session.commit(new_synopsis)
+    except:
+        pass
+
+    return redirect(url_for('show_article', article_id=article_id))
 
   
 @app.route("/articles/", methods=["POST"])
