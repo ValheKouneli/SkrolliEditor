@@ -31,7 +31,8 @@
 
 {% if articles_writing %}
 <h1>I am writing</h1>
-{{ articlelist(articles=articles_writing, current_user=current_user) }}
+
+{{ articlelist(articles_writing) }}
 {% endif %}
 
 {% if articles_editing %}

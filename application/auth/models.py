@@ -1,4 +1,4 @@
-from application import db
+from application import db, os
 from application.help import getArticlesWithCondition
 from application.models import Base
 from application.people.models import Name
@@ -83,9 +83,9 @@ class User(Base):
         db.session().commit()
 
     def find_articles_writing(self):
-        condition = "(Article.ready = 0 AND Article.writer = %s)" % self.id
+        condition = "(Article.ready = %s AND Article.writer = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
         return getArticlesWithCondition(condition)
 
     def find_articles_editing(self):
-        condition = "(Article.ready = 0 AND Article.editor_in_charge = %s)" % self.id
+        condition = "(Article.ready = %s AND Article.editor_in_charge = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
         return getArticlesWithCondition(condition)

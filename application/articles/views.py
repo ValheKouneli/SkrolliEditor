@@ -17,7 +17,7 @@ def articles_index():
 def articles_form():
     if not current_user.editor:
         return render_template("articles/list.html")
-
+    
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()
     form.editorInCharge.choices = getEditorOptions()
@@ -41,7 +41,6 @@ def articles_set_ready(article_id):
 def show_article(article_id):
     try:
         id = int(article_id)
-        print("id: ", id)
     except:
         return redirect(url_for("error404"))
     article = getArticleWithId(id)
@@ -72,6 +71,52 @@ def delete_article(article_id):
 
     return redirect(url_for("articles_index")) # todo: change this to where the request came from
 
+  
+@app.route("/article/<article_id>/update/", methods=["GET", "POST"])
+@login_required
+def article_update(article_id):
+    if not current_user.is_editor:
+        return redirect(url_for("articles_index")) # todo: create an 'unauthenticated' page
+
+    article = Article.query.get(int(article_id))
+    if not article:
+        return redirect(url_for("error404"))
+
+    if request.method == "GET":
+        # create form
+        form = ArticleForm()
+        form.writer.choices = getPeopleOptions()
+        form.editorInCharge.choices = getEditorOptions()
+        form.issue.choices = getIssueOptions()
+
+        # preselect everything according to article's current status
+        form.name.data = article.name
+        form.writer.data = article.writer if article.writer is not None else 0
+        form.issue.data = article.issue if article.issue is not None else 0
+        form.editorInCharge.data = article.editor_in_charge if article.editor_in_charge is not None else 0
+        
+        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
+    
+    # create form and preselect eveything according to what was selected when form was sent
+    form = ArticleForm(request.form)
+    form.writer.choices = getPeopleOptions()
+    form.editorInCharge.choices = getEditorOptions()
+    form.issue.choices = getIssueOptions()
+
+    if not form.validate():
+        return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
+
+    # change article info it it was changed
+    if form.writer.data is not article.writer:
+        article.set_writer(form.writer.data)
+    if form.issue.data is not article.issue:
+        article.set_issue(form.issue.data)
+    if form.editorInCharge.data is not article.editor_in_charge:
+        article.set_editor(form.editorInCharge.data)
+
+    return render_template("articles/article.html", article=getArticleWithId(int(article_id)))
+
+  
 @app.route("/articles/", methods=["POST"])
 @login_required
 def articles_create():
@@ -80,17 +125,22 @@ def articles_create():
         return render_template("articles/list.html")
 
     form = ArticleForm(request.form)
-    form.issue.choices = getIssueOptions() # todo: keep old selection
-    form.writer.choices = getPeopleOptions() # todo: keep old selection
-    form.editorInCharge.choices = getEditorOptions() # todo: keep old selection
+    form.writer.choices = getPeopleOptions()
+    form.editorInCharge.choices = getEditorOptions()
+    form.issue.choices = getIssueOptions()
 
     if not form.validate():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data, current_user.id)
-    a.issue = int(form.issue.data)
-    a.writer = int(form.writer.data)
-    a.editor_in_charge = int(form.editorInCharge.data)
+    a = Article(form.name.data)
+    if form.issue.data != 0:
+        a.issue = int(form.issue.data)
+    if form.writer.data != 0:
+        a.writer = int(form.writer.data)
+    if form.editorInCharge.data != 0:
+        a.editor_in_charge = int(form.editorInCharge.data)
+    a.created_by = current_user.id
 
     db.session().add(a)
     db.session().commit()

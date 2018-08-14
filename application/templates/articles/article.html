@@ -2,9 +2,11 @@
 
 {% block body %}
 <h2>{{ article.name }}</h2>
+<p>Issue: {{ article.issue }}</p>
 <p>Writer: {{ article.writer }}</p>
-<p>Editor: {{ article.editor }}</p>
+<p>Editor: {{ article.editor_in_charge }}</p>
 <p>Ready: {{ article.ready }}</p>
 <p>Synopsis: {{ synopsis }}</p>
 
+<a href="{{ url_for('article_update', article_id=article.id) }}">Edit article info</a>
 {% endblock %}
