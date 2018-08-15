@@ -1,4 +1,4 @@
-{% macro articlecard(article, current_user, view_as_editor=False) -%}
+{% macro articlecard(article, current_user, synopsis, view_as_editor=False) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 {% if current_user and (current_user.id == article.editor_id|int or current_user.id == article.writer_id) %}
 {% set user_is_involved = True %}

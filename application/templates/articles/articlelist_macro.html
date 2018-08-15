@@ -3,7 +3,7 @@
 
 <div class="row">
 {% for article in articles %}
-<div class="col mr-1">{{ articlecard(article=article, current_user=current_user) }}</div>
+<div class="col mr-1">{{ articlecard(article=article, synopsis=synopsis, current_user=current_user) }}</div>
 {% endfor %}
 </div>
 {%- endmacro %}

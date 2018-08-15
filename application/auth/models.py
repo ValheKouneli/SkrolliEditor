@@ -73,8 +73,6 @@ class User(Base):
     def is_correct_password(self, plaintext_password: str) -> bool:
         if not self.password:
             return False
-        print(bcrypt.hashpw(plaintext_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'))
-        print(self.password)
         return bcrypt.hashpw(plaintext_password.encode('utf-8'), self.password.encode('utf-8')).decode('utf-8') == self.password
     
     def add_name(self, name):

@@ -40,8 +40,7 @@ def show_article(article_id):
         id = int(article_id)
     except:
         return redirect(url_for("error404"))
-    article = getArticleWithId(id)
-    print("article: ", article)    
+    article = getArticleWithId(id) 
     if article is None:
         return redirect(url_for("error404"))
 
@@ -105,6 +104,7 @@ def article_update(article_id):
     article = set_article_according_to_form(article, form)
 
     content = form.synopsis.data
+
     if synopsis and len(content) > 0:
         synopsis.set_content(form.synopsis.data)
     elif synopsis and len(content) == 0:

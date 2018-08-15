@@ -75,9 +75,4 @@ class Synopsis(Base):
       self.content = content
 
    def set_content(self, content):
-      try:
-            self.content = content
-            db.session().commit()
-            return True
-      except Exception:
-            return False
+      self.content = content
