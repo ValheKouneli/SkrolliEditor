@@ -23,6 +23,19 @@
                                 {% for issuename in issuenames %}
                                 <a class="dropdown-item" href="{{ url_for('articles_in_issue', issue=issuename) }}">{{ issuename }}</a>
                                 {% endfor %}
+                                <a class="dropdown-item" href="{{ url_for('articles_orphans') }}">Orphan articles</a>
+                              </div>
+                            </div>
+                      </li>
+                      <li class="nav-item">
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Views
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ url_for('articles_index') }}"> Articles </a>
+                                <a class="dropdown-item" href="{{ url_for('issues_index') }}"> Issues </a>
+                                <a class="dropdown-item" href="{{ url_for('people_index') }}"> Users </a>
                               </div>
                             </div>
                       </li>
@@ -30,14 +43,12 @@
                       <li class="nav-item">
                           <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
+                                Actions
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{{ url_for('articles_form') }}"> Add articles </a>
                                 <a class="dropdown-item" href="{{ url_for('issues_create') }}"> Add an issue </a>
                                 <a class="dropdown-item" href="{{ url_for('people_form') }}"> Add a dummy user </a>
-                                <a class="dropdown-item" href="{{ url_for('issues_index') }}"> Show all issues </a>
-                                <a class="dropdown-item" href="{{ url_for('people_index') }}"> Show all users </a>
                               </div>
                             </div>
                       </li>
