@@ -40,42 +40,26 @@ class Article(Base):
       self.created_by = created_by
 
    def set_writer(self, writer_id):
-      try:
+      if writer_id == 0:
+            self.writer = None
+      else:
             self.writer = writer_id
-            db.session().commit()
-            return True
-      except Exception:
-            return False
+
 
    def set_editor(self, editor_id):
-      try:
-            if editor_id == 0:
-                  self.editor_in_charge = None
-            else:
-                  self.editor_in_charge = editor_id
-            db.session().commit()
-            return True
-      except Exception:
-            return False 
+      if editor_id == 0:
+            self.editor_in_charge = None
+      else:
+            self.editor_in_charge = editor_id
 
    def set_issue(self, issue_id):
-      try:
-            if issue_id == 0:
-                  self.issue = None
-            else:
-                  self.issue = issue_id
-            db.session().commit()
-            return True
-      except Exception:
-            return False
+      if issue_id == 0:
+            self.issue = None
+      else:
+            self.issue = issue_id
 
    def set_name(self, name):
-      try:
-            self.name = name
-            db.session().commit()
-            return True
-      except Exception:
-            return False 
+      self.name = name
 
 
    @staticmethod
