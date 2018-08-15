@@ -6,10 +6,16 @@ from application.help import getArticlesWithCondition
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
+from application.issues.forms import IssueForm
+
+from sqlalchemy.sql import text
 
 @app.route("/issues/", methods=["GET"])
 def issues_index():
-    issues = Issue.query.all()
+    query = text(
+        "SELECT issue.id, issue.name FROM issue ORDER BY issue.name"
+    )
+    issues = db.engine.execute(query)
     return render_template("/issues/list.html", issues = issues)
 
 @app.route("/<issue>/articles/", methods=["GET"])
@@ -42,3 +48,24 @@ def articles_create_for_issue(issue):
     form.issue.data = issueid
 
     return render_template("/articles/new.html", form=form)
+
+@app.route("/issues/new/", methods=["GET", "POST"])
+@login_required
+def issues_create():
+    if request.method == "GET":
+        form = IssueForm()
+        return render_template("/issues/new.html", form=form)
+    
+    if not current_user.editor:
+        return redirect(url_for("error401"))
+        
+    form = IssueForm(request.form)
+
+    if not form.validate():
+        return render_template("issues/new.html", form = form)
+    
+    issue = Issue(form.name.data)
+    db.session.add(issue)
+    db.session.commit()
+
+    return redirect(url_for("issues_index"))

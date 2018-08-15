@@ -7,3 +7,7 @@ class Issue(Base):
     current = db.Column(db.Boolean, nullable=False)
 
     articles = db.relationship("Article", foreign_keys=[Article.issue], lazy=True)
+
+    def __init__(self, name):
+        self.name = name
+        self.current = False
