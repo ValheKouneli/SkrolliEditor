@@ -82,10 +82,10 @@ class User(Base):
         db.session().add(new_name)
         db.session().commit()
 
-    def find_articles_writing(self):
+    def get_articles_writing(self):
         condition = "(Article.ready = %s AND Article.writer = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
         return getArticlesWithCondition(condition)
 
-    def find_articles_editing(self):
+    def get_articles_editing(self):
         condition = "(Article.ready = %s AND Article.editor_in_charge = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
         return getArticlesWithCondition(condition)

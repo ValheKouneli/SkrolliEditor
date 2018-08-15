@@ -93,9 +93,9 @@ def show_tasks(name):
     user = User.query.get(name_in_db.user_id)
 
     return render_template("people/tasks.html",
-        articles_writing = user.find_articles_writing(),
-        articles_editing = user.find_articles_editing(),
-        name = name,
+        articles_writing = user.get_articles_writing(),
+        articles_editing = user.get_articles_editing(),
+        posessive_form = "" + name + "'s",
         system_name = user.name,
         person_is = name + " is")
 
