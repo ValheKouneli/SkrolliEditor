@@ -3,8 +3,6 @@ from application import app, os
 from application.help import getArticlesWithCondition
 from application.articles.models import Article
 from flask_login import current_user
-from application.testform import TestForm
-
 
 
 @app.route("/")
