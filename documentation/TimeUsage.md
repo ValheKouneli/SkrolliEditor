@@ -83,7 +83,7 @@ Daily time usage
 
 ## Week 4, 13.-17.8.2018
 
-**Total: 7h 55 min**
+**Total: 15h 52 min**
 
 * Mon: 3h 25 min
   * feature: showing one article's info on a single page
@@ -100,9 +100,16 @@ Daily time usage
   * feature: article info can be edited
   * dropdown menus on navbar
   * small improvements here and there
-  * TODO: own css that makes conditional usage of flask bootstrap easier?
-  * TODO: figure out how to implement the different statuses
-  * TODO: refactoring, more macros etc. to make coding faster
-  * TODO: adding issues (validate name format and uniqueness )
   * TODO: update username ( validate uniqueness )
   * TODO: list dummy users separately
+* Wed: 7h 30 min
+  * feature: add issues
+  * feature: admin can remove issues
+  * feature: list oprhan issues
+  * learning more stuff about flask bootstrap
+  * major improvements to UI
+  * refactoring
+  * feature: status bar to show progress
+  * feature: control status with sliders
+  * TODO: redirect 'update status' to the same page where it came from; same to other methods
+  * TODO: let editor select if they want to control sliders relevant to them or all sliders

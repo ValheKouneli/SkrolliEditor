@@ -35,7 +35,7 @@ A **picture editor** is always an **editor** as well.
   - [ ] I can see the unfinished articles whose language consultant I am.
   - [ ] I can see the unfinished picture units whose artist I am.
 - [ ] I can edit the status of a task I am related to, so that I can let other people know of my progress.
-  - [ ] As a writer, I can edit the article's writing status
+  - [x] As a writer, I can edit the article's writing status
   - [ ] As a language consultant, I can edit the article's language consultation status
   - [ ] As an artist, I can edit the picture unit's completition status
 - [ ] I can request editor previledges
@@ -55,7 +55,7 @@ A **picture editor** is always an **editor** as well.
   - [ ] I can associate an editor as the layout artist of the new article.
   - [ ] I can give the new article a title, subtitle and a table-of-contents text.
   - [ ] I can give the new article an amount of pages.
-  - [ ] I can give the new article a writing status.
+  - [x] I can give the new article a writing status.
   - [x] I can give the new article a synopsis.
 - [x] I can see the unfinished articles whose editor-in-charge I am, so that I can keep track of their progress.
   - [ ] I can add picture units to those articles, so that I can let the picture editor know that pictures are provided or needed.
