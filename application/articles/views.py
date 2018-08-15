@@ -161,8 +161,10 @@ def update_status(article_id):
     if not article:
         return redirect(url_for("error404"))
 
-    article.writing_status = form.writing_status.data
-    article.editing_status = form.editing_status.data
+    if form.writing_status.data is not None:
+        article.writing_status = form.writing_status.data
+    if form.editing_status.data is not None:
+        article.editing_status = form.editing_status.data
     db.session.commit()
 
     return redirect(url_for("show_article", article_id=article_id))
