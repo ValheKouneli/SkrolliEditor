@@ -1,14 +1,30 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h2>{{ article.name }}</h2>
-<p>Issue: {{ article.issue }}</p>
-<p>Writer: {{ article.writer }}</p>
-<p>Editor: {{ article.editor_in_charge }}</p>
-<p>Ready: {{ article.ready }}</p>
-<p>Synopsis: {{ synopsis }}</p>
+<p>
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_in_issue', issue=article.issue) }}" role="button">Show all articles in {{ article.issue }}</a>
+</p>
 
-{% if current_user.editor %}
-<a href="{{ url_for('article_update', article_id=article.id) }}">Edit article info</a>
+{% if article.ready %}
+<div class="card border-success mb-3" style="width: 18rem;">
+{% else %}
+<div class="card border-danger mb-3" style="width: 18rem;">
 {% endif %}
+    <div class="card-header">
+        {{ article.name }}
+        {{ article.issue }}
+    </div>
+    <ul class="list-group list-group-flush" >
+            <li class="list-group-item">Writer: {{ article.writer }}</li>
+            <li class="list-group-item">Editor: {{ article.editor }}</li>
+    </ul>
+    <div class="card-body">
+        <p class="card-text">{{ synopsis }}</p>
+        {% if current_user.editor %}
+        <a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
+        {% endif %}
+    </div>
+</div>
+
+
 {% endblock %}

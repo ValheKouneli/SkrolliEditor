@@ -14,8 +14,7 @@ def people_index():
 @login_required
 def people_form():
     if not current_user.editor:
-        people = get_people()
-        return render_template("/people/list.html", people = people if people.count() > 0 else 0)
+        return redirect(url_for("error403"))
 
     form = NameForm()
     return render_template("/people/new.html", form = form)
@@ -24,7 +23,7 @@ def people_form():
 @login_required
 def people_create():
     if not current_user.editor:
-        return render_template("/people/list.html", people = get_people())
+        return redirect(url_for("error403"))
 
     form = NameForm(request.form)
 
@@ -60,7 +59,7 @@ def person_edit(user_id):
 @login_required
 def delete_name(name_id, user_id):
     if not current_user.editor:
-        return render_template("/people/list.html", people = get_people())
+        return redirect(url_for("error403"))
 
     name_to_delete = Name.query.filter_by(id = name_id).first()
     db.session.delete(name_to_delete)
@@ -71,7 +70,7 @@ def delete_name(name_id, user_id):
 @login_required
 def names_create(user_id):
     if not current_user.editor:
-        return render_template("/people/list.html", people = get_people())
+        return redirect(url_for("error403"))
 
     form = NameForm(request.form)
 

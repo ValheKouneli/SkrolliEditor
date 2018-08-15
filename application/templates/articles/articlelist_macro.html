@@ -1,10 +1,13 @@
 {% macro articlelist(articles, current_user) -%}
 <table class="table table-hover table-sm">
     <tr>
+      <th>Issue</th>
       <th>Article</th>
       <th>Writer</th>
       <th>Editor-in-charge</th>
+      {% if current_user.editor %}
       <th></th>
+      {% endif %}
       {% if current_user and current_user.admin %}
       <th></th>
       {% endif %}
@@ -15,6 +18,9 @@
     {% else %}
     <tr class="table-danger">
     {% endif %}
+      <td>
+        {{ article.issue }}
+      </td>
       <td><a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a></td>
 
       {% if article.writer is not none %}
@@ -29,17 +35,19 @@
         <td></td>
       {% endif %}
       
+      {% if current_user.editor %}
       <td>
       {% if not article.ready %}
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
-            <input type="submit" value="Mark as ready"/>    
+            <input class="btn btn-success" type="submit" value="Mark as ready" />   
           </form>
       {% endif %}
       </td>
+      {% endif %}
       {% if current_user and current_user.admin %}
       <td>
         <form method="POST" action="{{ url_for('delete_article', article_id=article.id) }}">
-          <input type="submit" value="Delete"/>
+          <input class="btn btn-danger" type="submit" value="Delete" />
         </form>
       </td>
       {% endif %}

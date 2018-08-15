@@ -62,10 +62,10 @@ A **picture editor** is always an **editor** as well.
     - [ ] I can associate myself as the artist of those picture units.
 - [ ] I can see the articles whose layout artist I am, so that I can keep track of their progress and I will know when they are ready for layout phase.
 - [ ] I can edit all the information related to articles.
-  - [ ] I can edit the name of the article
-  - [ ] I can edit the issue associated with the article
-  - [ ] I can edit the writer of the article.
-  - [ ] I can change or add the editor-in-charge of the article.
+  - [x] I can edit the name of the article
+  - [x] I can edit the issue associated with the article
+  - [x] I can edit the writer of the article.
+  - [x] I can change or add the editor-in-charge of the article.
   - [ ] I can edit the amount of pages of the article.
   - [ ] I can edit the title of the article.
   - [ ] I can edit the subtitle of the article.
