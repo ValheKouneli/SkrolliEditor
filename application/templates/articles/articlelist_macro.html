@@ -41,7 +41,7 @@
       <br>
       {% endif %}
       {{ progressbar(article.writing_status) }}<br>
-      {% if current_user.editor %}
+      {% if current_user.admin or current_user.id == article.writer_id|int %}
       <input type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
       <input type="submit" name="btn1" value="update">
       {% endif %}
@@ -54,7 +54,7 @@
       <br>
       {% endif %}
       {{ progressbar(article.editing_status) }}<br>
-      {% if current_user.editor %}
+      {% if current_user.admin or current_user.id == article.editor_id|int %}
       <input type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
       <input type="submit" name="btn2" value="update">
       {% endif %}
