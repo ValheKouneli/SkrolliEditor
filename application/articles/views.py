@@ -10,7 +10,7 @@ from application.help import getArticleWithId, getArticlesWithCondition, getPeop
 @app.route("/articles/", methods=["GET"])
 def articles_index():
     articles = Article.get_all_articles().fetchall()
-    return render_template("/articles/list.html", articles = articles)
+    return render_template("/articles/list.html", title="All articles", articles = articles)
 
 @app.route("/articles/new/", methods=["GET"])
 @login_required
@@ -99,7 +99,7 @@ def article_update(article_id):
     form = replicate_article_form(request.form)
 
     if not form.validate():
-        return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
 
     # change article info
     article = set_article_according_to_form(article, form)
@@ -150,7 +150,7 @@ def articles_create():
 
 @app.route("/articles/orphans/", methods=["GET"])
 def articles_orphans():
-    return render_template("articles/list.html", articles=getArticlesWithCondition("Article.issue IS NULL"))
+    return render_template("articles/list.html", title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
 
 
 @app.route("/articles/<article_id>/update_status", methods=["POST"])
