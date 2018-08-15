@@ -23,7 +23,8 @@
                                 {% for issuename in issuenames %}
                                 <a class="dropdown-item" href="{{ url_for('articles_in_issue', issue=issuename) }}">{{ issuename }}</a>
                                 {% endfor %}
-                                <a class="dropdown-item" href="{{ url_for('articles_orphans') }}">Orphan articles</a>
+                                <a class="dropdown-item" href="{{ url_for('articles_orphans') }}">Orphans</a>
+                                <a class="dropdown-item" href="{{ url_for('articles_index') }}">All</a>
                               </div>
                             </div>
                       </li>

@@ -19,21 +19,34 @@
     <tr class="table-danger">
     {% endif %}
       <td>
+      {% if not article.issue %}
+      
         {{ article.issue }}
+      
+      {% else %}
+        <a href="{{ url_for('articles_in_issue', issue=article.issue) }}">{{ article.issue }}</a>
+      {% endif %}
       </td>
-      <td><a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a></td>
 
+      <td>
+        <a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a>
+      </td>
+      
+      <td>
       {% if article.writer is not none %}
-        <td>{{ article.writer }}</td>
+        <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
       {% else %}
-        <td></td>
+        
       {% endif %}
+      </td>
 
+      <td>
       {% if article.editor_in_charge is not none %}
-        <td>{{ article.editor_in_charge }}</td>
+      <a href="{{ url_for('show_tasks', name=article.editor_in_charge) }}">{{ article.editor_in_charge }}</a>
       {% else %}
-        <td></td>
+        
       {% endif %}
+      </td>
       
       {% if current_user.editor %}
       <td>

@@ -37,8 +37,11 @@ def getArticlesWithCondition(condition="(0 = 0)"):
 #  is satisfied
 def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     howmany = ""
+    order = ""
     if amount > 0:
         howmany = " LIMIT %d" % int(amount)
+    if amount != 1:
+        order = " ORDER BY Issue.name"
     query = text(
         "SELECT Article.id AS id, Issue.name AS issue, Article.ready AS ready, Article.name AS name,"
         " Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
@@ -46,7 +49,8 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
         " LEFT JOIN Issue ON Article.issue = Issue.id"
         " WHERE %s" % condition +\
-        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + howmany
+        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + \
+        howmany + order
     )
     return db.engine.execute(query)
 

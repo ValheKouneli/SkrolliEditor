@@ -37,7 +37,7 @@ def people_create():
 
     return redirect(url_for("people_index"))
 
-@app.route("/people/<user_id>/", methods=["GET"])
+@app.route("/people/<user_id>/edit", methods=["GET"])
 @login_required
 def person_edit(user_id):
     form = NameForm()
@@ -83,6 +83,21 @@ def names_create(user_id):
     db.session().commit()
 
     return redirect(url_for("person_edit", user_id=user_id))
+
+@app.route("/people/<name>/", methods=["GET"])
+def show_tasks(name):
+    name_in_db = Name.query.filter_by(name = name).first()
+    if not name_in_db:
+        return redirect(url_for("error404"))
+    
+    user = User.query.get(name_in_db.user_id)
+
+    return render_template("people/tasks.html",
+        articles_writing = user.find_articles_writing(),
+        articles_editing = user.find_articles_editing(),
+        name = name,
+        system_name = user.name,
+        person_is = name + " is")
 
 def get_people():
     people = []
