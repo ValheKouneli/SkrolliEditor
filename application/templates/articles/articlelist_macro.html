@@ -14,6 +14,12 @@
       {% endif %}
     </tr>
     {% for article in articles %}
+    {% if current_user and (current_user.id == article.editor_id|int or current_user.id == article.writer_id) %}
+    {% set current_user_is_involved = True %}
+    {% else %}
+    {% set current_user_is_involved = False %}
+    {% endif %}
+
     {% if article.ready %}
     <tr class="table-success">
     {% else %}
@@ -62,19 +68,22 @@
       <td>
       {% if not article.ready %}
 
-      {% if not (article.editing_status|int == 100 and article.writing_status|int == 100) %}
-      <input class="btn btn-primary" type="submit" value="Update status">
-      </form>
-      {% else %}
+      {% if article.editing_status|int == 100 and article.writing_status|int == 100 %}
       </form>
           <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
             <input class="btn btn-success" type="submit" value="Mark as ready" />   
           </form>
+      {% elif current_user_is_involved %}
+          <input class="btn btn-primary" type="submit" value="Update status">
+        </form>
+      {% else %}
+      </form>
       {% endif %}
+      
       {% endif %}
       </td>
       {% endif %}
-      {% if current_user and current_user.admin %}
+      {% if current_user.admin %}
       <td>
         <form method="POST" action="{{ url_for('delete_article', article_id=article.id) }}">
           <input class="btn btn-danger" type="submit" value="Delete" />
