@@ -1,0 +1,62 @@
+{% macro articlecard(article, current_user, view_as_editor=False) -%}
+{% from "articles/progress_bar_macro.html" import progressbar %}
+{% if current_user and (current_user.id == article.editor_id|int or current_user.id == article.writer_id) %}
+{% set user_is_involved = True %}
+{% else %}
+{% set user_is_involved = False %}
+{% endif %}
+{% if view_as_editor %}
+{% set user_has_general_right_to_edit = current_user.editor %}
+{% else %}
+{% set user_has_general_right_to_edit = current_user.admin %}
+{% endif %}
+
+{% if article.ready %}
+<div class="card border-success mb-3" style="width: 18rem;">
+{% else %}
+<div class="card border-danger mb-3" style="width: 18rem;">
+{% endif %}
+    <div class="card-header">
+        {{ article.name }}
+        {{ article.issue }}
+    </div>
+    <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
+    <ul class="list-group list-group-flush" >
+            <li class="list-group-item">
+                Writer: {{ article.writer }} <br>
+                {{ progressbar(article.writing_status) }} <br>
+                {% if user_has_general_right_to_edit or current_user.id == article.writer_id|int %}
+                <input type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                Editor: {{ article.editor_in_charge }} <br>
+                {{ progressbar(article.editing_status) }} <br>
+                {% if user_has_general_right_to_edit or or current_user.id == article.editor_id|int %}
+                <input type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
+                {% endif %}
+            </li>
+            {% if user_has_general_right_to_edit or user_is_involved}
+            <li class="list-group-item">
+                <input class="btn btn-primary" type="submit" value="Update status">
+            </li>
+            {% endif %}
+    </ul>
+    </form>
+    <div class="card-body">
+        <p class="card-text">{{ synopsis }}</p>
+        {% if current_user.editor %}
+        <a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
+        {% endif %}
+    </div>
+    {% if article.writing_status|int == 100 and article.editing_status|int == 100 %}
+    <ul class="list-group list-group-flush" >
+        <li class="list-group-item">
+            <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
+                <input class="btn btn-success" type="submit" value="Mark as ready" />   
+            </form>
+        </li>
+    </ul>
+    {% endif %}
+</div>
+{%- endmacro %}
