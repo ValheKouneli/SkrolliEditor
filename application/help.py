@@ -43,7 +43,10 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     if amount != 1:
         order = " ORDER BY Issue.name"
     query = text(
-        "SELECT Article.id AS id, Issue.name AS issue, Article.ready AS ready, Article.name AS name,"
+        "SELECT Article.id AS id, Issue.name AS issue,"
+        " Article.writing_status AS writing_status,"
+        " Article.editing_status AS editing_status,"
+        " Article.ready AS ready, Article.name AS name,"
         " Writer.name AS writer, Editor.name AS editor_in_charge FROM Article"
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"

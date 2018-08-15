@@ -1,4 +1,5 @@
 {% macro articlelist(articles, current_user) -%}
+{% from "articles/progress_bar_macro.html" import progressbar %}
 <table class="table table-hover table-sm">
     <tr>
       <th>Issue</th>
@@ -36,16 +37,18 @@
       {% if article.writer is not none %}
         <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
       {% else %}
-        
+      <br>
       {% endif %}
+      {{ progressbar(article.writing_status) }}
       </td>
 
       <td>
       {% if article.editor_in_charge is not none %}
       <a href="{{ url_for('show_tasks', name=article.editor_in_charge) }}">{{ article.editor_in_charge }}</a>
       {% else %}
-        
+      <br>
       {% endif %}
+      {{ progressbar(article.editing_status) }}
       </td>
       
       {% if current_user.editor %}
