@@ -24,19 +24,19 @@
     <ul class="list-group list-group-flush" >
             <li class="list-group-item">
                 Writer: {{ article.writer }} <br>
-                {{ progressbar(article.writing_status) }} <br>
+                {{ progressbar(article.writing_status) }}
                 {% if user_has_general_right_to_edit or current_user.id == article.writer_id|int %}
-                <input type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
+                <br><input class="slider rounded w-100" width="100%" type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
                 {% endif %}
             </li>
             <li class="list-group-item">
                 Editor: {{ article.editor_in_charge }} <br>
-                {{ progressbar(article.editing_status) }} <br>
-                {% if user_has_general_right_to_edit or or current_user.id == article.editor_id|int %}
-                <input type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
+                {{ progressbar(article.editing_status) }}
+                {% if user_has_general_right_to_edit or current_user.id == article.editor_id|int %}
+                <br><input class="slider w-100" type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
                 {% endif %}
             </li>
-            {% if user_has_general_right_to_edit or user_is_involved}
+            {% if user_has_general_right_to_edit or user_is_involved %}
             <li class="list-group-item">
                 <input class="btn btn-primary" type="submit" value="Update status">
             </li>
@@ -44,7 +44,7 @@
     </ul>
     </form>
     <div class="card-body">
-        <p class="card-text">{{ synopsis }}</p>
+        <p class="card-text">Synopsis: {{ synopsis }}</p>
         {% if current_user.editor %}
         <a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
         {% endif %}

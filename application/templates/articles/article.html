@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "articles/progress_bar_macro.html" import progressbar %}
+{% from "articles/articlecard_macro.html" import articlecard %}
 
 {% block body %}
 <p>
@@ -10,32 +11,6 @@
 {% endif %}
 </p>
 
-{% if article.ready %}
-<div class="card border-success mb-3" style="width: 18rem;">
-{% else %}
-<div class="card border-danger mb-3" style="width: 18rem;">
-{% endif %}
-    <div class="card-header">
-        {{ article.name }}
-        {{ article.issue }}
-    </div>
-    <ul class="list-group list-group-flush" >
-            <li class="list-group-item">
-                Writer: {{ article.writer }} <br>
-                {{ progressbar(article.writing_status) }}
-            </li>
-            <li class="list-group-item">
-                Editor: {{ article.editor_in_charge }} <br>
-                {{ progressbar(article.editing_status) }}
-            </li>
-    </ul>
-    <div class="card-body">
-        <p class="card-text">{{ synopsis }}</p>
-        {% if current_user.editor %}
-        <a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
-        {% endif %}
-    </div>
-</div>
-
+{{ articlecard(article=article, current_user=current_user, view_as_editor=False) }}
 
 {% endblock %}
