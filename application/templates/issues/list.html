@@ -6,6 +6,13 @@
     {% for issue in issues %}
     <li>
         <a href="{{ url_for('articles_in_issue', issue=issue.name) }}">{{ issue.name }}</a>
+        {% if current_user.admin %}
+        <form class="form form-horizontal" role="form" method="POST" action="{{ url_for('issues_delete', issue_id=issue.id) }}">
+            <dl>
+                <input class="btn btn-danger" type="submit" value="Delete issue" />
+            </dl>
+        </form>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
