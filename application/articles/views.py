@@ -111,13 +111,11 @@ def article_update(article_id):
     if not form.validate():
         return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
 
-    # change article info it it was changed
-    if form.writer.data is not article.writer:
-        article.set_writer(form.writer.data)
-    if form.issue.data is not article.issue:
-        article.set_issue(form.issue.data)
-    if form.editorInCharge.data is not article.editor_in_charge:
-        article.set_editor(form.editorInCharge.data)
+    # change article info
+    article.set_name(form.name.data)
+    article.set_writer(form.writer.data)
+    article.set_issue(form.issue.data)
+    article.set_editor(form.editorInCharge.data)
 
     try:
         synopsis = synopsises.first()
