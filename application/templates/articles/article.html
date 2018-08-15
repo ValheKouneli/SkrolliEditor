@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "articles/progress_bar_macro.html" import progressbar %}
 
 {% block body %}
 <p>
@@ -19,8 +20,14 @@
         {{ article.issue }}
     </div>
     <ul class="list-group list-group-flush" >
-            <li class="list-group-item">Writer: {{ article.writer }}</li>
-            <li class="list-group-item">Editor: {{ article.editor }}</li>
+            <li class="list-group-item">
+                Writer: {{ article.writer }} <br>
+                {{ progressbar(article.writing_status) }}
+            </li>
+            <li class="list-group-item">
+                Editor: {{ article.editor }} <br>
+                {{ progressbar(article.editing_status) }}
+            </li>
     </ul>
     <div class="card-body">
         <p class="card-text">{{ synopsis }}</p>
