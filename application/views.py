@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template
 from application import app, os
 from application.help import getArticlesWithCondition
 from application.articles.models import Article
@@ -27,9 +27,3 @@ def error404():
 @app.route("/403/")
 def error403():
     return render_template("error403.html")
-
-@app.route("/test/", methods=["POST"])
-def test():
-    form = TestForm(request.form)
-    value = form.slider.data
-    return render_template("index.html", value=value)
