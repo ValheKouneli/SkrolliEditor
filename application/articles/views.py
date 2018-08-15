@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article, Synopsis
-from application.articles.forms import ArticleForm
+from application.articles.forms import ArticleForm, StatusForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
 
@@ -152,6 +152,20 @@ def articles_create():
 def articles_orphans():
     return render_template("articles/list.html", articles=getArticlesWithCondition("Article.issue IS NULL"))
 
+
+@app.route("/articles/<article_id>/update_status", methods=["POST"])
+@login_required
+def update_status(article_id):
+    form = StatusForm(request.form)
+    article = Article.query.get(article_id)
+    if not article:
+        return redirect(url_for("error404"))
+
+    article.writing_status = form.writing_status.data
+    article.editing_status = form.editing_status.data
+    db.session.commit()
+
+    return redirect(url_for("show_article", article_id=article_id))
 
 def create_article_form():
     form = ArticleForm()

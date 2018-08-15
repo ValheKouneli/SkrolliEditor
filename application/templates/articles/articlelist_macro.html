@@ -32,14 +32,19 @@
       <td>
         <a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a>
       </td>
-      
+
+      <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
       <td>
       {% if article.writer is not none %}
         <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
       {% else %}
       <br>
       {% endif %}
-      {{ progressbar(article.writing_status) }}
+      {{ progressbar(article.writing_status) }}<br>
+      {% if current_user.editor %}
+      <input type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
+      <input type="submit" name="btn1" value="update">
+      {% endif %}
       </td>
 
       <td>
@@ -48,9 +53,14 @@
       {% else %}
       <br>
       {% endif %}
-      {{ progressbar(article.editing_status) }}
+      {{ progressbar(article.editing_status) }}<br>
+      {% if current_user.editor %}
+      <input type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
+      <input type="submit" name="btn2" value="update">
+      {% endif %}
       </td>
-      
+      </form>
+
       {% if current_user.editor %}
       <td>
       {% if not article.ready %}
