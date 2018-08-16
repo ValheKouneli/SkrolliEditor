@@ -14,7 +14,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
-                      <li class="nav-item">
+                      <li class="nav-item mr-1">
                           <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Articles
@@ -68,8 +68,12 @@
                           </div>
                       </div>
                       {% else %}
-                      <a href="{{ url_for('auth_register') }}">Register</a> or 
-                      <a href="{{ url_for('auth_login') }}">Login</a>
+                      <div class="nav-item mr-1">
+                        <a class="btn btn-secondary" role="button" href="{{ url_for('auth_register') }}">Register</a>
+                      </div>
+                      <div class="nav-item">
+                        <a class="btn btn-secondary" role="button" href="{{ url_for('auth_login') }}">Login</a>
+                      </div>
                       {% endif %}
                     </div>
             </div>

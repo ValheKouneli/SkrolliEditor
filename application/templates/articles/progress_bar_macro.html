@@ -1,0 +1,19 @@
+{% macro progressbar(value) -%}
+{% if value|int != 0 and value|int < 40 %}
+<div class="progress">
+    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ value }}%" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% elif value|int >= 50 and value|int < 100 %}
+<div class="progress">
+    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ value }}%" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% elif value|int == 0 %}
+<div class="progress">
+    <div class="progress-bar bg-info" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% else %}
+<div class="progress">
+    <div class="progress-bar bg-success" role="progressbar" style="width: {{ value }}%" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+{% endif %}
+{%- endmacro %}

@@ -134,13 +134,13 @@ def articles_create():
         return render_template("articles/new.html", form = form)
 
     article = Article(form.name.data, current_user.id)
-    article = set_article_according_to_form(a, form)
+    article = set_article_according_to_form(article, form)
 
     db.session().add(article)
     db.session().commit()
     
     if len(form.synopsis.data) > 0:
-        synopsis = Synopsis(article_id = a.id, content=form.synopsis.data)
+        synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
         db.session().add(synopsis)
         db.session().commit()
     
