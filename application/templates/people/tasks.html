@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% from "articles/articlelist_macro.html" import articlelist %}
+
+{% block body %}
+<h1>{{ posessive_form }} tasks</h1>
+<p>Name in system: {{ system_name }}</p>
+{% if articles_writing %}
+<h2>{{ person_is }} writing</h2>
+
+{{ articlelist(articles_writing, current_user=current_user) }}
+{% endif %}
+
+{% if articles_editing %}
+<h2>{{ person_is }} editing</h2>
+{{ articlelist(articles=articles_editing, current_user=current_user) }}
+{% endif %}
+
+{% endblock %}

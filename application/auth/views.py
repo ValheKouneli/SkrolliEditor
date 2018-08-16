@@ -1,12 +1,12 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
 
 
-@app.route("/auth/login", methods = ["GET", "POST"])
+@app.route("/auth/login/", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
         return render_template("auth/loginform.html", form = LoginForm())
@@ -22,12 +22,12 @@ def auth_login():
     login_user(user)
     return redirect(url_for("index")) 
 
-@app.route("/auth/logout")
+@app.route("/auth/logout/")
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
 
-@app.route("/auth/register", methods = ["GET", "POST"])
+@app.route("/auth/register/", methods = ["GET", "POST"])
 def auth_register():
     if request.method == "GET":
         return render_template("auth/registerform.html", form = RegisterForm())
@@ -45,7 +45,8 @@ def auth_register():
     login_user(u)
     return redirect(url_for("index")) 
 
-@app.route("/auth/update", methods = ["GET", "POST"])
+@app.route("/auth/update/", methods = ["GET", "POST"])
+@login_required
 def auth_update():
     if request.method == "GET":
         form = UpdateAccountForm()
@@ -68,3 +69,13 @@ def auth_update():
         current_user.set_name(form.name.data)
 
     return redirect(url_for("index"))
+
+@app.route("/auth/mypage/", methods = ["GET"])
+@login_required
+def mypage():
+    return render_template("people/tasks.html",
+        person_is = "I am",
+        posessive_form = "My",
+        system_name = current_user.name,
+        articles_writing = current_user.get_articles_writing(),
+        articles_editing = current_user.get_articles_editing())

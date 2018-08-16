@@ -1,44 +1,5 @@
 {% extends "layout.html" %}
-{% from "articles/articlelist_macro.html" import articlelist %}
 
 {% block body %}
-
-{% if not logged_in %}
-
-  {% if unfinished_articles %}
-
-  <p>
-    Unfinished articles
-  </p>
-
-  <ul>
-    {% for article in unfinished_articles %}
-    <li>
-      {{article.name}} (writer: {{article.writer}})
-    </li>
-    {% endfor %}
-  </ul>
-
-  {% else %}
-
-  <p>
-    No unfinished articles
-  </p>
-
-  {% endif %}
-
-{% else %}
-
-{% if articles_writing %}
-<h1>I am writing</h1>
-
-{{ articlelist(articles_writing, current_user=current_user) }}
-{% endif %}
-
-{% if articles_editing %}
-<h1>I am editing</h1>
-{{ articlelist(articles=articles_editing, current_user=current_user) }}
-{% endif %}
-
-{% endif %}
+<h1>Welcome to SkrolliEditor</h1>
 {% endblock %}
