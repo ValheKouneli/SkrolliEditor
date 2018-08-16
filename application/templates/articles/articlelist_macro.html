@@ -1,9 +1,52 @@
-{% macro articlelist(articles, current_user) -%}
-{% from "articles/articlecard_macro.html" import articlecard %}
+{% macro articlelist(articles, current_user, show_issue=False) -%}
+{% from "articles/progress_bar_macro.html" import progressbar %}
 
-<div class="row">
 {% for article in articles %}
-<div class="col-lg-3 col-md-6 col-sm-12">{{ articlecard(article=article, synopsis=synopsis, current_user=current_user) }}</div>
-{% endfor %}
+<div class="row border-right border-bottom px-1 pb-1 ml-1 mr-1">
+<div class="col-md-3 col-xs-12 border rounded bg-secondary">
+    <div class="row font-weight-bold text-white p-1">
+        {% if show_issue %}
+        <div class="col col-xs-1 col-md-3 mx-1">
+        {{ article.issue }}
+        </div>
+        {% endif %}
+        <div class="col mx-1">
+        {{ article.name }}
+        </div>
+    </div>
 </div>
+<div class="col-md-3 col-xs-12">
+    <div class="row">
+    <div class="col">
+        {% if article.writer %}
+        Writer: <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
+        {% else %}
+        Writer:
+        {% endif %}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        {{ progressbar(article.writing_status) }}
+    </div>
+    </div>
+</div>
+<div class="col-md-3 col-xs-12">
+    <div class="row">
+    <div class="col">
+        {% if article.editor %}
+        Editor: <a href="{{ url_for('show_tasks', name=article.editor_in_charge) }}">{{ article.editor_in_charge }}</a>
+        {% else %}
+        Editor: 
+        {% endif %}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        {{ progressbar(article.editing_status) }}
+    </div>
+    </div>
+</div>
+</div>
+{% endfor %}
 {%- endmacro %}
