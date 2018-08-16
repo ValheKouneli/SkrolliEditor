@@ -5,16 +5,20 @@
 {% if people %}
   <table class="table table-sm">
     <tr>
+    {% if current_user.editor %}
       <th>Edit</th>
+    {% endif %}
       <th>Name</th>
       <th>Username</th>
-      <th>All names</th>
+      <th>Aliases</th>
     </tr>
     {% for person in people %}
     <tr>
+      {% if current_user.editor %}
       <td>
           <a href="{{ url_for('person_edit', user_id=person.id) }}">Edit</a>
       </td>
+      {% endif %}
       <td><a href="{{ url_for('show_tasks', name=person.name) }}">{{ person.name }}</a></td>
       <td>{{ person.username }}</td>
       <td>

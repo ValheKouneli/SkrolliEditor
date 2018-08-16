@@ -7,7 +7,6 @@
 {% else %}
 <h1>Create a new article</h1>
 {% endif %}
-<div class="container">
 {% if updating_article %}
 <form class="form form-horizontal" role="form" method="POST" action="{{ url_for('article_update', article_id=article_id) }}">
 {% else %}
@@ -22,5 +21,4 @@
         {% endif %}
     </dl>
 </form>
-</div>
 {% endblock %}

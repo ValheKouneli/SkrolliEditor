@@ -5,7 +5,6 @@ from application.articles.models import Article
 from flask_login import current_user
 
 
-
 @app.route("/")
 def index():
     if current_user.is_authenticated:

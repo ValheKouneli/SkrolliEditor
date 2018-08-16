@@ -1,73 +1,111 @@
-{% macro articlelist(articles, current_user) -%}
+{% macro articlelist(articles, current_user, show_issue=False) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
-<table class="table table-hover table-sm">
-    <tr>
-      <th>Issue</th>
-      <th>Article</th>
-      <th>Writer</th>
-      <th>Editor-in-charge</th>
-      {% if current_user.editor %}
-      <th></th>
-      {% endif %}
-      {% if current_user and current_user.admin %}
-      <th></th>
-      {% endif %}
-    </tr>
-    {% for article in articles %}
-    {% if article.ready %}
-    <tr class="table-success">
-    {% else %}
-    <tr class="table-danger">
-    {% endif %}
-      <td>
-      {% if not article.issue %}
-      
+
+{% for article in articles %}
+
+{% if current_user and (current_user.id == article.editor_id|int or current_user.id == article.writer_id) %}
+{% set user_is_involved = True %}
+{% else %}
+{% set user_is_involved = False %}
+{% endif %}
+
+{% if view_as_editor %}
+{% set user_has_general_right_to_edit = current_user.editor %}
+{% else %}
+{% set user_has_general_right_to_edit = current_user.admin %}
+{% endif %}
+
+{% if current_user.id == article.writer_id|int or user_has_general_right_to_edit %}
+{% set user_can_edit_writing_status = True %}
+{% else %}
+{% set user_can_edit_writing_status = False %}
+{% endif %}
+
+{% if current_user.id == article.editor_id|int or user_has_general_right_to_edit %}
+{% set user_can_edit_editing_status = True %}
+{% else %}
+{% set user_can_edit_editing_status = False %}
+{% endif %}
+
+<form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
+<div class="row border-right border-bottom px-1 pb-1 ml-1 mr-1">
+<div class="col-2 col-md-3 col-xs-1 border rounded bg-secondary">
+    <div class="row font-weight-bold text-white p-1">
+
+        {% if show_issue %}
+        <div class="col col-xs-1 col-md-3 mx-1">
         {{ article.issue }}
-      
-      {% else %}
-        <a href="{{ url_for('articles_in_issue', issue=article.issue) }}">{{ article.issue }}</a>
-      {% endif %}
-      </td>
+        </div>
+        {% endif %}
 
-      <td>
-        <a href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a>
-      </td>
-      
-      <td>
-      {% if article.writer is not none %}
-        <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
-      {% else %}
-      <br>
-      {% endif %}
-      {{ progressbar(article.writing_status) }}
-      </td>
+        <div class="col col-xs-1 col-md-6 mx-1">
+        {{ article.name }}
+        </div>
 
-      <td>
-      {% if article.editor_in_charge is not none %}
-      <a href="{{ url_for('show_tasks', name=article.editor_in_charge) }}">{{ article.editor_in_charge }}</a>
-      {% else %}
-      <br>
-      {% endif %}
-      {{ progressbar(article.editing_status) }}
-      </td>
-      
-      {% if current_user.editor %}
-      <td>
-      {% if not article.ready %}
-          <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
-            <input class="btn btn-success" type="submit" value="Mark as ready" />   
-          </form>
-      {% endif %}
-      </td>
-      {% endif %}
-      {% if current_user and current_user.admin %}
-      <td>
-        <form method="POST" action="{{ url_for('delete_article', article_id=article.id) }}">
-          <input class="btn btn-danger" type="submit" value="Delete" />
-        </form>
-      </td>
-      {% endif %}
-    </tr>
-  {% endfor %}
-</table>
+        {% if current_user.editor %}
+        <div class="col text-black mx-1 col-xs-1 col-md-3">
+        <a class="btn btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="col-2 col-md-2 col-xs-1">
+    <div class="row">
+    <div class="col">
+        {% if article.writer %}
+        Writer: <a href="{{ url_for('show_tasks', name=article.writer) }}">{{ article.writer }}</a>
+        {% else %}
+        Writer:
+        {% endif %}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        {{ progressbar(article.writing_status) }}
+    </div>
+    </div>
+    {% if user_can_edit_writing_status %}
+    <div class="row">
+    <div class="col">
+    <input class="slider rounded w-100" width="100%" type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
+    </div>
+    </div>
+    {% endif %}
+</div>
+<div class="col-2 col-md-2 col-xs-1">
+    <div class="row">
+    <div class="col">
+        {% if article.editor %}
+        Editor: <a href="{{ url_for('show_tasks', name=article.editor_in_charge) }}">{{ article.editor_in_charge }}</a>
+        {% else %}
+        Editor: 
+        {% endif %}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        {{ progressbar(article.editing_status) }}
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+    {% if user_can_edit_editing_status %}
+    <input class="slider w-100" type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
+    {% endif %}
+    </div>
+    </div>
+</div>
+{% if user_is_involved or user_has_general_right_to_edit %}
+<div class="col-3 col-md-2 col-xs-1">
+<input class="btn btn-primary" type="submit" value="Update sliders">
+</div>
+{% endif %}
+{% if current_user.admin %}
+<div class="col-3 col-md-2 col-xs-1 p-1">
+<a class="btn btn-danger" href="{{ url_for('delete_article', article_id=article.id) }}" role="button">Delete</a>
+</div>
+{% endif %}
+</div>
+</form>
+{% endfor %}
 {%- endmacro %}

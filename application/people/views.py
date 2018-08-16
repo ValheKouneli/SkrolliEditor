@@ -88,9 +88,13 @@ def names_create(user_id):
 def show_tasks(name):
     name_in_db = Name.query.filter_by(name = name).first()
     if not name_in_db:
+        user = User.query.filter_by(name = name).first()
+    else:
+        user = User.query.get(name_in_db.user_id)
+    
+    if not user:
         return redirect(url_for("error404"))
     
-    user = User.query.get(name_in_db.user_id)
 
     return render_template("people/tasks.html",
         articles_writing = user.get_articles_writing(),

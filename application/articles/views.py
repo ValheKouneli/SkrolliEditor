@@ -3,14 +3,14 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article, Synopsis
-from application.articles.forms import ArticleForm
+from application.articles.forms import ArticleForm, StatusForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
     articles = Article.get_all_articles().fetchall()
-    return render_template("/articles/list.html", articles = articles)
+    return render_template("/articles/list.html", title="All articles", articles = articles, show_issue=True)
 
 @app.route("/articles/new/", methods=["GET"])
 @login_required
@@ -40,8 +40,7 @@ def show_article(article_id):
         id = int(article_id)
     except:
         return redirect(url_for("error404"))
-    article = getArticleWithId(id)
-    print("article: ", article)    
+    article = getArticleWithId(id) 
     if article is None:
         return redirect(url_for("error404"))
 
@@ -99,12 +98,13 @@ def article_update(article_id):
     form = replicate_article_form(request.form)
 
     if not form.validate():
-        return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
 
     # change article info
     article = set_article_according_to_form(article, form)
 
     content = form.synopsis.data
+
     if synopsis and len(content) > 0:
         synopsis.set_content(form.synopsis.data)
     elif synopsis and len(content) == 0:
@@ -150,8 +150,24 @@ def articles_create():
 
 @app.route("/articles/orphans/", methods=["GET"])
 def articles_orphans():
-    return render_template("articles/list.html", articles=getArticlesWithCondition("Article.issue IS NULL"))
+    return render_template("articles/list.html", show_issue=False, title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
 
+
+@app.route("/articles/<article_id>/update_status", methods=["POST"])
+@login_required
+def update_status(article_id):
+    form = StatusForm(request.form)
+    article = Article.query.get(article_id)
+    if not article:
+        return redirect(url_for("error404"))
+
+    if form.writing_status.data is not None:
+        article.writing_status = form.writing_status.data
+    if form.editing_status.data is not None:
+        article.editing_status = form.editing_status.data
+    db.session.commit()
+
+    return redirect(url_for("show_article", article_id=article_id))
 
 def create_article_form():
     form = ArticleForm()
