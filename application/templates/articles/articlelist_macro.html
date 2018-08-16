@@ -29,16 +29,16 @@
 
 <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
 <div class="row border-right border-bottom px-1 pb-1 ml-1 mr-1">
-<div class="col-md-2 col-xs-12 border rounded bg-secondary">
+<div class="col-2 col-md-3 col-xs-12 border rounded bg-secondary">
     <div class="row font-weight-bold text-white p-1">
 
         {% if show_issue %}
-        <div class="col col-xs-12 col-md-2 mx-1">
+        <div class="col col-xs-12 col-md-3 mx-1">
         {{ article.issue }}
         </div>
         {% endif %}
 
-        <div class="col col-md-flex col-xs-flex mx-1">
+        <div class="col col-xs-12 col-md-6 mx-1">
         {{ article.name }}
         </div>
 
@@ -49,7 +49,7 @@
         {% endif %}
     </div>
 </div>
-<div class="col-md-2 col-xs-12">
+<div class="col-2 col-md-2 col-xs-12">
     <div class="row">
     <div class="col">
         {% if article.writer %}
@@ -68,11 +68,11 @@
     <div class="row">
     <div class="col">
     <input class="slider rounded w-100" width="100%" type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
+    </div>
+    </div>
     {% endif %}
-    </div>
-    </div>
 </div>
-<div class="col-md-2 col-xs-12">
+<div class="col-2 col-md-2 col-xs-12">
     <div class="row">
     <div class="col">
         {% if article.editor %}
@@ -96,12 +96,12 @@
     </div>
 </div>
 {% if user_is_involved or user_has_general_right_to_edit %}
-<div class="col-md-3 col-xs-12">
+<div class="col-3 col-md-2 col-xs-12">
 <input class="btn btn-primary" type="submit" value="Update sliders">
 </div>
 {% endif %}
 {% if current_user.admin %}
-<div class="col-md-3 col-xs-12 p-1">
+<div class="col-3 col-md-2 col-xs-12 p-1">
 <a class="btn btn-danger" href="{{ url_for('delete_article', article_id=article.id) }}" role="button">Delete</a>
 </div>
 {% endif %}
