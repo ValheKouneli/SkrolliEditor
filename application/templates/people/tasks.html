@@ -7,12 +7,12 @@
 {% if articles_writing %}
 <h2>{{ person_is }} writing</h2>
 
-{{ articlelist(articles_writing, current_user=current_user) }}
+{{ articlelist(articles_writing, current_user=current_user, show_issue=True) }}
 {% endif %}
 
 {% if articles_editing %}
 <h2>{{ person_is }} editing</h2>
-{{ articlelist(articles=articles_editing, current_user=current_user) }}
+{{ articlelist(articles=articles_editing, current_user=current_user, show_issue=True) }}
 {% endif %}
 
 {% endblock %}

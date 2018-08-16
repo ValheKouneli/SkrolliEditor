@@ -27,6 +27,7 @@ def articles_in_issue(issue):
         return redirect(url_for("error404"))
 
     return render_template("/articles/list.html",
+        show_issue = False,
         current_user = current_user,
         issue = issue,
         title = "Articles in " + issue,
