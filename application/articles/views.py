@@ -18,10 +18,7 @@ def articles_form():
     if not current_user.editor:
         return redirect(url_for("error403"))
     
-    form = ArticleForm()
-    form.writer.choices = getPeopleOptions()
-    form.editorInCharge.choices = getEditorOptions()
-    form.issue.choices = getIssueOptions()
+    form = create_article_form()
 
     return render_template("/articles/new.html", form=form)
 
@@ -71,7 +68,7 @@ def delete_article(article_id):
 
     return redirect(url_for("articles_index")) # todo: change this to where the request came from
 
-# Todo: fix this method
+
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
 @login_required
 def article_update(article_id):
@@ -82,56 +79,44 @@ def article_update(article_id):
     if not article:
         return redirect(url_for("error404"))
 
-    synopsises = Synopsis.query.filter_by(article_id=int(article_id))
+    # fetch synopsis
+    synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
 
     if request.method == "GET":
         # create form
-        form = ArticleForm()
-        form.writer.choices = getPeopleOptions()
-        form.editorInCharge.choices = getEditorOptions()
-        form.issue.choices = getIssueOptions()
+        form = create_article_form()
 
         # preselect everything according to article's current status
         form.name.data = article.name
         form.writer.data = article.writer if article.writer is not None else 0
         form.issue.data = article.issue if article.issue is not None else 0
         form.editorInCharge.data = article.editor_in_charge if article.editor_in_charge is not None else 0
-        try:
-            form.synopsis.data = synopsises.first().content
-        except:
-            pass
+        if synopsis:
+            form.synopsis.data = synopsis.content
         return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
     
-    # create form and preselect eveything according to what was selected when form was sent
-    form = ArticleForm(request.form)
-    form.writer.choices = getPeopleOptions()
-    form.editorInCharge.choices = getEditorOptions()
-    form.issue.choices = getIssueOptions()
+    # get the sent form
+    form = replicate_article_form(request.form)
 
     if not form.validate():
         return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
 
     # change article info
-    article.set_name(form.name.data)
-    article.set_writer(form.writer.data)
-    article.set_issue(form.issue.data)
-    article.set_editor(form.editorInCharge.data)
+    article = set_article_according_to_form(article, form)
 
-    try:
-        synopsis = synopsises.first()
-        if synopsis and len(form.synopsis.data) > 0:
-            synopsis.set_content(form.synopsis.data)
-        elif synopsis and len(form.synopsis.data) == 0:
-            db.session.delete(synopsis)
-            db.session.commit()
-        else:
-            new_synopsis = Synopsis(article_id=int(article_id), content=form.synopsis.data)
-            db.session.add(new_synopsis)
-            db.session.commit()
-    except:
+    content = form.synopsis.data
+    if synopsis and len(content) > 0:
+        synopsis.set_content(form.synopsis.data)
+    elif synopsis and len(content) == 0:
+        db.session.delete(synopsis)
+    elif not synopsis and len(content) > 0:
         new_synopsis = Synopsis(article_id=int(article_id), content=form.synopsis.data)
         db.session.add(new_synopsis)
-        db.session.commit()
+    else:
+        pass
+
+    # commit changes
+    db.session.commit()
 
     return redirect(url_for('show_article', article_id=article_id))
 
@@ -143,30 +128,51 @@ def articles_create():
     if not current_user.editor:
         return redirect(url_for("error403"))
 
-    form = ArticleForm(request.form)
-    form.writer.choices = getPeopleOptions()
-    form.editorInCharge.choices = getEditorOptions()
-    form.issue.choices = getIssueOptions()
+    form = create_article_form()
 
     if not form.validate():
         return render_template("articles/new.html", form = form)
 
-    a = Article(form.name.data, current_user.id)
-    a.set_issue = int(form.issue.data)
-    a.set_writer = int(form.writer.data)
-    a.set_editor = int(form.editorInCharge.data)
+    article = Article(form.name.data, current_user.id)
+    article = set_article_according_to_form(a, form)
 
-    db.session().add(a)
+    db.session().add(article)
     db.session().commit()
     
     if len(form.synopsis.data) > 0:
-        s = Synopsis(article_id = a.id, content=form.synopsis.data)
-        db.session().add(s)
+        synopsis = Synopsis(article_id = a.id, content=form.synopsis.data)
+        db.session().add(synopsis)
         db.session().commit()
     
 
     return redirect(url_for("articles_index"))
 
+
 @app.route("/articles/orphans/", methods=["GET"])
 def articles_orphans():
     return render_template("articles/list.html", articles=getArticlesWithCondition("Article.issue IS NULL"))
+
+
+def create_article_form():
+    form = ArticleForm()
+    form = set_options(form)
+    return form
+
+def replicate_article_form(form):
+    replica = ArticleForm(form)
+    replica = set_options(replica)
+    return replica
+
+def set_options(articleform):
+    articleform.writer.choices = getPeopleOptions()
+    articleform.editorInCharge.choices = getEditorOptions()
+    articleform.issue.choices = getIssueOptions()
+    return articleform
+
+def set_article_according_to_form(article, form):
+    article.set_name(form.name.data)
+    article.set_writer(int(form.writer.data))
+    article.set_issue(int(form.issue.data))
+    article.set_editor(int(form.editorInCharge.data))
+    return article
+
