@@ -1,8 +1,7 @@
 from application import db, os
 from sqlalchemy.sql import text
 
-def format_as_pair_id_name_and_alphabetize(query_result):
-    options = sorted(query_result, key=lambda option: option["name"])
+def format_as_pair_id_name(options):
     formatted = [(0, None)]
     for item in options:
         formatted.append((item.id, item.name))
@@ -12,22 +11,24 @@ def getPeopleOptions():
     query = text(
         "SELECT Account.name AS name, Account.id AS id FROM Account"
         " GROUP BY Account.name, Account.id"
+        " ORDER BY Account.name"
     )
-    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
+    return format_as_pair_id_name(db.engine.execute(query))
 
 def getEditorOptions():
     query = text(
         "SELECT Account.name AS name, Account.id AS id FROM Account"
         " WHERE Account.editor = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
         " GROUP BY Account.name, Account.id"
+        " ORDER BY Account.name"
     )
-    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
+    return format_as_pair_id_name(db.engine.execute(query))
 
 def getIssueOptions():
     query = text(
-        "SELECT id, name FROM Issue"
+        "SELECT id, name FROM Issue ORDER BY name"
     )
-    return format_as_pair_id_name_and_alphabetize(db.engine.execute(query))
+    return format_as_pair_id_name(db.engine.execute(query))
 
 def getArticlesWithCondition(condition="(0 = 0)"):
     return getArticlesAmountCondition(condition=condition)
@@ -55,3 +56,4 @@ def getArticleWithId(id):
         return resultArray.first()
     except:
         return None
+        

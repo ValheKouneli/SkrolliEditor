@@ -2,7 +2,11 @@
 
 {% block body %}
 <p>
+{% if article.issue %}
 <a class="btn btn-link btn-primary" href="{{ url_for('articles_in_issue', issue=article.issue) }}" role="button">Show all articles in {{ article.issue }}</a>
+{% else %}
+<a class="btn btn-link btn-primary" href="{{ url_for('articles_orphans') }}" role="button">Show all orphan articles</a>
+{% endif %}
 </p>
 
 {% if article.ready %}

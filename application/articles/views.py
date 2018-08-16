@@ -5,14 +5,14 @@ from application import app, db
 from application.articles.models import Article, Synopsis
 from application.articles.forms import ArticleForm
 from application.auth.models import User
-from application.help import getArticleWithId, getPeopleOptions, getEditorOptions, getIssueOptions
+from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
     articles = Article.get_all_articles().fetchall()
     return render_template("/articles/list.html", articles = articles)
 
-@app.route("/articles/new/")
+@app.route("/articles/new/", methods=["GET"])
 @login_required
 def articles_form():
     if not current_user.editor:
@@ -44,7 +44,7 @@ def show_article(article_id):
     except:
         return redirect(url_for("error404"))
     article = getArticleWithId(id)
-    
+    print("article: ", article)    
     if article is None:
         return redirect(url_for("error404"))
 
@@ -71,7 +71,7 @@ def delete_article(article_id):
 
     return redirect(url_for("articles_index")) # todo: change this to where the request came from
 
-  
+# Todo: fix this method
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
 @login_required
 def article_update(article_id):
@@ -111,13 +111,11 @@ def article_update(article_id):
     if not form.validate():
         return render_template("articles/new.html", form = form, updating_article=True, article_id=int(article.id))
 
-    # change article info it it was changed
-    if form.writer.data is not article.writer:
-        article.set_writer(form.writer.data)
-    if form.issue.data is not article.issue:
-        article.set_issue(form.issue.data)
-    if form.editorInCharge.data is not article.editor_in_charge:
-        article.set_editor(form.editorInCharge.data)
+    # change article info
+    article.set_name(form.name.data)
+    article.set_writer(form.writer.data)
+    article.set_issue(form.issue.data)
+    article.set_editor(form.editorInCharge.data)
 
     try:
         synopsis = synopsises.first()
@@ -154,12 +152,9 @@ def articles_create():
         return render_template("articles/new.html", form = form)
 
     a = Article(form.name.data, current_user.id)
-    if form.issue.data != 0:
-        a.issue = int(form.issue.data)
-    if form.writer.data != 0:
-        a.writer = int(form.writer.data)
-    if form.editorInCharge.data != 0:
-        a.editor_in_charge = int(form.editorInCharge.data)
+    a.set_issue = int(form.issue.data)
+    a.set_writer = int(form.writer.data)
+    a.set_editor = int(form.editorInCharge.data)
 
     db.session().add(a)
     db.session().commit()
@@ -171,3 +166,7 @@ def articles_create():
     
 
     return redirect(url_for("articles_index"))
+
+@app.route("/articles/orphans/", methods=["GET"])
+def articles_orphans():
+    return render_template("articles/list.html", articles=getArticlesWithCondition("Article.issue IS NULL"))
