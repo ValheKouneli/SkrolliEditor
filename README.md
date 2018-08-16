@@ -5,8 +5,8 @@ Web application to help the editorial process of Skrolli
 https://skrollieditor.herokuapp.com/
 
 **Test user**
-* username: [the same as in the course material]
-* [the Finnish word for test repeated twice in lower case]
+* username: editor or admin
+* password: [the Finnish word for test repeated twice in lower case]
 
 ## Project definition
 
