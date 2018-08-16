@@ -5,14 +5,22 @@
 <div class="row border-right border-bottom px-1 pb-1 ml-1 mr-1">
 <div class="col-md-3 col-xs-12 border rounded bg-secondary">
     <div class="row font-weight-bold text-white p-1">
+
         {% if show_issue %}
-        <div class="col col-xs-1 col-md-3 mx-1">
+        <div class="col col-xs-12 col-md-2 mx-1">
         {{ article.issue }}
         </div>
         {% endif %}
-        <div class="col mx-1">
+
+        <div class="col col-md-flex col-xs-flex mx-1">
         {{ article.name }}
         </div>
+
+        {% if current_user.editor %}
+        <div class="col text-black mx-1 col-xs-12 col-md-3">
+        <a class="btn btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 <div class="col-md-3 col-xs-12">
@@ -47,6 +55,11 @@
     </div>
     </div>
 </div>
+{% if current_user.admin %}
+<div class="col-md-3 col-xs-12 p-1">
+<a class="btn btn-danger" href="{{ url_for('delete_article', article_id=article.id) }}" role="button">Delete</a>
+</div>
+{% endif %}
 </div>
 {% endfor %}
 {%- endmacro %}
