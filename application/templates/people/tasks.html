@@ -10,9 +10,11 @@
 {{ articlelist(articles_writing, current_user=current_user, show_issue=True) }}
 {% endif %}
 
+{% if current_user.editor %}
 {% if articles_editing %}
 <h2>{{ person_is }} editing</h2>
 {{ articlelist(articles=articles_editing, current_user=current_user, show_issue=True) }}
+{% endif %}
 {% endif %}
 
 {% endblock %}

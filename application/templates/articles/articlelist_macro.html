@@ -34,12 +34,14 @@
 
         {% if show_issue %}
         <div class="col col-xs-1 col-md-3 mx-1">
-        {{ article.issue }}
+        {% if article.issue %}
+        <a class="badge badge-pill badge-light" href="{{ url_for('articles_in_issue', issue=article.issue) }}">{{ article.issue }}</a>
+        {% endif %}
         </div>
         {% endif %}
 
         <div class="col col-xs-1 col-md-6 mx-1">
-        {{ article.name }}
+        <a class="text-white" href="{{ url_for('show_article', article_id=article.id) }}">{{ article.name }}</a>
         </div>
 
         {% if current_user.editor %}
