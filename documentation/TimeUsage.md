@@ -83,7 +83,7 @@ Daily time usage
 
 ## Week 4, 13.-17.8.2018
 
-**Total: 15h 52 min**
+**Total: 20h 10 min**
 
 * Mon: 3h 25 min
   * feature: showing one article's info on a single page
@@ -113,3 +113,7 @@ Daily time usage
   * feature: control status with sliders
   * TODO: redirect 'update status' to the same page where it came from; same to other methods
   * TODO: let editor select if they want to control sliders relevant to them or all sliders
+* Thu: 4h 15 min
+  * redesigning the list articles page with grids
+  * merging a lot of branches to master
+  * fixing small things, testing stuff, learning more about bootstrap
