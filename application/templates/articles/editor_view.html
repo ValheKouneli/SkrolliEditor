@@ -4,35 +4,35 @@
 {% block body %}
 
 <div class="row border">
-    <div class="col m-1 p-0 border">
+    <div class="col p-1 border" style="max-width: 20%;">
         <div class="accordion" id="planned">
             {% for article in planned_articles %}
                 {{ articlecard(article, current_user, synopsis, "planned") }}
             {% endfor %}
         </div>
     </div>
-    <div class="col m-1 p-0 border">
+    <div class="col p-1 border" style="max-width: 20%;">
         <div class="accordion" id="draft">
             {% for article in draft_articles %}
                 {{ articlecard(article, current_user, synopsis, "draft") }}
             {% endfor %}
         </div>
     </div>
-    <div class="col m-1 p-0 border">
+    <div class="col p-1 border" style="max-width: 20%;">
         <div class="accordion" id="written">
             {% for article in written_articles %}
                 {{ articlecard(article, current_user, synopsis, "written") }}
             {% endfor %}
         </div>
     </div>
-    <div class="col m-1 p-0 border">
+    <div class="col p-1 border" style="max-width: 20%;">
         <div class="accordion" id="edited">
             {% for article in edited_articles %}
                 {{ articlecard(article, current_user, synopsis, "edited") }}
             {% endfor %}
         </div>
     </div>
-    <div class="col m-1 p-0 border">
+    <div class="col p-1 border" style="max-width: 20%;">
         <div class="accordion" id="finished">
             {% for article in finished_articles %}
                 {{ articlecard(article, current_user, synopsis, "finished") }}
