@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% from "articles/articlelist_macro.html" import articlelist %}
 
 {% block body %}
 <h1>{{ posessive_form }} tasks</h1>
@@ -7,14 +6,13 @@
 {% if articles_writing %}
 <h2>{{ person_is }} writing</h2>
 
-{{ articlelist(articles_writing, current_user=current_user, show_issue=True) }}
+List
 {% endif %}
 
 {% if current_user.editor %}
 {% if articles_editing %}
 <h2>{{ person_is }} editing</h2>
-{{ articlelist(articles=articles_editing, current_user=current_user, show_issue=True) }}
-{% endif %}
+List
 {% endif %}
 
 {% endblock %}

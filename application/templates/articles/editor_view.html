@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% from "articles/articlecard_macro.html" import articlecard %}
+
+{% block body %}
+
+<div class="row border">
+    <div class="col m-1 p-0 border">
+        <div class="accordion" id="planned">
+            {% for article in planned_articles %}
+                {{ articlecard(article, current_user, synopsis, "planned") }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col m-1 p-0 border">
+        <div class="accordion" id="draft">
+            {% for article in draft_articles %}
+                {{ articlecard(article, current_user, synopsis, "draft") }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col m-1 p-0 border">
+        <div class="accordion" id="written">
+            {% for article in written_articles %}
+                {{ articlecard(article, current_user, synopsis, "written") }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col m-1 p-0 border">
+        <div class="accordion" id="edited">
+            {% for article in edited_articles %}
+                {{ articlecard(article, current_user, synopsis, "edited") }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col m-1 p-0 border">
+        <div class="accordion" id="finished">
+            {% for article in finished_articles %}
+                {{ articlecard(article, current_user, synopsis, "finished") }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

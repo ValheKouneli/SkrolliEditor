@@ -12,6 +12,17 @@ def articles_index():
     articles = Article.get_all_articles().fetchall()
     return render_template("/articles/list.html", title="All articles", articles = articles, show_issue=True)
 
+
+@app.route("/articles/editor_view/", methods=["GET"])
+def editor_view():
+    all = Article.query.all()
+    return render_template("articles/editor_view.html", 
+        planned_articles = all,
+        draft_articles = all,
+        written_articles = all,
+        edited_articles = all,
+        finished_articles = all)
+
 @app.route("/articles/new/", methods=["GET"])
 @login_required
 def articles_form():

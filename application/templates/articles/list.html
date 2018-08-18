@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-<!-- {% from "articles/articlelist_macro.html" import articlelist %} -->
 {% from "articles/articlecard_macro.html" import articlecard %}
 
 {% block body %}
@@ -15,9 +14,8 @@
 {% endif %}
 
 {% if articles %}
-<!-- <p>
-  {{ articlelist(current_user=current_user, articles=articles, show_issue=show_issue) }}
-</p> -->
+
+
 <div class="accordion" id="accordionList">
 {% for article in articles %}
 {{ articlecard(article, current_user, synopsis, view_as_editor) }}
