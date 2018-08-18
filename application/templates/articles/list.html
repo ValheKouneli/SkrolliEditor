@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
-{% from "articles/articlelist_macro.html" import articlelist %}
+<!-- {% from "articles/articlelist_macro.html" import articlelist %} -->
+{% from "articles/articlecard_macro.html" import articlecard %}
 
 {% block body %}
 {% if title %}
@@ -14,9 +15,14 @@
 {% endif %}
 
 {% if articles %}
-<p>
+<!-- <p>
   {{ articlelist(current_user=current_user, articles=articles, show_issue=show_issue) }}
-</p>
+</p> -->
+<div class="accordion" id="accordionList">
+{% for article in articles %}
+{{ articlecard(article, current_user, synopsis, view_as_editor) }}
+{% endfor %}
+</div>
 {% else %}
 <p>
   No articles in the system
