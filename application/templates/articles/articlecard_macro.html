@@ -1,59 +1,91 @@
 {% macro articlecard(article, current_user, synopsis, accordion_name) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
-<div class="card">
-    <div class="card-header btn text-left p-1"
+<div class="card rounded-0">
+    <div class="card-header btn text-left p-0 m-0"
         id="heading{{ article.id }}"
         data-toggle="collapse"
         data-target="#collapse{{ article.id }}"
         aria-controls="collapse{{ article.id }}">
-        
-        <h5 class="text mb-0 text-truncate">
-                {{ article.name }}
-        </h5> 
+
+        <div class="btn-group m-0 p-0 rounded-0" style="width:100%;" role="group">
+            <button type="button" style="width:100%;" class="btn pl-1 text-left text-truncate rounded-0">
+                <div class="text">
+                    {{ article.name }}
+                </div>
+            </button>
+            <button type="button" class="btn rounded-0 pl-0 pr-1">
+                &#9776;
+            </button>
+        </div>
     </div>
     <div class="collapse"
         id="collapse{{ article.id }}"
         aria-labelledby="heading{{ article.id }}"
         data-parent="#{{ accordion_name }}">
 
-        <div class="card-body">   
+        <div class="card-body p-1">   
             <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
                 <ul class="list-group list-group-flush" >
-                    <li class="list-group-item">
-                        Writer: {{ article.writer }} <br>
-                        {{ progressbar(article.writing_status) }}
-
-                        {% if current_user.editor %}
-                            <br><input class="slider rounded w-100"
-                                    width="100%"
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value="{{ article.writing_status }}"
-                                    class="slider"
-                                    name="writing_status">
-                        {% endif %}
+                    <li class="list-group-item p-1">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="py-0">
+                                    Writer: {{ article.writer }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ progressbar(article.writing_status) }}
+                                </td>
+                            </tr>
+                            {% if current_user.editor %}
+                                <tr>
+                                    <td>
+                                        <input class="slider w-100"
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value="{{ article.editing_status }}"
+                                            class="slider"
+                                            name="editing_status">
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
                     </li>
-                    <li class="list-group-item">
-                        Editor: {{ article.editor_in_charge }} <br>
-                        {{ progressbar(article.editing_status) }}
-                        
-                        {% if current_user.editor %}
-                            <br><input class="slider w-100"
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value="{{ article.editing_status }}"
-                                    class="slider"
-                                    name="editing_status">
-                        {% endif %}
+                    <li class="list-group-item p-1">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="py-0">
+                                    Editor: {{ article.editor_in_charge }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ progressbar(article.editing_status) }}
+                                </td>
+                            </tr>
+                            {% if current_user.editor %}
+                            <tr>
+                                <td>
+                                    <input class="slider w-100"
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value="{{ article.editing_status }}"
+                                        class="slider"
+                                        name="editing_status">
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
                     </li>
                     {% if current_user.editor %}
-                        <li class="list-group-item">
+                        <li class="list-group-item text-center p-2">
                             <input class="btn btn-primary"
                                 type="submit"
-                                value="Update status">
+                                value="Update sliders">
                         </li>
                     {% endif %}
                 </ul>
@@ -64,11 +96,16 @@
             </p>
 
             {% if current_user.editor %}
-                <a class="btn btn-link btn-primary"
-                href="{{ url_for('article_update', article_id=article.id) }}"
-                role="button">
-                    Edit article info
-                </a>
+                <div class="card-footer text-right p-0">
+                    <a class="btn btn-lg p-0"
+                        href="{{ url_for('article_update', article_id=article.id) }}"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Edit article">
+                        
+                        &#9998;
+                    </a>
+                </div>
             {% endif %}
         </div>
     </div>
