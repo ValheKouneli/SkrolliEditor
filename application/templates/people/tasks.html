@@ -1,18 +1,33 @@
 {% extends "layout.html" %}
+{% from "articles/articlecard_macro.html" import articlecard %}
 
 {% block body %}
 <h1>{{ posessive_form }} tasks</h1>
 <p>Name in system: {{ system_name }}</p>
-{% if articles_writing %}
-<h2>{{ person_is }} writing</h2>
 
-List
-{% endif %}
 
-{% if current_user.editor %}
-{% if articles_editing %}
-<h2>{{ person_is }} editing</h2>
-List
-{% endif %}
+<div class="row m-1">
+        {% if articles_writing %}
+            <div class="col p-1" style="max-width: 20%;">
+                <h2>{{ person_is }} writing</h2>
+                <div class="accordion" id="writing">
+                    {% for article in articles_writing %}
+                        {{ articlecard(article, current_user, synopsis, "writing") }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
 
+        {% if current_user.editor %}
+            {% if articles_editing %}
+                <div class="col p-1" style="max-width: 20%;">
+                    <h2>{{ person_is }} editing</h2>
+                    <div class="accordion" id="editing">
+                        {% for article in articles_editing %}
+                            {{ articlecard(article, current_user, synopsis, "editing") }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
 {% endblock %}
