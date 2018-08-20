@@ -2,14 +2,14 @@
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
 <div class="card rounded-0">
-    <div class="card-header btn text-left p-0 m-0"
+    <div class="card-header text-left p-0 m-0"
         id="heading{{ article.id }}"
         data-toggle="collapse"
         data-target="#collapse{{ article.id }}"
         aria-controls="collapse{{ article.id }}">
 
-        <div type="button" style="width:100%;"
-            class="btn btn-light p-0 text-left text-truncate rounded-0">
+        <div class="btn btn-light p-0 text-left text-truncate rounded-0"
+            style="width:100%;">
             <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
                 <div class="btn pl-1 pr-0 text-left text-truncate" style="width:100%;">
                     {{ article.name }}
