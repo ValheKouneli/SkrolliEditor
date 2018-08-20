@@ -12,7 +12,8 @@
                 <h2>{{ person_is }} writing</h2>
                 <div class="accordion" id="writing">
                     {% for article in articles_writing %}
-                        {{ articlecard(article, current_user, synopsis, "writing") }}
+                        {{ articlecard(article, current_user, synopsis, "writing",
+                            open = (True if open|int == article.id else False)) }}
                     {% endfor %}
                 </div>
             </div>
@@ -23,7 +24,8 @@
                 <h2>{{ person_is }} editing</h2>
                 <div class="accordion" id="editing">
                     {% for article in articles_editing %}
-                        {{ articlecard(article, current_user, synopsis, "editing") }}
+                        {{ articlecard(article, current_user, synopsis, "editing",
+                            open = (True if open|int == article.id else False)) }}
                     {% endfor %}
                 </div>
             </div>

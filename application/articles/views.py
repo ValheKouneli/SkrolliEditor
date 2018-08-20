@@ -2,10 +2,11 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.articles.models import Article, Synopsis
+from application.articles.models import Article, Synopsis, update_status
 from application.articles.forms import ArticleForm, StatusForm
 from application.auth.models import User
-from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
+from application.help import getArticleWithId, getArticlesWithCondition, \
+    getPeopleOptions, getEditorOptions, getIssueOptions
 
 @app.route("/articles/", methods=["GET", "POST"])
 def articles_index():
@@ -21,6 +22,9 @@ def articles_index():
         if success:
             alert = {"type": "success",
                 "text": "Status updated!"}
+        else:
+            alert = {"type": "danger",
+                "text": "Something went wrong."}
     
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(),
@@ -141,23 +145,6 @@ def articles_create():
 def articles_orphans():
     return render_template("articles/list.html", show_issue=False, title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
 
-
-
-def update_status(request):
-    form = request.form
-    article_id = form["article_id"]
-    article = Article.query.get(int(article_id))
-
-    if not article:
-        return False
-
-    if form["writing_status"] is not None:
-        article.writing_status = form["writing_status"]
-    if form["editing_status"] is not None:
-        article.editing_status = form["editing_status"]
-    db.session.commit()
-
-    return True
 
 
 

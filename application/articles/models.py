@@ -118,3 +118,19 @@ def get_issue_condition(issue):
             issue = str(issue)
             issuecondition = " AND Article.issue = " + issue
       return issuecondition
+
+def update_status(request):
+    form = request.form
+    article_id = form["article_id"]
+    article = Article.query.get(int(article_id))
+
+    if not article:
+        return False
+
+    if form["writing_status"] is not None:
+        article.writing_status = form["writing_status"]
+    if form["editing_status"] is not None:
+        article.editing_status = form["editing_status"]
+    db.session.commit()
+
+    return True
