@@ -131,3 +131,6 @@ Daily time usage
   * TODO: make it possible to delete article again
   * TODO: make it possible to possible to mark article ready again
   * TODO: make it possible to change current issue
+  * TODO: make it possible to view single article again
+  * TODO: open some accordion pages by default
+  * TODO: figure out if it's possible to save info on opened accordion page
