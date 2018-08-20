@@ -121,16 +121,18 @@ Daily time usage
 
 ## Week 5, 20.-24.8.2018
 
-**Total: 6h min**
+**Total: 10h min**
 
-* Mon: 6h
+* Mon: 10h
   * Tweaking article list UI
   * Studying what is possible with Bootstrap
   * Fixing little things
   * Removing old stuff
+  * Updating status redirects back to the same page
+  * Article card stays open when updating status
+  * When succesfully updating status, notification is shown for 2s
   * TODO: make it possible to delete article again
   * TODO: make it possible to possible to mark article ready again
   * TODO: make it possible to change current issue
   * TODO: make it possible to view single article again
-  * TODO: open some accordion pages by default
-  * TODO: figure out if it's possible to save info on opened accordion page
+  * FIX: when pressing browser's "back" button, alert is repeated if there was one
