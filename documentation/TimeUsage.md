@@ -83,7 +83,7 @@ Daily time usage
 
 ## Week 4, 13.-17.8.2018
 
-**Total: 20h 10 min**
+**Total: 22h 10 min**
 
 * Mon: 3h 25 min
   * feature: showing one article's info on a single page
@@ -111,9 +111,23 @@ Daily time usage
   * refactoring
   * feature: status bar to show progress
   * feature: control status with sliders
-  * TODO: redirect 'update status' to the same page where it came from; same to other methods
-  * TODO: let editor select if they want to control sliders relevant to them or all sliders
 * Thu: 4h 15 min
   * redesigning the list articles page with grids
   * merging a lot of branches to master
   * fixing small things, testing stuff, learning more about bootstrap
+* Fri: 4h
+  * UI designing
+  * Playing with Bootstrap and redoing article list as an accordion
+
+## Week 5, 20.-24.8.2018
+
+**Total: 6h min**
+
+* Mon: 6h
+  * Tweaking article list UI
+  * Studying what is possible with Bootstrap
+  * Fixing little things
+  * Removing old stuff
+  * TODO: make it possible to delete article again
+  * TODO: make it possible to possible to mark article ready again
+  * TODO: make it possible to change current issue
