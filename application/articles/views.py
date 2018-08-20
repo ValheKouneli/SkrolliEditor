@@ -33,36 +33,6 @@ def articles_form():
 
     return render_template("/articles/new.html", form=form)
 
-@app.route("/articles/set_ready/<article_id>/", methods=["POST"])
-@login_required
-def articles_set_ready(article_id):
-
-    #todo: give redirect address as a parameter
-    a = Article.query.get(article_id)
-    a.ready = True
-    db.session().commit()
-
-    return redirect(url_for("articles_index"))
-
-
-@app.route("/article/<article_id>/", methods=["GET"])
-def show_article(article_id):
-    try:
-        id = int(article_id)
-    except:
-        return redirect(url_for("error404"))
-    article = getArticleWithId(id) 
-    if article is None:
-        return redirect(url_for("error404"))
-
-    synopsis = ""
-    try:
-        synopsis = Synopsis.query.filter_by(article_id=id).first().content
-    except:
-        pass
-
-    return render_template("/articles/article.html", article=article, synopsis=synopsis)
-
 @app.route("/article/<article_id>/delete/", methods=["POST"])
 @login_required
 def delete_article(article_id):
