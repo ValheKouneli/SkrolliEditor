@@ -11,7 +11,7 @@
         <div class="btn btn-light p-0 text-left text-truncate rounded-0"
             style="width:100%;">
             <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
-                <div class="btn pl-1 pr-0 text-left text-truncate" style="width:100%;">
+                <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate" style="width:100%;">
                     {{ article.name }}
                 </div>
 
@@ -68,7 +68,7 @@
                             {% endif %}
                         </table>
                     </li>
-                    <li class="list-group-item p-1">
+                    <li class="list-group-item px-1 pt-1 py-0">
                         <table style="width:100%;">
                             <tr>
                                 <td class="py-0">
@@ -82,8 +82,8 @@
                             </tr>
                             {% if current_user.editor %}
                             <tr>
-                                <td>
-                                    <input class="slider w-100"
+                                <td class="pd-0 md-0">
+                                    <input class="slider pd-0 w-100"
                                         type="range"
                                         min="0"
                                         max="100"
@@ -96,7 +96,7 @@
                         </table>
                     </li>
                     {% if current_user.editor %}
-                        <li class="list-group-item text-center p-2">
+                        <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
                             <input class="btn btn-primary"
                                 type="submit"
                                 value="Update sliders">
@@ -110,7 +110,7 @@
             </p>
 
             {% if current_user.editor %}
-                <div class="card-footer text-right p-0">
+                <div class="card-footer bg-white text-right p-0">
                     <a class="btn btn-default p-0 m-0"
                         href="{{ url_for('article_update', article_id=article.id) }}"
                         data-toggle="tooltip"
