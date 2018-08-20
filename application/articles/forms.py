@@ -15,6 +15,7 @@ class ArticleForm(FlaskForm):
             csrf = False
 
 class StatusForm(FlaskForm):
+        article_id = IntegerField("Article id")
         writing_status = IntegerField("Writing status")
         editing_status = IntegerField("Editing status")
 

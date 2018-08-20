@@ -7,14 +7,29 @@ from application.articles.forms import ArticleForm, StatusForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
 
-@app.route("/articles/", methods=["GET"])
+@app.route("/articles/", methods=["GET", "POST"])
 def articles_index():
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        if not current_user.editor:
+            redirect(url_for("error401"))
+        
+        success = update_status(request)
+        open = request.form["article_id"]
+        if success:
+            alert = {"type": "success",
+                "text": "Status updated!"}
+    
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(),
         draft_articles = Article.get_all_draft_articles(),
         written_articles = Article.get_all_written_articles(),
         edited_articles = Article.get_all_edited_articles(),
-        finished_articles = Article.get_all_finished_articles())
+        finished_articles = Article.get_all_finished_articles(),
+        alert = alert,
+        open = open)
 
 @app.route("/articles/new/", methods=["GET"])
 @login_required
@@ -127,21 +142,24 @@ def articles_orphans():
     return render_template("articles/list.html", show_issue=False, title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
 
 
-@app.route("/articles/<article_id>/update_status", methods=["POST"])
-@login_required
-def update_status(article_id):
-    form = StatusForm(request.form)
-    article = Article.query.get(int(article_id))
-    if not article:
-        return redirect(url_for("error404"))
 
-    if form.writing_status.data is not None:
-        article.writing_status = form.writing_status.data
-    if form.editing_status.data is not None:
-        article.editing_status = form.editing_status.data
+def update_status(request):
+    form = request.form
+    article_id = form["article_id"]
+    article = Article.query.get(int(article_id))
+
+    if not article:
+        return False
+
+    if form["writing_status"] is not None:
+        article.writing_status = form["writing_status"]
+    if form["editing_status"] is not None:
+        article.editing_status = form["editing_status"]
     db.session.commit()
 
-    return redirect(request.referrer)
+    return True
+
+
 
 def create_article_form():
     form = ArticleForm()

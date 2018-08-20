@@ -1,4 +1,4 @@
-{% macro articlecard(article, current_user, synopsis, accordion_name) -%}
+{% macro articlecard(article, current_user, synopsis, accordion_name, open=false) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
 <div class="card rounded-0">
@@ -6,6 +6,9 @@
         id="heading{{ article.id }}"
         data-toggle="collapse"
         data-target="#collapse{{ article.id }}"
+        {% if open %}
+            aria-expanded="true"
+        {% endif %}
         aria-controls="collapse{{ article.id }}">
 
         <div class="btn btn-light p-0 text-left text-truncate rounded-0"
@@ -33,13 +36,18 @@
         </div>
         
     </div>
-    <div class="collapse"
+    {% if open %}
+        <div class="collapse show"
+    {% else %}
+        <div class="collapse"
+    {% endif %}
         id="collapse{{ article.id }}"
         aria-labelledby="heading{{ article.id }}"
         data-parent="#{{ accordion_name }}">
 
         <div class="card-body px-1 pt-1 pb-0">   
-            <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
+            <form method="POST">
+                <input type="hidden" name="article_id" value="{{ article.id }}">
                 <ul class="list-group list-group-flush" >
                     <li class="list-group-item p-1">
                         <table style="width:100%;">
