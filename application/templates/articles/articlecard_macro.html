@@ -8,16 +8,30 @@
         data-target="#collapse{{ article.id }}"
         aria-controls="collapse{{ article.id }}">
 
-        <div class="btn-group m-0 p-0 rounded-0" style="width:100%;" role="group">
-            <button type="button" style="width:100%;" class="btn pl-1 text-left text-truncate rounded-0">
-                <div class="text">
+        <div type="button" style="width:100%;"
+            class="btn btn-light p-0 text-left text-truncate rounded-0">
+            <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
+                <div class="btn pl-1 pr-0 text-left text-truncate" style="width:100%;">
                     {{ article.name }}
                 </div>
-            </button>
-            <button type="button" class="btn rounded-0 pl-0 pr-1">
-                &#9776;
-            </button>
+
+                <div class="btn pl-1 pr-1 text-right">
+                    <div class="badge badge-pill badge-success"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="So far does not have a meaning.">
+
+                        Pics
+                    </div>
+                </div>
+                
+                <div class="btn pl-0 pr-1 text-right">
+                    &#9776;
+                </div>
+            </div>
+
         </div>
+        
     </div>
     <div class="collapse"
         id="collapse{{ article.id }}"
