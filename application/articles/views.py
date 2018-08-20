@@ -92,7 +92,7 @@ def article_update(article_id):
     # commit changes
     db.session.commit()
 
-    return redirect(url_for('show_article', article_id=article_id))
+    return redirect(url_for('articles_index'))
 
   
 @app.route("/articles/", methods=["POST"])
@@ -131,7 +131,7 @@ def articles_orphans():
 @login_required
 def update_status(article_id):
     form = StatusForm(request.form)
-    article = Article.query.get(article_id)
+    article = Article.query.get(int(article_id))
     if not article:
         return redirect(url_for("error404"))
 
@@ -141,7 +141,7 @@ def update_status(article_id):
         article.editing_status = form.editing_status.data
     db.session.commit()
 
-    return redirect(url_for("show_article", article_id=article_id))
+    return redirect(request.referrer)
 
 def create_article_form():
     form = ArticleForm()
