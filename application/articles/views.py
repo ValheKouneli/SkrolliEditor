@@ -9,19 +9,12 @@ from application.help import getArticleWithId, getArticlesWithCondition, getPeop
 
 @app.route("/articles/", methods=["GET"])
 def articles_index():
-    articles = Article.get_all_articles().fetchall()
-    return render_template("/articles/list.html", title="All articles", articles = articles, show_issue=True)
-
-
-@app.route("/articles/editor_view/", methods=["GET"])
-def editor_view():
-    all = Article.query.all()
     return render_template("articles/editor_view.html", 
-        planned_articles = all,
-        draft_articles = all,
-        written_articles = all,
-        edited_articles = all,
-        finished_articles = all)
+        planned_articles = Article.get_all_planned_articles(),
+        draft_articles = Article.get_all_draft_articles(),
+        written_articles = Article.get_all_written_articles(),
+        edited_articles = Article.get_all_edited_articles(),
+        finished_articles = Article.get_all_finished_articles())
 
 @app.route("/articles/new/", methods=["GET"])
 @login_required

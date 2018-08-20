@@ -26,12 +26,12 @@ def articles_in_issue(issue):
     except:
         return redirect(url_for("error404"))
 
-    return render_template("/articles/list.html",
-        show_issue = False,
-        current_user = current_user,
-        issue = issue,
-        title = "Articles in " + issue,
-        articles=getArticlesWithCondition("issue = "+ str(issueid)))
+    return render_template("articles/editor_view.html", 
+        planned_articles = Article.get_all_planned_articles(int(issueid)),
+        draft_articles = Article.get_all_draft_articles(int(issueid)),
+        written_articles = Article.get_all_written_articles(int(issueid)),
+        edited_articles = Article.get_all_edited_articles(int(issueid)),
+        finished_articles = Article.get_all_finished_articles(int(issueid)))
 
 @app.route("/<issue>/articles/new", methods=["GET"])
 @login_required
