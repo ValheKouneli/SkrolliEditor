@@ -19,7 +19,7 @@
           <a href="{{ url_for('person_edit', user_id=person.id) }}">Edit</a>
       </td>
       {% endif %}
-      <td><a href="{{ url_for('show_tasks', name=person.name) }}">{{ person.name }}</a></td>
+      <td><a href="{{ url_for('show_tasks', user_id=person.id) }}">{{ person.name }}</a></td>
       <td>{{ person.username }}</td>
       <td>
           <ul>

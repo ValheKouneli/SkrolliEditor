@@ -18,16 +18,20 @@
             </div>
         {% endif %}
 
-        {% if current_user.editor %}
-            {% if articles_editing %}
-                <div class="col p-1" style="max-width: 20%;">
-                    <h2>{{ person_is }} editing</h2>
-                    <div class="accordion" id="editing">
-                        {% for article in articles_editing %}
-                            {{ articlecard(article, current_user, synopsis, "editing") }}
-                        {% endfor %}
-                    </div>
+        {% if articles_editing %}
+            <div class="col p-1" style="max-width: 20%;">
+                <h2>{{ person_is }} editing</h2>
+                <div class="accordion" id="editing">
+                    {% for article in articles_editing %}
+                        {{ articlecard(article, current_user, synopsis, "editing") }}
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
+
+        {% if not articles_writing and not articles_editing %}
+            <div class="col">
+                <h2> No tasks </h2>
+            </div>
         {% endif %}
 {% endblock %}
