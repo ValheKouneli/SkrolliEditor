@@ -114,7 +114,7 @@ class Synopsis(Base):
 
 def get_issue_condition(issue):
       issuecondition = ""
-      if issue != 0:
+      if issue != 0 and isinstance(issue, int):
             issue = str(issue)
             issuecondition = " AND Article.issue = " + issue
       return issuecondition

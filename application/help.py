@@ -30,11 +30,13 @@ def getIssueOptions():
     )
     return format_as_pair_id_name(db.engine.execute(query))
 
+# DANGER DANGER, never call this without verifying that condition is not shady
 def getArticlesWithCondition(condition="(0 = 0)"):
     return getArticlesAmountCondition(condition=condition)
 
 # Returns an array of [amount] articles where the condition [condition]
-#  is satisfied
+#  is satisfied.
+# DANGER DANGER, never call this without verifying that condition is not shady
 def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     howmany = ""
     order = ""
@@ -65,6 +67,9 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     return db.engine.execute(query)
 
 def getArticleWithId(id):
+    if not isinstance(id, int):
+        return None
+
     resultArray = getArticlesAmountCondition(amount=1, condition="Article.id = %d" % id)
     try:
         return resultArray.first()

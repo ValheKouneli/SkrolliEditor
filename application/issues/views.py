@@ -2,7 +2,6 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.help import getArticlesWithCondition
 from application.articles.models import Article
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
