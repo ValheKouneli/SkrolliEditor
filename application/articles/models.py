@@ -135,7 +135,7 @@ def updateStatus(request, current_user, id):
             if form["writing_status"] is not None:
                   article.writing_status = int(form["writing_status"])
             if form["editing_status"] is not None:
-                  if not (form["editing_status"] == 100 and article.writing_status < 100):
+                  if int(form["editing_status"]) <= article.writing_status:
                         article.editing_status = int(form["editing_status"])
             db.session.commit()
             alert = {"type": "success",
