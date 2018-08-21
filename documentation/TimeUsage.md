@@ -121,7 +121,7 @@ Daily time usage
 
 ## Week 5, 20.-24.8.2018
 
-**Total: 10h min**
+**Total: 14h 15 min**
 
 * Mon: 10h
   * Tweaking article list UI
@@ -131,8 +131,12 @@ Daily time usage
   * Updating status redirects back to the same page
   * Article card stays open when updating status
   * When succesfully updating status, notification is shown for 2s
-  * TODO: make it possible to delete article again
   * TODO: make it possible to possible to mark article ready again
-  * TODO: make it possible to change current issue
   * TODO: make it possible to view single article again
   * FIX: when pressing browser's "back" button, alert is repeated if there was one
+* Tue: 4h 15 min
+  * Articles can be deleted again
+  * Deleting or editing an article redirects to the page you came from
+  * Lots of refactoring to make all this possible and clean-ish
+  * TODO: article updating on the same page the card is shown
+  * TODO: alerts when updating article info ^
