@@ -8,16 +8,19 @@
 <h1>Create a new article</h1>
 {% endif %}
 {% if updating_article %}
-<form class="form form-horizontal" role="form" method="POST" action="{{ url_for('article_update', article_id=article_id) }}">
+<form class="form form-horizontal" role="form" method="POST">
 {% else %}
-<form class="form form-horizontal" role="form" method="POST" action="{{ url_for('articles_create') }}">
+<form class="form form-horizontal" role="form" method="POST">
 {% endif %}
     <dl>
         {{ wtf.quick_form(form, form_type="horizontal", horizontal_columns=('lg', 2, 4)) }}
+        {% if redirect_to %}
+            <input class="hidden" type="hidden" name="redirect_to" value="{{ redirect_to }}">
+        {% endif %}
         {% if updating_article %}
-        <input class="btn btn-primary" type="submit" value="Update article" />
+        <input class="btn btn-primary" name="update_article" type="submit" action="{{ url_for('article_update', article_id=article_id) }}" value="Update article" />
         {% else %}
-        <input class="btn btn-primary" type="submit" value="Add a new article" />
+        <input class="btn btn-primary" name="create_article" type="submit" value="Add a new article" />
         {% endif %}
     </dl>
 </form>

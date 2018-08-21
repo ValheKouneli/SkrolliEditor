@@ -36,13 +36,13 @@ def articles_in_issue(issue):
             # returns None if user is not authorized
             alert = updateStatus(request=request, current_user=current_user, id=int(id))
             if not alert:
-                return redirect(url_for("error401"))
+                return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
             alert = deleteArticle(request=request, current_user=current_user, id=int(id))
             if not alert:
-                return redirect(url_for("error401"))
+                return redirect(url_for("error403"))
 
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(int(issueid)),
@@ -53,6 +53,13 @@ def articles_in_issue(issue):
         alert = alert,
         open = open,
         topic = "Articles " + issue)
+
+@app.route("/issues/<id>", methods=["GET"])
+def issue_by_id(id):
+    issue = Issue.query.get(id)
+    if not issue:
+        return redirect(url_for("error404"))
+    return redirect(url_for("articles_in_issue", issue=issue.name))
 
 @app.route("/<issue>/articles/new", methods=["GET"])
 @login_required
@@ -81,7 +88,7 @@ def issues_create():
         return render_template("/issues/new.html", form=form)
     
     if not current_user.editor:
-        return redirect(url_for("error401"))
+        return redirect(url_for("error403"))
 
     form = IssueForm(request.form)
 
@@ -98,7 +105,7 @@ def issues_create():
 @login_required
 def issues_delete(issue_id):
     if not current_user.is_admin:
-        return redirect(url_for("error401"))
+        return redirect(url_for("error403"))
 
     issue_to_delete = Issue.query.get(issue_id)
     if not issue_to_delete:

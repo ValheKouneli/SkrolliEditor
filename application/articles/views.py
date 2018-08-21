@@ -9,6 +9,8 @@ from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, \
     getPeopleOptions, getEditorOptions, getIssueOptions
 
+
+
 @app.route("/articles/", methods=["GET", "POST"])
 def articles_index():
     alert = {}
@@ -22,13 +24,13 @@ def articles_index():
             # returns None if user is not authorized
             alert = updateStatus(request=request, current_user=current_user, id=int(id))
             if not alert:
-                return redirect(url_for("error401"))
+                return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
             alert = deleteArticle(request=request, current_user=current_user, id=int(id))
             if not alert:
-                return redirect(url_for("error401"))
+                return redirect(url_for("error403"))
 
     # show all articles
     return render_template("articles/editor_view.html", 
@@ -43,15 +45,59 @@ def articles_index():
 
 
 
-@app.route("/articles/new/", methods=["GET"])
+@app.route("/articles/new/", methods=["GET", "POST"])
 @login_required
 def articles_form():
     if not current_user.editor:
         return redirect(url_for("error403"))
     
+    if request.method == "POST":
+
+        # create a new article
+        if request.form.get('create_article', None):
+
+            redirect_to = url_for('articles_orphans')
+            if request.form.get('redirect_to', None):
+                redirect_to = request.form["redirect_to"]
+                
+            form = ArticleForm(request.form)
+            form = set_options(form)
+
+            if not form.validate():
+                return render_template("articles/new.html", \
+                    form = form, redirect_to=redirect_to)
+
+            # default redirect address for new article is the page
+            # showing all articles for the same issue
+            if redirect_to == url_for('articles_orphans') and form.issue.data:
+                redirect_to = url_for('issue_by_id', id=form.issue.data)
+
+            article = Article(form.name.data, current_user.id)
+            article = set_article_according_to_form(article, form)
+
+            db.session().add(article)
+            db.session().commit()
+    
+            if len(form.synopsis.data) > 0:
+                synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
+                db.session().add(synopsis)
+                db.session().commit()
+    
+            return redirect(redirect_to)
+
     form = create_article_form()
 
-    return render_template("/articles/new.html", form=form)
+    # if the page that made this GET request wants that
+    # the new article form sends it to somewhere special,
+    # make it so
+    redirect_to = None
+    if request.form.get('redirect_to', None):
+        redirect.to = request.form['redirect_to']
+
+    return render_template("/articles/new.html", form=form, redirect_to=redirect_to)
+
+
+
 
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
 @login_required
@@ -66,6 +112,10 @@ def article_update(article_id):
     # fetch synopsis
     synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
 
+    redirect_to = url_for('articles_index')
+    if request.form.get('redirect_to', None):
+        redirect_to = request.form["redirect_to"]
+
     if request.method == "GET":
         # create form
         form = create_article_form()
@@ -74,16 +124,21 @@ def article_update(article_id):
         form.name.data = article.name
         form.writer.data = article.writer if article.writer is not None else 0
         form.issue.data = article.issue if article.issue is not None else 0
-        form.editorInCharge.data = article.editor_in_charge if article.editor_in_charge is not None else 0
+        form.editorInCharge.data = \
+            article.editor_in_charge if article.editor_in_charge is not None else 0
         if synopsis:
             form.synopsis.data = synopsis.content
-        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", \
+            form=form, updating_article=True, \
+            article_id=int(article.id), redirect_to=redirect_to)
     
     # get the sent form
     form = replicate_article_form(request.form)
 
     if not form.validate():
-        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", \
+            form=form, updating_article=True, \
+            article_id=int(article.id), redirect_to=redirect_to)
 
     # change article info
     article = set_article_according_to_form(article, form)
@@ -103,34 +158,10 @@ def article_update(article_id):
     # commit changes
     db.session.commit()
 
-    return redirect(url_for('articles_index'))
+    return redirect(redirect_to)
 
-  
-@app.route("/articles/", methods=["POST"])
-@login_required
-def articles_create():
 
-    if not current_user.editor:
-        return redirect(url_for("error403"))
 
-    form = create_article_form()
-
-    if not form.validate():
-        return render_template("articles/new.html", form = form)
-
-    article = Article(form.name.data, current_user.id)
-    article = set_article_according_to_form(article, form)
-
-    db.session().add(article)
-    db.session().commit()
-    
-    if len(form.synopsis.data) > 0:
-        synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
-        db.session().add(synopsis)
-        db.session().commit()
-    
-
-    return redirect(url_for("articles_index"))
 
 
 @app.route("/articles/orphans/", methods=["GET"])
