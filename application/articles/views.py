@@ -112,11 +112,10 @@ def article_update(article_id):
     # fetch synopsis
     synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
 
-    redirect_to = url_for('articles_index')
-    if request.form.get('redirect_to', None):
-        redirect_to = request.form["redirect_to"]
+
 
     if request.method == "GET":
+        redirect_to = request.referrer
         # create form
         form = create_article_form()
 
@@ -132,6 +131,12 @@ def article_update(article_id):
             form=form, updating_article=True, \
             article_id=int(article.id), redirect_to=redirect_to)
     
+    # request method is POST
+    
+    redirect_to = url_for('articles_index')
+    if request.form.get('redirect_to', None):
+        redirect_to = request.form["redirect_to"]
+
     # get the sent form
     form = replicate_article_form(request.form)
 

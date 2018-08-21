@@ -144,22 +144,30 @@
                         <span style="width:100%">
 
                         </span>
-                        <a class="btn btn-default text-right p-0 m-0"
-                            href="{{ url_for('article_update', article_id=article.id) }}"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Edit article">
-    
-                            <div class="btn-group p-0 m-0">
-    
-                                <div class="btn btn-lg p-0">
-                                    &#9998;
+
+                        <form method="GET"
+                            action="{{ url_for('article_update', article_id=article.id) }}"
+                            name="editform">
+                            <button class="btn bg-transparent text-info text-right p-0 m-0"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Edit article"
+                                type="submit"
+                                name="edit"
+                                value="submit">
+        
+                                <div class="btn-group p-0 m-0">
+        
+                                    <div class="btn btn-lg p-0">
+                                        &#9998;
+                                    </div>
+                                    <div class="btn btn-sm p-0 mx-1 mt-1">
+                                        edit
+                                    </div>
                                 </div>
-                                <div class="btn btn-sm p-0 mx-1 mt-1">
-                                    edit
-                                </div>
-                            </div>
-                        </a>
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             {% endif %}

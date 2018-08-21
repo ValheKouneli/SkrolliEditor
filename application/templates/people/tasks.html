@@ -2,14 +2,14 @@
 {% from "articles/articlecard_macro.html" import articlecard %}
 
 {% block body %}
-<h1>{{ posessive_form }} tasks</h1>
+<h1 class="text text-info">{{ posessive_form }} tasks</h1>
 <p>Name in system: {{ system_name }}</p>
 
 
 <div class="row m-1">
         {% if articles_writing %}
             <div class="col p-1" style="max-width: 20%;">
-                <h2>{{ person_is }} writing</h2>
+                <h2 class="text text-info">{{ person_is }} writing</h2>
                 <div class="accordion" id="writing">
                     {% for article in articles_writing %}
                         {{ articlecard(article, current_user, synopsis, "writing",
@@ -21,7 +21,7 @@
 
         {% if articles_editing %}
             <div class="col p-1" style="max-width: 20%;">
-                <h2>{{ person_is }} editing</h2>
+                <h2 class="text text-info">{{ person_is }} editing</h2>
                 <div class="accordion" id="editing">
                     {% for article in articles_editing %}
                         {{ articlecard(article, current_user, synopsis, "editing",
