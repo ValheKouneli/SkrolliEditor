@@ -82,6 +82,7 @@ def mypage():
 
     if request.method == "POST":
         article_id = request.form["article_id"]
+        open = article_id
         alert = updateStatus(request=request, current_user=current_user, id=article_id)
         if not alert:
             return redirect(url_for("error403"))

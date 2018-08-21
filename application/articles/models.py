@@ -90,6 +90,7 @@ class Article(Base):
       def get_all_edited_articles(issue=0):
             issuecondition = get_issue_condition(issue)
             condition = "article.editing_status = 100 AND" + \
+                  " article.writing_status = 100 AND" + \
                   " Article.ready = %s" % ("false" if os.environ.get("HEROKU") else "0") + \
                   issuecondition
             return getArticlesWithCondition(condition)
@@ -132,16 +133,17 @@ def updateStatus(request, current_user, id):
                   "text": "Something went wrong."}
       else:
             if form["writing_status"] is not None:
-                  article.writing_status = form["writing_status"]
+                  article.writing_status = int(form["writing_status"])
             if form["editing_status"] is not None:
-                  article.editing_status = form["editing_status"]
+                  if not (form["editing_status"] == 100 and article.writing_status < 100):
+                        article.editing_status = int(form["editing_status"])
             db.session.commit()
             alert = {"type": "success",
                   "text": "Status updated!"}
 
       return alert
-     
-        
+
+
 def deleteArticle(request, current_user, id):
       if not current_user.admin:
             return None
