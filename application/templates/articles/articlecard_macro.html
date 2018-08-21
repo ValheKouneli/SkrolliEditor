@@ -107,7 +107,8 @@
                         <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
                             <input class="btn btn-primary"
                                 type="submit"
-                                value="Update sliders">
+                                name="update_status"
+                                value="Update status">
                         </li>
                     {% endif %}
                 </ul>
@@ -118,23 +119,48 @@
             </p>
 
             {% if current_user.editor %}
-                <div class="card-footer bg-white text-right p-0">
-                    <a class="btn btn-default p-0 m-0"
-                        href="{{ url_for('article_update', article_id=article.id) }}"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Edit article">
+                <div class="card-footer bg-white p-0">
+                    <div class="btn-group p-0 m-0" style="width:100%;">
+                        {% if current_user.admin %}
+                            <form method="POST" name="deleteform">
+                                <input type="hidden" name="article_id" value="{{ article.id }}">
+                                <button class="btn bg-transparent text-danger p-0 m-0"
+                                    type="submit"
+                                    name="delete"
+                                    value="submit">
 
-                        <div class="btn-group p-0 m-0">
+                                    <div class="btn-group">
+                                        <div class="btn btn-lg p-0">
+                                            &times;
+                                        </div>
+                                        <div class="btn btn-sm text-left p-0 mx-1 mt-1">
+                                        delete
+                                        </div>
+                                    </div>
+                                </button>
+                            </form>
+                        {% endif %}
 
-                            <div class="btn btn-lg p-0">
-                                &#9998;
+                        <span style="width:100%">
+
+                        </span>
+                        <a class="btn btn-default text-right p-0 m-0"
+                            href="{{ url_for('article_update', article_id=article.id) }}"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Edit article">
+    
+                            <div class="btn-group p-0 m-0">
+    
+                                <div class="btn btn-lg p-0">
+                                    &#9998;
+                                </div>
+                                <div class="btn btn-sm p-0 mx-1 mt-1">
+                                    edit
+                                </div>
                             </div>
-                            <div class="btn btn-sm p-0 mx-1 mt-1">
-                                edit
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
             {% endif %}
         </div>

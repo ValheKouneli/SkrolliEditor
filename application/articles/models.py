@@ -119,18 +119,44 @@ def get_issue_condition(issue):
             issuecondition = " AND Article.issue = " + issue
       return issuecondition
 
-def update_status(request):
-    form = request.form
-    article_id = form["article_id"]
-    article = Article.query.get(int(article_id))
 
-    if not article:
-        return False
+def updateStatus(request, current_user, id):
+      if not current_user.editor:
+            return None
+        
+      form = request.form
+      article = Article.query.get(id)
 
-    if form["writing_status"] is not None:
-        article.writing_status = form["writing_status"]
-    if form["editing_status"] is not None:
-        article.editing_status = form["editing_status"]
-    db.session.commit()
+      if not article:
+            alert = {"type": "danger",
+                  "text": "Something went wrong."}
+      else:
+            if form["writing_status"] is not None:
+                  article.writing_status = form["writing_status"]
+            if form["editing_status"] is not None:
+                  article.editing_status = form["editing_status"]
+            db.session.commit()
+            alert = {"type": "success",
+                  "text": "Status updated!"}
 
-    return True
+      return alert
+     
+        
+def deleteArticle(request, current_user, id):
+      if not current_user.admin:
+            return None
+            
+      article_to_delete = Article.query.get(id)
+      if article_to_delete:
+            db.session.delete(article_to_delete)
+            synopsis_to_delete = Synopsis.query.filter_by(article_id = id).first()
+            if synopsis_to_delete:
+                  db.session.delete(synopsis_to_delete)
+            db.session.commit()
+            alert = {"type": "success",
+                  "text": "Article deleted!"}
+      else:
+            alert = {"type": "danger",
+                  "text": "Article was already removed."}
+      return alert
+      

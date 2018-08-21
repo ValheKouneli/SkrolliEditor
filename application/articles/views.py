@@ -2,7 +2,8 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.articles.models import Article, Synopsis, update_status
+from application.articles.models import Article, Synopsis, \
+    updateStatus, deleteArticle
 from application.articles.forms import ArticleForm, StatusForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, \
@@ -14,18 +15,22 @@ def articles_index():
     open = 0
 
     if request.method == "POST":
-        if not current_user.editor:
-            redirect(url_for("error401"))
-        
-        success = update_status(request)
-        open = request.form["article_id"]
-        if success:
-            alert = {"type": "success",
-                "text": "Status updated!"}
-        else:
-            alert = {"type": "danger",
-                "text": "Something went wrong."}
-    
+        id = request.form["article_id"]
+        open = id
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error401"))
+
+        elif request.form.get('delete', None):
+            # returns None if user is not authorized
+            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error401"))
+
+    # show all articles
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(),
         draft_articles = Article.get_all_draft_articles(),
@@ -36,6 +41,8 @@ def articles_index():
         open = open,
         topic = "All articles")
 
+
+
 @app.route("/articles/new/", methods=["GET"])
 @login_required
 def articles_form():
@@ -45,22 +52,6 @@ def articles_form():
     form = create_article_form()
 
     return render_template("/articles/new.html", form=form)
-
-@app.route("/article/<article_id>/delete/", methods=["POST"])
-@login_required
-def delete_article(article_id):
-    if current_user.is_admin:
-        try:
-            article_to_delete = Article.query.filter_by(id = article_id).first()
-            db.session.delete(article_to_delete)
-            synopsis_to_delete = Synopsis.query.filter_by(article_id = article_id).first()
-            db.session.delete(synopsis_to_delete)
-        except:
-            pass
-        db.session.commit()
-
-    return redirect(url_for("articles_index")) # todo: change this to where the request came from
-
 
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
 @login_required

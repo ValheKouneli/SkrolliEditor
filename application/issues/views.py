@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.articles.models import Article, update_status
+from application.articles.models import Article, updateStatus, deleteArticle
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
@@ -29,17 +29,20 @@ def articles_in_issue(issue):
     open = 0
 
     if request.method == "POST":
-        if not current_user.editor:
-            redirect(url_for("error401"))
-        
-        success = update_status(request)
-        open = request.form["article_id"]
-        if success:
-            alert = {"type": "success",
-                "text": "Status updated!"}
-        else:
-            alert = {"type": "danger",
-                "text": "Something went wrong."}
+        id = request.form["article_id"]
+        open = id
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error401"))
+
+        elif request.form.get('delete', None):
+            # returns None if user is not authorized
+            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error401"))
 
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(int(issueid)),

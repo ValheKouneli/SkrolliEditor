@@ -75,4 +75,5 @@ def getArticleWithId(id):
         return resultArray.first()
     except:
         return None
+
         
