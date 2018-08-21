@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.articles.models import Article
+from application.articles.models import Article, update_status
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
@@ -18,19 +18,38 @@ def issues_index():
     issues = db.engine.execute(query)
     return render_template("/issues/list.html", current_user=current_user, issues = issues)
 
-@app.route("/<issue>/articles/", methods=["GET"])
+@app.route("/<issue>/articles/", methods=["GET", "POST"])
 def articles_in_issue(issue):
     try:
         issueid = Issue.query.filter_by(name=issue).first().id
     except:
         return redirect(url_for("error404"))
 
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        if not current_user.editor:
+            redirect(url_for("error401"))
+        
+        success = update_status(request)
+        open = request.form["article_id"]
+        if success:
+            alert = {"type": "success",
+                "text": "Status updated!"}
+        else:
+            alert = {"type": "danger",
+                "text": "Something went wrong."}
+
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(int(issueid)),
         draft_articles = Article.get_all_draft_articles(int(issueid)),
         written_articles = Article.get_all_written_articles(int(issueid)),
         edited_articles = Article.get_all_edited_articles(int(issueid)),
-        finished_articles = Article.get_all_finished_articles(int(issueid)))
+        finished_articles = Article.get_all_finished_articles(int(issueid)),
+        alert = alert,
+        open = open,
+        topic = "Articles " + issue)
 
 @app.route("/<issue>/articles/new", methods=["GET"])
 @login_required

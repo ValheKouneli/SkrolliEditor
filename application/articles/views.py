@@ -33,7 +33,8 @@ def articles_index():
         edited_articles = Article.get_all_edited_articles(),
         finished_articles = Article.get_all_finished_articles(),
         alert = alert,
-        open = open)
+        open = open,
+        topic = "All articles")
 
 @app.route("/articles/new/", methods=["GET"])
 @login_required
