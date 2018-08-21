@@ -137,9 +137,12 @@ def updateStatus(request, current_user, id):
             if form["editing_status"] is not None:
                   if int(form["editing_status"]) <= article.writing_status:
                         article.editing_status = int(form["editing_status"])
+                        alert = {"type": "success",
+                              "text": "Status updated!"}
+                  else:
+                        alert = {"type": "danger",
+                              "text": "Editing can not be ahead of writing!"}
             db.session.commit()
-            alert = {"type": "success",
-                  "text": "Status updated!"}
 
       return alert
 
