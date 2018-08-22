@@ -57,7 +57,7 @@ class RegisterForm(FlaskForm):
         username_only_alphanumerics_check, validators.Length(min=4, max=10)])
     name = StringField("Name", validators = [validators.Length(min=1, max=25),
         name_only_contains_certain_characters])
-    password = PasswordField("Password", validators = [validators.Length(max=144),
+    password = PasswordField("Password", validators = [validators.Length(min=8, max=144),
         validators.InputRequired(), password_strength_check])
     confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
 
