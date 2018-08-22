@@ -3,6 +3,7 @@ from wtforms import PasswordField, StringField, validators, ValidationError
 import re
 
 from application.auth.models import User
+from application.help import name_only_contains_certain_characters
   
 class LoginForm(FlaskForm):
     username = StringField("Username")
@@ -40,16 +41,7 @@ def username_only_alphanumerics_check(form, field):
     pattern = re.compile(r"^[1-9A-Za-z]*$")
     if not pattern.match(field.data):
         raise ValidationError(message)
-    return  
-
-def name_only_contains_certain_characters(form, field):
-    message = 'Name contains illegal characters or does not start with a capital letter.'
-
-    pattern = re.compile(r"^[A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸÇßØÅåÆ]" + \
-        r"[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
-    if not pattern.match(field.data):
-        raise ValidationError(message)
-    return
+    return 
 
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators = [validators.InputRequired, 

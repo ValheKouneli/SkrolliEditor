@@ -28,6 +28,8 @@ def issues_index():
                 issue = Issue(form.name.data)
                 db.session.add(issue)
                 db.session.commit()
+                # empty form
+                form = IssueForm()
                 alert = {"type": "success",
                     "text": "New issue added to database!"}
 

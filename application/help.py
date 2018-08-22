@@ -1,5 +1,7 @@
 from application import db, os
 from sqlalchemy.sql import text
+from wtforms import ValidationError
+import re
 
 def format_as_pair_id_name(options):
     formatted = [(0, None)]
@@ -77,5 +79,14 @@ def getArticleWithId(id):
         return resultArray.first()
     except:
         return None
+
+def name_only_contains_certain_characters(form, field):
+    message = 'Name contains illegal characters or does not start with a capital letter.'
+
+    pattern = re.compile(r"^[A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸÇßØÅåÆ]" + \
+        r"[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
+    if not pattern.match(field.data):
+        raise ValidationError(message)
+    return
 
         

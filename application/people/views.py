@@ -4,56 +4,82 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.auth.models import User
 from application.people.models import Name
-from application.people.forms import NameForm
+from application.people.forms import NameForm, AliasForm
 
-@app.route("/people/", methods=["GET"])
+@app.route("/people/", methods=["GET", "POST"])
 def people_index():
-    return render_template("/people/list.html", people = get_people())
-
-@app.route("/people/new/")
-@login_required
-def people_form():
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
     form = NameForm()
-    return render_template("/people/new.html", form = form)
+    alert = {}
 
-@app.route("/people/", methods=["POST"])
-@login_required
-def people_create():
-    if not current_user.editor:
-        return redirect(url_for("error403"))
+    if request.method == "POST":
+        if request.form.get('create_dummy_user', None):
+            if not current_user.editor:
+                return redirect(url_for("error403"))
+            
+            form = NameForm(request.form)
 
-    form = NameForm(request.form)
+            if form.validate():
+                u = User(form.name.data, "", "")
+                db.session().add(u)
+                db.session().commit()
+                u.add_name(form.name.data)
+                # empty form
+                form = NameForm()
 
-    if not form.validate():
-        return render_template("people/new.html", form = form)
+                alert = {"type": "success",
+                    "text": "New dummy user created!"}
+            
+    return render_template("/people/list.html",
+        people = get_people(),
+        form = form,
+        alert = alert)
 
-    u = User(form.name.data, "", "")
-    db.session().add(u)
-    db.session().commit()
-    u.add_name(form.name.data)
 
-    return redirect(url_for("people_index"))
 
-@app.route("/people/<user_id>/edit", methods=["GET"])
+
+@app.route("/people/<user_id>/edit", methods=["GET", "POST"])
 @login_required
 def person_edit(user_id):
-    form = NameForm()
-    name = ""
-    username = ""
-    prsn = User.query.filter_by(id = user_id).first()
 
-    if prsn.username != "":
-        username = prsn.username
+    alert = {}
+    form = AliasForm()
+    
+    if request.method == "POST":
+        if not current_user.editor:
+            return redirect(url_for("error403"))
 
+        form = AliasForm(request.form)
+
+        if form.validate():
+            name = Name(form.name.data, user_id)
+
+            db.session().add(name)
+            db.session().commit()
+            # empty form
+            form = AliasForm()
+            
+            alert = {"type": "success",
+                "text": "New alias added!"}
+
+
+    prsn = User.query.get(int(user_id))
+
+    if not prsn:
+        return redirect(url_for("error404"))
+    
+    username = prsn.username
     name = prsn.name
 
     names = list(map(lambda name: {"name":name.name, "id":name.id}, prsn.names))
     person = {"id": user_id, "name": name, "username": username, "names": names}
 
-    return render_template("/people/edit.html", person = person, form = form)
+    return render_template("/people/edit.html",
+        person = person,
+        form = form,
+        alert = alert)
+
+
+
 
 @app.route("/people/<user_id>/delete_name/<name_id>", methods=["POST"])
 @login_required
@@ -66,23 +92,6 @@ def delete_name(name_id, user_id):
     db.session.commit()
     return redirect(url_for("person_edit", user_id=user_id))
 
-@app.route("/people/<user_id>", methods=["POST"])
-@login_required
-def names_create(user_id):
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
-    form = NameForm(request.form)
-
-    if not form.validate():
-        return render_template("/people/edit.html", person=eval(request.form["person"]), form = form)
-
-    n = Name(form.name.data, user_id)
-
-    db.session().add(n)
-    db.session().commit()
-
-    return redirect(url_for("person_edit", user_id=user_id))
 
 @app.route("/people/<user_id>/", methods=["GET"])
 def show_tasks(user_id):
