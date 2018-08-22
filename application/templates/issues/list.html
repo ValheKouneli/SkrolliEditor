@@ -2,37 +2,46 @@
 
 {% block body %}
 <h1 class="text-info">Issues in system</h1>
+{% if current_user.editor %}
+    <p>
+        <a class="btn btn-primary ml-2" href="{{ url_for('issues_create') }}" value="Add issues">
+            Add issues
+        </a>
+    </p>
+{% endif %}
 
     {% for issue in issues %}
-        <a class="btn p-0 m-0 rounded-0 text-dark" href="{{ url_for('articles_in_issue', issue=issue.name) }}">
-            <div class="card bg-light text-left" style="width: 18rem;">
-                <div class="card-header pb-0">
-                    <h2>{{ issue.name }}</h2>
-                </div>
-                <div class="card-body">
-                    <p class="card-text text-wrap" style="white-space: normal;">
-                        Here are some boring statistics about this issue
-                        such as the number of articles, the editorial team and so on.
-                    </p>
-                </div>
-                <footer class="text-right m-0">
-                    {% if current_user.admin %}
-                        <form class="form form-horizontal"
-                            role="form"
-                            method="POST"
-                            action="{{ url_for('issues_delete', issue_id=issue.id) }}">
+        <div class="row m-1">
+            <a class="btn p-0 m-0 rounded-0 text-dark" href="{{ url_for('articles_in_issue', issue=issue.name) }}">
+                <div class="card bg-light text-left" style="width: 18rem;">
+                    <div class="card-header pb-0">
+                        <h2>{{ issue.name }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-wrap" style="white-space: normal;">
+                            Here are some boring statistics about this issue
+                            such as the number of articles, the editorial team and so on.
+                        </p>
+                    </div>
+                    <footer class="text-right m-0">
+                        {% if current_user.admin %}
+                            <form class="form form-horizontal"
+                                role="form"
+                                method="POST"
+                                action="{{ url_for('issues_delete', issue_id=issue.id) }}">
         
-                                <input class="btn bg-transparent text-danger m-0 mr-2 p-0"
-                                    type="submit"
-                                    value="&times;"
-                                    data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="Delete issue" />
-                        </form>
-                    {% endif %}
-                </footer>
-            </div>
-        </a>
+                                    <input class="btn bg-transparent text-danger m-0 mr-2 p-0"
+                                        type="submit"
+                                        value="&times;"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Delete issue" />
+                            </form>
+                        {% endif %}
+                    </footer>
+                </div>
+            </a>
+        </div>
     {% endfor %}
 
 {% endblock %}
