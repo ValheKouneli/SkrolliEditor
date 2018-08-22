@@ -118,6 +118,8 @@ def get_issue_condition(issue):
       if issue != 0 and isinstance(issue, int):
             issue = str(issue)
             issuecondition = " AND Article.issue = " + issue
+      elif issue == None:
+            issuecondition = " AND Article.issue IS NULL"
       return issuecondition
 
 

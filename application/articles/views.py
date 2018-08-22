@@ -171,8 +171,17 @@ def article_update(article_id):
 
 @app.route("/articles/orphans/", methods=["GET"])
 def articles_orphans():
-    return render_template("articles/list.html", show_issue=False, title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
-
+    alert = {}
+    open = 0
+    return render_template("articles/editor_view.html", 
+        planned_articles = Article.get_all_planned_articles(None),
+        draft_articles = Article.get_all_draft_articles(None),
+        written_articles = Article.get_all_written_articles(None),
+        edited_articles = Article.get_all_edited_articles(None),
+        finished_articles = Article.get_all_finished_articles(None),
+        alert = alert,
+        open = open,
+        topic = "Orphan articles")
 
 
 
