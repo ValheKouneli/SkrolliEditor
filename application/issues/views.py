@@ -52,7 +52,8 @@ def articles_in_issue(issue):
         finished_articles = Article.get_all_finished_articles(int(issueid)),
         alert = alert,
         open = open,
-        topic = "Articles " + issue)
+        topic = "Articles " + issue,
+        issue = issue)
 
 @app.route("/issues/<id>", methods=["GET"])
 def issue_by_id(id):
@@ -63,7 +64,7 @@ def issue_by_id(id):
 
 @app.route("/<issue>/articles/new", methods=["GET"])
 @login_required
-def articles_create_for_issue(issue):
+def articles_form_for_issue(issue):
     try:
         issueid = Issue.query.filter_by(name=issue).first().id
     except:
