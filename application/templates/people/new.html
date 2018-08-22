@@ -1,12 +1,10 @@
 {% extends "layout.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% from "quickform_macro.html" import quickform %}
 
 {% block body %}
-<h1>Add a dummy user</h1>
+<h1 class="text-info">Add a dummy user</h1>
 <form class="form form-horizontal" method="POST" action="{{ url_for('people_create') }}">
-    <dl>
-    {{ wtf.quick_form(form, form_type="horizontal", horizontal_columns=('lg', 2, 4)) }}
+    {{ quickform(form) }}
     <input class="btn btn-primary" type="submit" value="Add a person" />
-    </dl>
 </form>
 {% endblock %}

@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% from "articles/articlecard_macro.html" import articlecard %}
+
+{% block body %}
+
+<div class="lead text-info text-center m-0">
+    {{ topic }}
+
+    {% if issue %}
+        <a class="btn btn-sm btn-primary mb-1 ml-3"
+            href="{{ url_for('articles_form_for_issue', issue=issue) }}">
+            
+            Add an article
+        </a>
+    {% else %}
+        <a class="btn btn-sm btn-primary mb-1 ml-3" href="{{ url_for('articles_form')}}">
+            Add an article
+        </a>
+    {% endif %}
+    </div>
+<hr class="style1 m-0"></hr>
+
+<div class="row">
+    <div class="col p-1" style="max-width: 20%;">
+        <h2 class="text-info">Planned</h2>
+        <div class="accordion" id="planned">
+            {% for article in planned_articles %}
+                {{ articlecard(article, current_user, synopsis, "planned",
+                    open = (True if open and open|int == article.id else False)) }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col p-1" style="max-width: 20%;">
+        <h2 class="text-info">Draft</h2>
+        <div class="accordion" id="draft">
+            {% for article in draft_articles %}
+                {{ articlecard(article, current_user, synopsis, "draft",
+                    open = (True if open and open|int == article.id else False)) }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col p-1" style="max-width: 20%;">
+        <h2 class="text-info">Written</h2>
+        <div class="accordion" id="written">
+            {% for article in written_articles %}
+                {{ articlecard(article, current_user, synopsis, "written",
+                    open = (True if open and open|int == article.id else False)) }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col p-1" style="max-width: 20%;">
+        <h2 class="text-info">Edited</h2>
+        <div class="accordion" id="edited">
+            {% for article in edited_articles %}
+                {{ articlecard(article, current_user, synopsis, "edited",
+                    open = (True if open and open|int == article.id else False)) }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col p-1" style="max-width: 20%;">
+        <h2 class="text-info">Finished</h2>
+        <div class="accordion" id="finished">
+            {% for article in finished_articles %}
+                {{ articlecard(article, current_user, synopsis, "finished",
+                    open = (True if open and open|int == article.id else False)) }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

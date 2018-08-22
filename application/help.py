@@ -1,5 +1,7 @@
 from application import db, os
 from sqlalchemy.sql import text
+from wtforms import ValidationError
+import re
 
 def format_as_pair_id_name(options):
     formatted = [(0, None)]
@@ -30,11 +32,13 @@ def getIssueOptions():
     )
     return format_as_pair_id_name(db.engine.execute(query))
 
+# DANGER DANGER, never call this without verifying that condition is not shady
 def getArticlesWithCondition(condition="(0 = 0)"):
     return getArticlesAmountCondition(condition=condition)
 
 # Returns an array of [amount] articles where the condition [condition]
-#  is satisfied
+#  is satisfied.
+# DANGER DANGER, never call this without verifying that condition is not shady
 def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     howmany = ""
     order = ""
@@ -46,6 +50,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         "SELECT"
         " Article.id AS id,"
         " Issue.name AS issue,"
+        " Synopsis.content AS synopsis,"
         " Article.writing_status AS writing_status,"
         " Article.editing_status AS editing_status,"
         " Article.ready AS ready,"
@@ -58,6 +63,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
         " LEFT JOIN Issue ON Article.issue = Issue.id"
+        " LEFT JOIN Synopsis ON Synopsis.article_id = Article.id"
         " WHERE %s" % condition +\
         " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + \
         howmany + order
@@ -65,9 +71,22 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     return db.engine.execute(query)
 
 def getArticleWithId(id):
+    if not isinstance(id, int):
+        return None
+
     resultArray = getArticlesAmountCondition(amount=1, condition="Article.id = %d" % id)
     try:
         return resultArray.first()
     except:
         return None
+
+def name_only_contains_certain_characters(form, field):
+    message = 'Name contains illegal characters or does not start with a capital letter.'
+
+    pattern = re.compile(r"^[A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸÇßØÅåÆ]" + \
+        r"[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
+    if not pattern.match(field.data):
+        raise ValidationError(message)
+    return
+
         

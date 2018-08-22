@@ -1,29 +1,10 @@
 {% extends "layout.html" %}
+{% from "quickform_macro.html" import quickform %}
 
 {% block body %}
 {{ error }}
 <form method="POST" action="{{ url_for('auth_login') }}">
-  <table>
-    <tr>
-      <td>
-	{{ form.username.label }}
-      </td>
-      <td>
-	{{ form.username }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-	{{ form.password.label }}
-      </td>
-      <td>
-	{{ form.password }}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<input type="submit" value="Login"/>
-      </td>
-    </tr>
+      {{ quickform(form) }}
+	<input class="btn btn-primary" type="submit" value="Login" />
 </form>
 {% endblock %}

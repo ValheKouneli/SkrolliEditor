@@ -1,20 +1,58 @@
 {% extends "layout.html" %}
+{% from "quickform_macro.html" import quickform %}
 
 {% block body %}
+<h1 class="text-info">Issues in system</h1>
 
-<ul>
-    {% for issue in issues %}
-    <li>
-        <a href="{{ url_for('articles_in_issue', issue=issue.name) }}">{{ issue.name }}</a>
-        {% if current_user.admin %}
-        <form class="form form-horizontal" role="form" method="POST" action="{{ url_for('issues_delete', issue_id=issue.id) }}">
-            <dl>
-                <input class="btn btn-danger" type="submit" value="Delete issue" />
-            </dl>
+<div class="row">
+
+{% if current_user.editor %}
+    <div class="col-12 mb-2 ml-2">
+        <form class="form form-horizontal"
+            role="form"
+            method="POST">
+
+            {{ quickform(form) }}
+            <input class="hidden" type="hidden" name="create" value="create">
+            <input class="btn btn-primary" type="submit" value="Create a new issue" />
         </form>
-        {% endif %}
-    </li>
+    </div>
+{% endif %}
+
+    {% for issue in issues %}
+        <div class="col m-1">
+            <a class="btn p-0 m-0 rounded-0 text-dark" href="{{ url_for('articles_in_issue', issue=issue.name) }}">
+                <div class="card bg-light text-left" style="width: 18rem;">
+                    <div class="card-header pb-0">
+                        <h2>{{ issue.name }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-wrap" style="white-space: normal;">
+                            Here are some boring statistics about this issue
+                            such as the number of articles, the editorial team and so on.
+                        </p>
+                    </div>
+                    <footer class="text-right m-0">
+                        {% if current_user.admin %}
+                            <form class="form form-horizontal"
+                                role="form"
+                                method="POST">
+                                
+                                    <input type="hidden" name="delete" value="{{ issue.id }}">
+                                    <input class="btn bg-transparent text-danger m-0 mr-2 p-0"
+                                        type="submit"
+                                        value="&times;"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Delete issue" />
+                            </form>
+                        {% endif %}
+                    </footer>
+                </div>
+            </a>
+        </div>
     {% endfor %}
-</ul>
+
+</div>
 
 {% endblock %}

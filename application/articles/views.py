@@ -2,70 +2,101 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.articles.models import Article, Synopsis
-from application.articles.forms import ArticleForm, StatusForm
+from application.articles.models import Article, Synopsis, \
+    updateStatus, deleteArticle
+from application.articles.forms import ArticleForm
 from application.auth.models import User
-from application.help import getArticleWithId, getArticlesWithCondition, getPeopleOptions, getEditorOptions, getIssueOptions
+from application.help import getArticleWithId, getArticlesWithCondition, \
+    getPeopleOptions, getEditorOptions, getIssueOptions
 
-@app.route("/articles/", methods=["GET"])
+
+
+@app.route("/articles/", methods=["GET", "POST"])
 def articles_index():
-    articles = Article.get_all_articles().fetchall()
-    return render_template("/articles/list.html", title="All articles", articles = articles, show_issue=True)
+    alert = {}
+    open = 0
 
-@app.route("/articles/new/", methods=["GET"])
+    if request.method == "POST":
+        id = request.form["article_id"]
+        open = id
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error403"))
+
+        elif request.form.get('delete', None):
+            # returns None if user is not authorized
+            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error403"))
+
+    # show all articles
+    return render_template("articles/editor_view.html", 
+        planned_articles = Article.get_all_planned_articles(),
+        draft_articles = Article.get_all_draft_articles(),
+        written_articles = Article.get_all_written_articles(),
+        edited_articles = Article.get_all_edited_articles(),
+        finished_articles = Article.get_all_finished_articles(),
+        alert = alert,
+        open = open,
+        topic = "All articles")
+
+
+
+@app.route("/articles/new/", methods=["GET", "POST"])
 @login_required
 def articles_form():
     if not current_user.editor:
         return redirect(url_for("error403"))
     
+    if request.method == "POST":
+
+        # create a new article
+        if request.form.get('create_article', None):
+
+            redirect_to = url_for('articles_orphans')
+            if request.form.get('redirect_to', None):
+                redirect_to = request.form["redirect_to"]
+                
+            form = ArticleForm(request.form)
+            form = set_options(form)
+
+            if not form.validate():
+                return render_template("articles/new.html", \
+                    form = form, redirect_to=redirect_to)
+
+            # default redirect address for new article is the page
+            # showing all articles for the same issue
+            if redirect_to == url_for('articles_orphans') and form.issue.data:
+                redirect_to = url_for('issue_by_id', id=form.issue.data)
+
+            article = Article(form.name.data, current_user.id)
+            article = set_article_according_to_form(article, form)
+
+            db.session().add(article)
+            db.session().commit()
+    
+            if len(form.synopsis.data) > 0:
+                synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
+                db.session().add(synopsis)
+                db.session().commit()
+    
+            return redirect(redirect_to)
+
     form = create_article_form()
 
-    return render_template("/articles/new.html", form=form)
+    # if the page that made this GET request wants that
+    # the new article form sends it to somewhere special,
+    # make it so
+    redirect_to = None
+    if request.form.get('redirect_to', None):
+        redirect.to = request.form['redirect_to']
 
-@app.route("/articles/set_ready/<article_id>/", methods=["POST"])
-@login_required
-def articles_set_ready(article_id):
-
-    #todo: give redirect address as a parameter
-    a = Article.query.get(article_id)
-    a.ready = True
-    db.session().commit()
-
-    return redirect(url_for("articles_index"))
+    return render_template("/articles/new.html", form=form, redirect_to=redirect_to)
 
 
-@app.route("/article/<article_id>/", methods=["GET"])
-def show_article(article_id):
-    try:
-        id = int(article_id)
-    except:
-        return redirect(url_for("error404"))
-    article = getArticleWithId(id) 
-    if article is None:
-        return redirect(url_for("error404"))
-
-    synopsis = ""
-    try:
-        synopsis = Synopsis.query.filter_by(article_id=id).first().content
-    except:
-        pass
-
-    return render_template("/articles/article.html", article=article, synopsis=synopsis)
-
-@app.route("/article/<article_id>/delete/", methods=["POST"])
-@login_required
-def delete_article(article_id):
-    if current_user.is_admin:
-        try:
-            article_to_delete = Article.query.filter_by(id = article_id).first()
-            db.session.delete(article_to_delete)
-            synopsis_to_delete = Synopsis.query.filter_by(article_id = article_id).first()
-            db.session.delete(synopsis_to_delete)
-        except:
-            pass
-        db.session.commit()
-
-    return redirect(url_for("articles_index")) # todo: change this to where the request came from
 
 
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
@@ -81,7 +112,10 @@ def article_update(article_id):
     # fetch synopsis
     synopsis = Synopsis.query.filter_by(article_id=int(article_id)).first()
 
+
+
     if request.method == "GET":
+        redirect_to = request.referrer
         # create form
         form = create_article_form()
 
@@ -89,16 +123,27 @@ def article_update(article_id):
         form.name.data = article.name
         form.writer.data = article.writer if article.writer is not None else 0
         form.issue.data = article.issue if article.issue is not None else 0
-        form.editorInCharge.data = article.editor_in_charge if article.editor_in_charge is not None else 0
+        form.editorInCharge.data = \
+            article.editor_in_charge if article.editor_in_charge is not None else 0
         if synopsis:
             form.synopsis.data = synopsis.content
-        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", \
+            form=form, updating_article=True, \
+            article_id=int(article.id), redirect_to=redirect_to)
     
+    # request method is POST
+    
+    redirect_to = url_for('articles_index')
+    if request.form.get('redirect_to', None):
+        redirect_to = request.form["redirect_to"]
+
     # get the sent form
     form = replicate_article_form(request.form)
 
     if not form.validate():
-        return render_template("articles/new.html", form=form, updating_article=True, article_id=int(article.id))
+        return render_template("articles/new.html", \
+            form=form, updating_article=True, \
+            article_id=int(article.id), redirect_to=redirect_to)
 
     # change article info
     article = set_article_according_to_form(article, form)
@@ -118,56 +163,27 @@ def article_update(article_id):
     # commit changes
     db.session.commit()
 
-    return redirect(url_for('show_article', article_id=article_id))
+    return redirect(redirect_to)
 
-  
-@app.route("/articles/", methods=["POST"])
-@login_required
-def articles_create():
 
-    if not current_user.editor:
-        return redirect(url_for("error403"))
 
-    form = create_article_form()
-
-    if not form.validate():
-        return render_template("articles/new.html", form = form)
-
-    article = Article(form.name.data, current_user.id)
-    article = set_article_according_to_form(article, form)
-
-    db.session().add(article)
-    db.session().commit()
-    
-    if len(form.synopsis.data) > 0:
-        synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
-        db.session().add(synopsis)
-        db.session().commit()
-    
-
-    return redirect(url_for("articles_index"))
 
 
 @app.route("/articles/orphans/", methods=["GET"])
 def articles_orphans():
-    return render_template("articles/list.html", show_issue=False, title="Orphan articles", articles=getArticlesWithCondition("Article.issue IS NULL"))
+    alert = {}
+    open = 0
+    return render_template("articles/editor_view.html", 
+        planned_articles = Article.get_all_planned_articles(None),
+        draft_articles = Article.get_all_draft_articles(None),
+        written_articles = Article.get_all_written_articles(None),
+        edited_articles = Article.get_all_edited_articles(None),
+        finished_articles = Article.get_all_finished_articles(None),
+        alert = alert,
+        open = open,
+        topic = "Orphan articles")
 
 
-@app.route("/articles/<article_id>/update_status", methods=["POST"])
-@login_required
-def update_status(article_id):
-    form = StatusForm(request.form)
-    article = Article.query.get(article_id)
-    if not article:
-        return redirect(url_for("error404"))
-
-    if form.writing_status.data is not None:
-        article.writing_status = form.writing_status.data
-    if form.editing_status.data is not None:
-        article.editing_status = form.editing_status.data
-    db.session.commit()
-
-    return redirect(url_for("show_article", article_id=article_id))
 
 def create_article_form():
     form = ArticleForm()
