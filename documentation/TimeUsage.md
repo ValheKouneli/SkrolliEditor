@@ -150,5 +150,3 @@ Daily time usage
   * FIX: form should emtpy when it is sent and there were no errors!
   * TODO: fix: tasks page shows name two times (title and "name in system")
   * TODO: use names somehow, e.g. make a search function
-  * TODO: herokussa does not show pop-ups
-  * TODO: add article page's title should be blue
