@@ -52,7 +52,9 @@
                                 Menu
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{{ url_for('mypage') }}"> My page </a>
+                                {% if current_user.is_authenticated %}
+                                  <a class="dropdown-item" href="{{ url_for('mypage') }}"> My page </a>
+                                {% endif %}
                                 <a class="dropdown-item" href="{{ url_for('articles_index') }}"> Articles </a>
                                 <a class="dropdown-item" href="{{ url_for('issues_index') }}"> Issues </a>
                                 <a class="dropdown-item" href="{{ url_for('people_index') }}"> Users </a>
