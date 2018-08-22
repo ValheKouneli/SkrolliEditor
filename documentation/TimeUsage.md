@@ -148,3 +148,5 @@ Daily time usage
   * Refactoring code so that alerts can be shown when database is updated
   * Improving the UI
   * FIX: form should emtpy when it is sent and there were no errors!
+  * TODO: fix: tasks page shows name two times (title and "name in system")
+  * TODO: use names somehow, e.g. make a search function
