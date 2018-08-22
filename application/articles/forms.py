@@ -22,7 +22,7 @@ def needs_a_bigger_input_field():
 
 class ArticleForm(FlaskForm):
         name = StringField("Article name", validators=[validators.InputRequired(),
-            validators.Length(min=1, max=20), is_a_proper_name])
+            validators.Length(min=1, max=30), is_a_proper_name])
         issue = SelectField("Issue", coerce=int)
         writer = SelectField("Writer", coerce=int)
         editorInCharge = SelectField("Editor-in-charge", coerce=int)
