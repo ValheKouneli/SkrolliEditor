@@ -5,17 +5,18 @@
 
 <div class="lead text-info text-center m-0">
     {{ topic }}
-
-    {% if issue %}
-        <a class="btn btn-sm btn-primary mb-1 ml-3"
-            href="{{ url_for('articles_form_for_issue', issue=issue) }}">
+    {% if current_user and current_user.editor %}
+        {% if issue %}
+            <a class="btn btn-sm btn-primary mb-1 ml-3"
+                href="{{ url_for('articles_form_for_issue', issue=issue) }}">
             
-            Add an article
-        </a>
-    {% else %}
-        <a class="btn btn-sm btn-primary mb-1 ml-3" href="{{ url_for('articles_form')}}">
-            Add an article
-        </a>
+                Add an article
+            </a>
+        {% else %}
+            <a class="btn btn-sm btn-primary mb-1 ml-3" href="{{ url_for('articles_form')}}">
+                Add an article
+            </a>
+        {% endif %}
     {% endif %}
     </div>
 <hr class="style1 m-0"></hr>
