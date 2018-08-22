@@ -121,7 +121,7 @@ Daily time usage
 
 ## Week 5, 20.-24.8.2018
 
-**Total: 14h 15 min**
+**Total: 19h 45 min**
 
 * Mon: 10h
   * Tweaking article list UI
@@ -134,9 +134,17 @@ Daily time usage
   * TODO: make it possible to possible to mark article ready again
   * TODO: make it possible to view single article again
   * FIX: when pressing browser's "back" button, alert is repeated if there was one
-* Tue: 4h 15 min
+* Tue: 4h 45 min
   * Articles can be deleted again
   * Deleting or editing an article redirects to the page you came from
   * Lots of refactoring to make all this possible and clean-ish
   * TODO: article updating on the same page the card is shown
   * TODO: alerts when updating article info ^
+  * Giving the application for a test user to test, observing and taking notes
+* Wed: 5h
+  * Fixing issues the test user from yesterday found
+  * Putting back add article button to the article listing page
+  * Removing forms with a single field from their own page and combining them with another page
+  * Refactoring code so that alerts can be shown when database is updated
+  * Improving the UI
+  * FIX: form should emtpy when it is sent and there were no errors!
