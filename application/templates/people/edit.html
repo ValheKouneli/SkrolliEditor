@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1>Add aliases to user {{ person.name }}</h1>
+<h1 class="text-info">Add aliases to user {{ person.name }}</h1>
   <table>
     <tr>
       <th>Aliases</th>
@@ -9,31 +9,32 @@
     {% for name in person.names %}
     <tr>
       <td>{{ name.name }}</td>
-      <td>
-          <form method="POST" action="{{ url_for('delete_name', name_id=name.id, user_id=person.id) }} ">
-            <input type="submit" value="x"/>    
+      <td class="text-right">
+          <form method="POST" action="{{ url_for('delete_name', name_id=name.id, user_id=person.id) }}">
+            <input class="btn bg-transparent text-danger p-0 m-0" type="submit" value="&times;"/>    
           </form>
       </td>
     </tr>
     {% endfor %}
     <form method="POST" action="{{ url_for('names_create', user_id=person.id) }}">
     <tr>
+        <td>
+            <ul>
+                {% for error in form.name.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
         <td colspan=2>
             {{ form.name }}
         </td>
     </tr>
     <tr>
-        <td>
-            <ul>
-                {% for error in form.name.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </td>
-    <tr>
         <td colspan=2>
             <input type="hidden" name="person" value="{{ person|pprint }}"/>
-            <input type="submit" value="Add a new name" />
+            <input class="btn btn-primary mt-2" type="submit" value="Add a new alias" />
         </td>
     </tr>
     </form>

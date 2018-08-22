@@ -7,8 +7,7 @@ from application.auth.models import User
 class LoginForm(FlaskForm):
     username = StringField("Username")
     password = PasswordField("Password")
-    oldpassword = PasswordField("Old password")
-  
+
     class Meta:
         csrf = False
 
@@ -47,7 +46,7 @@ def name_only_contains_certain_characters(form, field):
     message = 'Name contains illegal characters or does not start with a capital letter.'
 
     pattern = re.compile(r"^[A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸÇßØÅåÆ]" + \
-        "[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
+        r"[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
     if not pattern.match(field.data):
         raise ValidationError(message)
     return

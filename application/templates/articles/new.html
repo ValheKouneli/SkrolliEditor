@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% from "quickform_macro.html" import quickform %}
 
 {% block body %}
 {% if updating_article %}
@@ -13,7 +14,7 @@
 <form class="form form-horizontal" role="form" method="POST">
 {% endif %}
     <dl>
-        {{ wtf.quick_form(form, form_type="horizontal", horizontal_columns=('lg', 2, 4)) }}
+        {{ quickform(form) }}
         {% if redirect_to %}
             <input class="hidden" type="hidden" name="redirect_to" value="{{ redirect_to }}">
         {% endif %}

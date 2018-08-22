@@ -1,17 +1,10 @@
 {% extends "layout.html" %}
-{% from 'auth/accountform_macro.html' import accountform %}
-{% from 'formfield_macro.html' import formfield %}
+{% from 'quickform_macro.html' import quickform %}
 {% block body %}
 <h1>Update your account</h1>
 {{ error }}
 <form method="POST" action="{{ url_for('auth_update') }}">
-    <table>
-    {{ accountform(form=form) }}
-    {{ formfield(field=form.oldpassword) }}
-    <tr>
-        <td colspan="2">
-            <input type="submit" value="Update"/>
-        </td>
-  </tr>
+    {{ quickform(form=form) }}
+    <input class="btn btn-primary" type="submit" value="Update"/>
 </form>
 {% endblock %}
