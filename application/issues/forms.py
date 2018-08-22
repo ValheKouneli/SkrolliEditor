@@ -16,14 +16,14 @@ def is_unique(form, field):
 def is_correct_format(form, field):
     message = 'Issue name is in the wrong format.'
 
-    pattern = re.compile(r"^[1-9][0-9]{3}\.[1-4]E?$")
+    pattern = re.compile(r"^20[0-9]{2}\.[1-4]E?$")
     if not pattern.match(field.data):
         raise ValidationError(message)
     return
 
 class IssueForm(FlaskForm):
     name = StringField("Issue number",
-        validators = [validators.Length(min=5), is_unique, is_correct_format])
+        validators = [is_unique, is_correct_format])
 
     class Meta:
         csrf = False
