@@ -53,13 +53,15 @@ def name_only_contains_certain_characters(form, field):
     return
 
 class RegisterForm(FlaskForm):
-    username = StringField("Username", validators = [username_uniqueness_check,
-        username_only_alphanumerics_check, validators.Length(min=4, max=10)])
-    name = StringField("Name", validators = [validators.Length(min=1, max=25),
-        name_only_contains_certain_characters])
-    password = PasswordField("Password", validators = [validators.Length(min=8, max=144),
-        validators.InputRequired(), password_strength_check])
-    confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
+    username = StringField("Username", validators = [validators.InputRequired, 
+        username_uniqueness_check, username_only_alphanumerics_check,
+        validators.Length(min=4, max=10)])
+    name = StringField("Name", validators = [validators.InputRequired(), 
+        validators.Length(min=1, max=25), name_only_contains_certain_characters])
+    password = PasswordField("Password", validators = [validators.InputRequired(),
+        validators.Length(min=8, max=144), password_strength_check])
+    confirm = PasswordField("Confirm password", validators=[validators.InputRequired(),
+        validators.EqualTo('password', message="Passwords must match.")])
 
     class Meta:
         csrf = False

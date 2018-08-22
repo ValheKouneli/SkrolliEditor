@@ -14,8 +14,8 @@ def is_a_proper_name(form, field):
     return
 
 class ArticleForm(FlaskForm):
-        name = StringField("Article name", validators=[validators.Length(min=1, max=20),
-            is_a_proper_name])
+        name = StringField("Article name", validators=[validators.InputRequired(),
+            validators.Length(min=1, max=20), is_a_proper_name])
         issue = SelectField("Issue", coerce=int)
         writer = SelectField("Writer", coerce=int)
         editorInCharge = SelectField("Editor-in-charge", coerce=int)
@@ -24,15 +24,4 @@ class ArticleForm(FlaskForm):
 
         class Meta:
             csrf = False
-
-class StatusForm(FlaskForm):
-        article_id = IntegerField("Article id")
-        writing_status = IntegerField("Writing status")
-        editing_status = IntegerField("Editing status")
-
-        class Meta:
-            csrf = False
-
-
-
         

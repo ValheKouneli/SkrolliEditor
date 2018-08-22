@@ -12,8 +12,8 @@ def does_not_start_with_whitespace(form, field):
     return
 
 class NameForm(FlaskForm):
-    name = StringField("Name", validators=[validators.Length(min=3, max=25),
-        does_not_start_with_whitespace])
+    name = StringField("Name", validators=[validators.InputRequired(),
+        validators.Length(min=3, max=25), does_not_start_with_whitespace])
   
     class Meta:
         csrf = False

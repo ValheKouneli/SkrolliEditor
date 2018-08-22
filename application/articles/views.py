@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.articles.models import Article, Synopsis, \
     updateStatus, deleteArticle
-from application.articles.forms import ArticleForm, StatusForm
+from application.articles.forms import ArticleForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, \
     getPeopleOptions, getEditorOptions, getIssueOptions
