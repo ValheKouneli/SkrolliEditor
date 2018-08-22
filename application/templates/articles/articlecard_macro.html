@@ -53,7 +53,11 @@
                         <table style="width:100%;">
                             <tr>
                                 <td class="py-0">
-                                    Writer: {{ article.writer }}
+                                    {% if article.writer %}
+                                        Writer: {{ article.writer }}
+                                    {% else %}
+                                        Writer: -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +84,11 @@
                         <table style="width:100%;">
                             <tr>
                                 <td class="py-0">
-                                    Editor: {{ article.editor_in_charge }}
+                                    {% if article.editor_in_charge %}
+                                        Editor: {{ article.editor_in_charge }}
+                                    {% else %}
+                                        Editor: -
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
@@ -115,7 +123,11 @@
             </form>
         
             <p class="card-text">
-                Synopsis: {{ synopsis }}
+                {% if article.synopsis %}
+                    Synopsis: {{ article.synopsis }}
+                {% else %}
+                    Synopsis: -
+                {% endif %}
             </p>
 
             {% if current_user.editor %}

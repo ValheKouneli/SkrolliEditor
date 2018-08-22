@@ -48,6 +48,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         "SELECT"
         " Article.id AS id,"
         " Issue.name AS issue,"
+        " Synopsis.content AS synopsis,"
         " Article.writing_status AS writing_status,"
         " Article.editing_status AS editing_status,"
         " Article.ready AS ready,"
@@ -60,6 +61,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
         " LEFT JOIN Issue ON Article.issue = Issue.id"
+        " LEFT JOIN Synopsis ON Synopsis.article_id = Article.id"
         " WHERE %s" % condition +\
         " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + \
         howmany + order
