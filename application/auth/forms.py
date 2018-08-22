@@ -35,18 +35,40 @@ def username_uniqueness_check(form, field):
     else:
         raise ValidationError('Account is taken.')
 
+def username_only_alphanumerics_check(form, field):
+    message = 'Username can contain only numbers and letters.'
+
+    pattern = re.compile(r"^[1-9A-Za-z]*$")
+    if not pattern.match(field.data):
+        raise ValidationError(message)
+    return  
+
+def name_only_contains_certain_characters(form, field):
+    message = 'Name contains illegal characters or does not start with a capital letter.'
+
+    pattern = re.compile(r"^[A-ZÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸÇßØÅåÆ]" + \
+        "[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\'\- ]*$")
+    if not pattern.match(field.data):
+        raise ValidationError(message)
+    return
+
 class RegisterForm(FlaskForm):
-    username = StringField("Username", [username_uniqueness_check, validators.Length(min=5)])
-    name = StringField("Name", [validators.Length(min=1)])
-    password = PasswordField("Password", [validators.InputRequired(), password_strength_check])
+    username = StringField("Username", validators = [username_uniqueness_check,
+        username_only_alphanumerics_check, validators.Length(min=4, max=10)])
+    name = StringField("Name", validators = [validators.Length(min=1, max=25),
+        name_only_contains_certain_characters])
+    password = PasswordField("Password", validators = [validators.Length(max=144),
+        validators.InputRequired(), password_strength_check])
     confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
 
     class Meta:
         csrf = False
 
 class UpdateAccountForm(FlaskForm):
-    name = StringField("Name", [validators.Length(min=1)])
-    password = PasswordField("New password", [new_password_strength_check])
+    name = StringField("Name", validators=[validators.Length(min=1, max=25),
+        name_only_contains_certain_characters])
+    password = PasswordField("New password", validators = [new_password_strength_check,
+        validators.Length(max=144)])
     confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
     oldpassword = PasswordField("Password", [validators.InputRequired()])
 
