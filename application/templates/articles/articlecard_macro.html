@@ -1,62 +1,192 @@
-{% macro articlecard(article, current_user, synopsis, view_as_editor=False) -%}
+{% macro articlecard(article, current_user, synopsis, accordion_name, open=false) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
-{% if current_user and (current_user.id == article.editor_id|int or current_user.id == article.writer_id) %}
-{% set user_is_involved = True %}
-{% else %}
-{% set user_is_involved = False %}
-{% endif %}
-{% if view_as_editor %}
-{% set user_has_general_right_to_edit = current_user.editor %}
-{% else %}
-{% set user_has_general_right_to_edit = current_user.admin %}
-{% endif %}
 
-{% if article.ready %}
-<div class="card border-success mb-3" style="width: 18rem;">
-{% else %}
-<div class="card border-danger mb-3" style="width: 18rem;">
-{% endif %}
-    <div class="card-header">
-        {{ article.name }}
-        {{ article.issue }}
-    </div>
-    <form method="POST" action="{{ url_for('update_status', article_id=article.id) }}">
-    <ul class="list-group list-group-flush" >
-            <li class="list-group-item">
-                Writer: {{ article.writer }} <br>
-                {{ progressbar(article.writing_status) }}
-                {% if user_has_general_right_to_edit or current_user.id == article.writer_id|int %}
-                <br><input class="slider rounded w-100" width="100%" type="range" min="0" max="100" value="{{ article.writing_status }}" class="slider" name="writing_status">
-                {% endif %}
-            </li>
-            <li class="list-group-item">
-                Editor: {{ article.editor_in_charge }} <br>
-                {{ progressbar(article.editing_status) }}
-                {% if user_has_general_right_to_edit or current_user.id == article.editor_id|int %}
-                <br><input class="slider w-100" type="range" min="0" max="100" value="{{ article.editing_status }}" class="slider" name="editing_status">
-                {% endif %}
-            </li>
-            {% if user_has_general_right_to_edit or user_is_involved %}
-            <li class="list-group-item">
-                <input class="btn btn-primary" type="submit" value="Update status">
-            </li>
-            {% endif %}
-    </ul>
-    </form>
-    <div class="card-body">
-        <p class="card-text">Synopsis: {{ synopsis }}</p>
-        {% if current_user.editor %}
-        <a class="btn btn-link btn-primary" href="{{ url_for('article_update', article_id=article.id) }}" role="button">Edit article info</a>
+<div class="card rounded-0">
+    <div class="card-header text-left p-0 m-0"
+        id="heading{{ article.id }}"
+        data-toggle="collapse"
+        data-target="#collapse{{ article.id }}"
+        {% if open %}
+            aria-expanded="true"
         {% endif %}
+        aria-controls="collapse{{ article.id }}">
+
+        <div class="btn btn-light p-0 text-left text-truncate rounded-0"
+            style="width:100%;">
+            <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
+                <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate" style="width:100%;">
+                    {{ article.name }}
+                </div>
+
+                <div class="btn pl-1 pr-1 text-right">
+                    <div class="badge badge-pill badge-success"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="So far does not have a meaning.">
+
+                        Pics
+                    </div>
+                </div>
+                
+                <div class="btn pl-0 pr-1 text-right">
+                    &#9776;
+                </div>
+            </div>
+
+        </div>
+        
     </div>
-    {% if article.writing_status|int == 100 and article.editing_status|int == 100 %}
-    <ul class="list-group list-group-flush" >
-        <li class="list-group-item">
-            <form method="POST" action="{{ url_for('articles_set_ready', article_id=article.id) }}">
-                <input class="btn btn-success" type="submit" value="Mark as ready" />   
-            </form>
-        </li>
-    </ul>
+    {% if open %}
+        <div class="collapse show"
+    {% else %}
+        <div class="collapse"
     {% endif %}
+        id="collapse{{ article.id }}"
+        aria-labelledby="heading{{ article.id }}"
+        data-parent="#{{ accordion_name }}">
+
+        <div class="card-body px-1 pt-1 pb-0">   
+            <form method="POST">
+                <input type="hidden" name="article_id" value="{{ article.id }}">
+                <ul class="list-group list-group-flush" >
+                    <li class="list-group-item p-1">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="py-0">
+                                    {% if article.writer %}
+                                        Writer: {{ article.writer }}
+                                    {% else %}
+                                        Writer: -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ progressbar(article.writing_status) }}
+                                </td>
+                            </tr>
+                            {% if current_user.editor %}
+                                <tr>
+                                    <td>
+                                        <input class="slider w-100"
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value="{{ article.writing_status }}"
+                                            class="slider"
+                                            name="writing_status">
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </li>
+                    <li class="list-group-item border-bottom p-1">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="py-0">
+                                    {% if article.editor_in_charge %}
+                                        Editor: {{ article.editor_in_charge }}
+                                    {% else %}
+                                        Editor: -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ progressbar(article.editing_status) }}
+                                </td>
+                            </tr>
+                            {% if current_user.editor %}
+                            <tr>
+                                <td class="pd-0 md-0">
+                                    <input class="slider pd-0 w-100"
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value="{{ article.editing_status }}"
+                                        class="slider"
+                                        name="editing_status">
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </li>
+                    {% if current_user.editor %}
+                        <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
+                            <input class="btn btn-primary"
+                                type="submit"
+                                name="update_status"
+                                value="Update status">
+                        </li>
+                    {% endif %}
+                </ul>
+            </form>
+        
+            <p class="card-text">
+                {% if article.synopsis %}
+                    Synopsis: {{ article.synopsis }}
+                {% else %}
+                    Synopsis: -
+                {% endif %}
+            </p>
+
+            {% if current_user.editor %}
+                <div class="card-footer bg-white p-0">
+                    <div class="btn-group p-0 m-0" style="width:100%;">
+                        {% if current_user.admin %}
+                            <form method="POST" name="deleteform">
+                                <input type="hidden" name="article_id" value="{{ article.id }}">
+                                <button class="btn bg-transparent text-danger p-0 m-0"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Delete article"
+                                    type="submit"
+                                    name="delete"
+                                    value="submit">
+
+                                    <div class="btn-group">
+                                        <div class="btn btn-lg p-0">
+                                            &times;
+                                        </div>
+                                        <div class="btn btn-sm text-left p-0 mx-1 mt-1">
+                                        delete
+                                        </div>
+                                    </div>
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        <span style="width:100%">
+
+                        </span>
+
+                        <form method="GET"
+                            action="{{ url_for('article_update', article_id=article.id) }}"
+                            name="editform">
+                            <button class="btn bg-transparent text-info text-right p-0 m-0"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Edit article"
+                                type="submit"
+                                name="edit"
+                                value="submit">
+        
+                                <div class="btn-group p-0 m-0">
+        
+                                    <div class="btn btn-lg p-0">
+                                        &#9998;
+                                    </div>
+                                    <div class="btn btn-sm p-0 mx-1 mt-1">
+                                        edit
+                                    </div>
+                                </div>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {%- endmacro %}

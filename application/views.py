@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, redirect, url_for
 from application import app, os
 from application.help import getArticlesWithCondition
 from application.articles.models import Article
@@ -8,15 +8,9 @@ from flask_login import current_user
 @app.route("/")
 def index():
     if current_user.is_authenticated:
-        articles_writing = current_user.get_articles_writing().fetchall()
-        articles_editing = current_user.get_articles_editing().fetchall()
-        return render_template("index.html", current_user=current_user, logged_in=True,
-            articles_writing = articles_writing,
-            articles_editing = articles_editing)
+        return redirect(url_for("mypage"))
     else:
-        condition = "Article.ready = %s" % ("false" if os.environ.get("HEROKU") else "0")
-        articles = getArticlesWithCondition(condition).fetchall()
-        return render_template("index.html", current_user=current_user, logged_in=False, unfinished_articles = articles)
+        return render_template("index.html")
 
 @app.route("/404/")
 def error404():

@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
+from application.articles.models import updateStatus
 
 
 @app.route("/auth/login/", methods = ["GET", "POST"])
@@ -70,12 +71,27 @@ def auth_update():
 
     return redirect(url_for("index"))
 
-@app.route("/auth/mypage/", methods = ["GET"])
+
+
+
+@app.route("/auth/mypage/", methods = ["GET", "POST"])
 @login_required
 def mypage():
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        article_id = request.form["article_id"]
+        open = article_id
+        alert = updateStatus(request=request, current_user=current_user, id=article_id)
+        if not alert:
+            return redirect(url_for("error403"))
+
     return render_template("people/tasks.html",
         person_is = "I am",
         posessive_form = "My",
         system_name = current_user.name,
         articles_writing = current_user.get_articles_writing(),
-        articles_editing = current_user.get_articles_editing())
+        articles_editing = current_user.get_articles_editing(),
+        open = open,
+        alert = alert)

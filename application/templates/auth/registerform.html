@@ -1,16 +1,10 @@
 {% extends "layout.html" %}
-{% from 'auth/accountform_macro.html' import accountform %}
-{% from 'formfield_macro.html' import formfield %}
+{% from 'quickform_macro.html' import quickform %}
 {% block body %}
+<h1 class="text-info">Register new account</h1>
 {{ error }}
 <form method="POST" action="{{ url_for('auth_register') }}">
-    <table>
-    {{ formfield(form.username) }}
-    {{ accountform(form=form) }}
-    <tr>
-        <td colspan="2">
-            <input type="submit" value="Register"/>
-        </td>
-  </tr>
+    {{ quickform(form) }}
+    <input class="btn btn-primary" type="submit" value="Register"/>
 </form>
 {% endblock %}
