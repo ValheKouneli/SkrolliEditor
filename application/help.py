@@ -65,7 +65,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Issue ON Article.issue = Issue.id"
         " LEFT JOIN Synopsis ON Synopsis.article_id = Article.id"
         " WHERE %s" % condition +\
-        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name" + \
+        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name, Synopsis.content" + \
         howmany + order
     )
     return db.engine.execute(query)
