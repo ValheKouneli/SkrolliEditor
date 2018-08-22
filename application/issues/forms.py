@@ -16,7 +16,7 @@ def is_unique(form, field):
 def is_correct_format(form, field):
     message = 'Issue name is in the wrong format.'
 
-    pattern = re.compile(r"^20[0-9]{2}\.[1-4]E?$")
+    pattern = re.compile(r"^20[0-9]{2}\.[0-4]E?$")
     if not pattern.match(field.data):
         raise ValidationError(message)
     return
