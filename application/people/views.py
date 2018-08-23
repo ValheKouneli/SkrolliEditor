@@ -28,6 +28,24 @@ def people_index():
 
                 alert = {"type": "success",
                     "text": "New dummy user created!"}
+        
+        elif request.form.get('delete', None):
+            if not current_user.admin:
+                return redirect(url_for("error403"))
+
+            id = int(request.form["id"])
+            user_to_delete = User.query.get(id)
+            if user_to_delete:
+                names = Name.query.filter_by(user_id = id)
+                for name in names:
+                    db.session.delete(name)
+                db.session.delete(user_to_delete) 
+                db.session.commit()
+                alert = {"type": "success",
+                    "text": "User succesfully deleted!"}
+            else:
+                alert = {"type": "danger",
+                    "text": "Somebody already deleted that user."}
             
     return render_template("/people/list.html",
         people = get_people(),

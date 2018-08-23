@@ -24,15 +24,27 @@
       <th>Aliases</th>
     </tr>
     {% for person in people %}
-    <tr>
+    <tr class="pb-0 mb-0">
       {% if current_user.editor %}
-      <td>
+      <td class="pb-0 mb-0">
           <a href="{{ url_for('person_edit', user_id=person.id) }}">Edit</a>
+          
+          <form method="POST">
+            <input type="hidden" name="delete" value="delete">
+            <input type="hidden" name="id" value="{{ person.id }}">
+            <input class="btn text-danger m-0 p-0 bg-transparent"
+              type="submit"
+              value="&times;">
+          </form>
       </td>
       {% endif %}
-      <td><a href="{{ url_for('show_tasks', user_id=person.id) }}">{{ person.name }}</a></td>
-      <td>{{ person.username }}</td>
-      <td>
+      <td class="pb-0 mb-0">
+        <a href="{{ url_for('show_tasks', user_id=person.id) }}">{{ person.name }}</a>
+      </td>
+      <td class="pb-0 mb-0">
+        {{ person.username }}
+      </td>
+      <td class="pb-0 mb-0">
           <ul>
             {% for name in person.names %}
             <li>{{ name.name }}</li>
