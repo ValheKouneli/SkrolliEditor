@@ -121,7 +121,7 @@ Daily time usage
 
 ## Week 5, 20.-24.8.2018
 
-**Total: 22h**
+**Total: 22h 45 min**
 
 * Mon: 10h
   * Tweaking article list UI
@@ -149,9 +149,9 @@ Daily time usage
   * Improving the UI
   * TODO: fix: tasks page shows name two times (title and "name in system")
   * TODO: use names somehow, e.g. make a search function
-* Thu: 2h 15 min
+* Thu: 3 min
   * Writing How to Use and Deployment instructions
   * Fixing a bug
   * TODO: Normalize database?
   * TODO: Update database diagram
-  * TODO: ability to delete users
+  * Feature: delete users
