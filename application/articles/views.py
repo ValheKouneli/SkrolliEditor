@@ -169,10 +169,30 @@ def article_update(article_id):
 
 
 
-@app.route("/articles/orphans/", methods=["GET"])
+@app.route("/articles/orphans/", methods=["GET", "POST"])
 def articles_orphans():
     alert = {}
     open = 0
+
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        id = request.form["article_id"]
+        open = id
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error403"))
+
+        elif request.form.get('delete', None):
+            # returns None if user is not authorized
+            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            if not alert:
+                return redirect(url_for("error403"))
+
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(None),
         draft_articles = Article.get_all_draft_articles(None),
