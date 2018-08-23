@@ -10,7 +10,9 @@ Users can access different content via the dropdown menus on the top of the page
 
 The article views show the articles separated into five different categories: planned, draft, written, edited and finished. The **status** of the article determines which category the article belongs to.
 
-By clicking the article title in the article view, the article card opens and shows information about the article. **JavaScript must be enabled** in the browser. The two progress bars represent the **writing status** and the **editing status** of the article. Editors can change these by using the sliders under the progress bars (visible only to editors). After adjusting the sliders, editor must press the "update sliders" button to apply the change.
+By clicking the article title in the article view, the article card opens and shows information about the article. **JavaScript must be enabled** in the browser. The picture-pill in the article card header does not have any meaning yet.
+
+The two progress bars represent the **writing status** and the **editing status** of the article. Editors can change these by using the sliders under the progress bars (visible only to editors). After adjusting the sliders, editor must press the "update sliders" button to apply the change.
 
 When article is created, it belongs in the 'planned' category. When writing has been started (status is something else than 0 %), article moves into the 'draft' category. When writing status is 100 %, article is 'written'. Bringing the editing status to 100 % moves it to the 'edited' category. There is no way, at the moment, to mark the article as 'finished'. Note that the editing status can never be higher than the writing status, as content that has not been written can not be edited.
 
