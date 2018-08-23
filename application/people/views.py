@@ -24,7 +24,7 @@ def people_index():
                 db.session().commit()
                 u.add_name(form.name.data)
                 # empty form
-                form = NameForm()
+                form = NameForm(formdata=None)
 
                 alert = {"type": "success",
                     "text": "New dummy user created!"}
@@ -56,7 +56,7 @@ def person_edit(user_id):
             db.session().add(name)
             db.session().commit()
             # empty form
-            form = AliasForm()
+            form = AliasForm(formdata=None)
             
             alert = {"type": "success",
                 "text": "New alias added!"}
