@@ -1,7 +1,7 @@
 How to Use
 ==========
 
-SkrolliEditor application supports three types of user accounts: **admin**, **editor** and **assistant**. Admins are also editors always. Assistant accounts do not have any special previledges, and at the moment; they can only view the content in the system and not manipulate it. Editor accounts have all the priviledges to manipulate the data except to delete issues and articles. Only admins can delete them. Newly registered users have assistant accounts, and at the moment (23.8.2018), there is no way to give previledges to accounts via the user interface.
+SkrolliEditor application supports three types of user accounts: **admin**, **editor** and **assistant**. Admins are also editors always. Assistant accounts do not have any special previledges, and at the moment; they can only view the content in the system and not manipulate it. Editor accounts have all the priviledges to manipulate the data except to delete users, issues and articles. Only admins can delete them. Newly registered users have assistant accounts, and at the moment (23.8.2018), there is no way to give previledges to accounts via the user interface.
 
 Users can access different content via the dropdown menus on the top of the page, in the navbar.
 
@@ -23,6 +23,7 @@ An **orphan article** means an article that belong to no particular issue.
 The users view shows all the users in the system. The users with no username are so-called 'dummy users', that can be set as a writer of an article, but that can not be used to log into the system. The users can have aliases, which do not have any meaning at the moment. (Later, there will be a search function that uses the aliases.)
 
 Editors can add new dummy users to the system and add and remove aliases to/from all existing users.
+Admin can delete users.
 
 By clicking the name of an user in the list, one can access the **'tasks page'** of that user. It shows what articles that user is writing and editing.
 
