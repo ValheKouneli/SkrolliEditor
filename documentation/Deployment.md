@@ -3,7 +3,7 @@ Deployment
 
 These instructions are suitable for linux users.
 
-In order to deploy this system, you need to have **python (version 3.5^)** installed in your system. You should also have python **pip** and **git** installed.
+In order to deploy this system, you need to have **python (version 3.5^)** installed in your system. You should also have **psql**, python **pip** and **git** installed.
 
 Git clone the repository to your computer and access it.
 
@@ -13,7 +13,7 @@ Set up the virtual environment. If you are using unix, run command ```python3 -m
 
 Install Heroku command line interface by running ```sudo snap install heroku --classic```. Then, log into Heroku by running ```heroku login```.
 
-```cd``` into the the project repository and run ```heroku create projekti```.
+```cd``` into the the project repository and run ```heroku create skrollieditor```.
 Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running 
 ```
 git add .
