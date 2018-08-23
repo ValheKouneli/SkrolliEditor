@@ -147,7 +147,6 @@ Daily time usage
   * Removing forms with a single field from their own page and combining them with another page
   * Refactoring code so that alerts can be shown when database is updated
   * Improving the UI
-  * FIX: form should emtpy when it is sent and there were no errors!
   * TODO: fix: tasks page shows name two times (title and "name in system")
   * TODO: use names somehow, e.g. make a search function
 * Thu: 2h 15 min
@@ -155,3 +154,4 @@ Daily time usage
   * Fixing a bug
   * TODO: Normalize database?
   * TODO: Update database diagram
+  * TODO: ability to delete users
