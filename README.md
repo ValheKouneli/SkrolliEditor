@@ -8,6 +8,12 @@ https://skrollieditor.herokuapp.com/
 * username: editor or admin
 * password: [the Finnish word for test repeated twice in lower case]
 
+## Documentation
+
+[User stories](/documentation/UserStories.md)
+[How to use](/documentation/HowToUse.md)
+[Deployment](/documentation/Deployment.md)
+
 ## Project definition
 
 The aim of this project is to create a web application for the editorial team of Skrolli magazine that can eventually replace the current system for managing the editorial process of Skrolli.
