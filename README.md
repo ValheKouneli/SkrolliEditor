@@ -11,7 +11,9 @@ https://skrollieditor.herokuapp.com/
 ## Documentation
 
 [User stories](/documentation/UserStories.md)
+
 [How to use](/documentation/HowToUse.md)
+
 [Deployment](/documentation/Deployment.md)
 
 ## Project definition
