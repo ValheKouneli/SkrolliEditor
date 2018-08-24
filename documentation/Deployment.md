@@ -45,7 +45,7 @@ Follow the instruction on **"Hashing password"** an come back to here.
 
 Now, in your project repository, connect to the heroku database by run command
 ```
-pg:psql heroku
+heroku pg:psql
 ```
 There, paste the following line:
 ```
