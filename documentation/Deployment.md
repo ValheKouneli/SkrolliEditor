@@ -28,9 +28,11 @@ Start the application again by running command ```python3 run.py```. In your bro
 
 Now you can log in with username 'admin' and the password of your choosing.
 
-## How to set-up the database on Heroku
+## How to put your own version of the application online, using Heroku
 
-Create an account in Heroku and install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login```.
+[Heroku](http://www.heroku.com) is _"a cloud platform that lets companies build, deliver, monitor and scale apps"_. The code will run online. First, you have to create an account.
+
+After creating an account, install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login```.
 
 ```cd``` into the the project repository and run ```heroku create skrollieditor```.
 Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running ```git push heroku master```.
