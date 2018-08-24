@@ -33,12 +33,8 @@ Now you can log in with username 'admin' and the password of your choosing.
 Create an account in Heroku and install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login```.
 
 ```cd``` into the the project repository and run ```heroku create skrollieditor```.
-Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running 
-```
-git add .
-git commit -m "deployment"
-git push heroku master
-```
+Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running ```git push heroku master```.
+
 Create the database by running
 ```
 heroku config:set HEROKU=1
