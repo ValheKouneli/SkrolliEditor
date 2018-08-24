@@ -64,7 +64,7 @@ where the long string of random looking characters is replaced with your hashed 
 
 Now you can disconnect by entering ```\q```.
 
-Now you can log in with username 'admin' and the password of your choosing.
+Now you can use your browser and go to ```http://ADDRESSNAME.herokuapp.com``` and log in with username 'admin' and the password of your choosing.
 
 ## Hashing password
 
