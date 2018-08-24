@@ -50,7 +50,7 @@ heroku config:set HEROKU=1
 heroku addons:add heroku-postgresql:hobby-dev
 ```
 
-Follow the instruction on **"Hashing password"** an come back to here.
+Follow the instructions on **"Hashing password"** an come back to here.
 
 Now, in your project repository, connect to the heroku database by run command
 ```
