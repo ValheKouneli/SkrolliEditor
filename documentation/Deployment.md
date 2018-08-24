@@ -30,7 +30,7 @@ Now you can log in with username 'admin' and the password of your choosing.
 
 ## How to set-up the database on Heroku
 
-Install Heroku command line interface by running ```sudo snap install heroku --classic```. Then, log into Heroku by running ```heroku login```.
+Create an account in Heroku and install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login```.
 
 ```cd``` into the the project repository and run ```heroku create skrollieditor```.
 Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running 
