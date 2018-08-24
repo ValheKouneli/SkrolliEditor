@@ -32,9 +32,16 @@ Now you can log in with username 'admin' and the password of your choosing.
 
 [Heroku](http://www.heroku.com) is _"a cloud platform that lets companies build, deliver, monitor and scale apps"_. The code will run online. First, you have to create an account.
 
-After creating an account, install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login```.
+After creating an account, install a [heroku command line user interface](https://devcenter.heroku.com/articles/heroku-cli). Then, log into Heroku by running ```heroku login``` and give your heroku account credentials.
 
-```cd``` into the the project repository and run ```heroku create skrollieditor```.
+Decide the address you want to use for your application. It will be of the form
+```
+http://ADDRESSNAME.herokuapp.com
+```
+It's a good idea to check out first that the address you want is not in use already.
+
+```cd``` into the the project repository and run ```heroku create ADDRESSNAME``` where you replace ADDRESSNAME with the address of your choosing.
+
 Then let git know about Heroku by running ```git remote add heroku```. Push everything to Heroku by running ```git push heroku master```.
 
 Create the database by running
