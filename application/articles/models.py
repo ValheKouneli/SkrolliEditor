@@ -10,22 +10,14 @@ class Article(Base):
       pages = db.Column(db.Integer, nullable=True)
       editor_in_charge = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       editing_status = db.Column(db.Integer, nullable=False)
-      editing_status_text = db.Column(db.String(144), nullable=True)
       writer = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       writing_status = db.Column(db.Integer, nullable=False)
-      writing_status_text = db.Column(db.String(144), nullable=True)
-      title = db.Column(db.String(144), nullable=True)
-      subtitle = db.Column(db.String(144), nullable=True)
-      TOC_text = db.Column(db.String(144), nullable=True)
       language_consultant = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
-      lenght_in_chars = db.Column(db.Integer, nullable=True)
+      length_in_chars = db.Column(db.Integer, nullable=True)
       language_consultation_status = db.Column(db.Integer, nullable=False)
-      language_consultation_status_text = db.Column(db.String(144), nullable=True)
       layout_artist = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       layout_status = db.Column(db.Integer, nullable=False)
-      layout_status_text = db.Column(db.String(144), nullable=True)
       ready = db.Column(db.Boolean, nullable=False)
-
       created_by = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
       synopsis = db.Column(db.Integer, db.ForeignKey('synopsis.id'), nullable=True)
 
@@ -121,51 +113,3 @@ def get_issue_condition(issue):
       elif issue == None:
             issuecondition = " AND Article.issue IS NULL"
       return issuecondition
-
-
-def updateStatus(request, current_user, id):
-      if not current_user.editor:
-            return None
-        
-      form = request.form
-      article = Article.query.get(id)
-
-      if not article:
-            alert = {"type": "danger",
-                  "text": "Something went wrong."}
-      else:
-            if form["writing_status"] is not None:
-                  print("writing status: ", int(form["writing_status"]))
-                  article.writing_status = int(form["writing_status"])
-            if form["editing_status"] is not None:
-                  if int(form["editing_status"]) <= article.writing_status:
-                        article.editing_status = int(form["editing_status"])
-                        alert = {"type": "success",
-                              "text": "Status updated!"}
-                  else:
-                        alert = {"type": "danger",
-                              "text": "Editing can not be ahead of writing!"}
-                  print("editing status: ", int(form["editing_status"]))
-            db.session.commit()
-
-      return alert
-
-
-def deleteArticle(request, current_user, id):
-      if not current_user.admin:
-            return None
-            
-      article_to_delete = Article.query.get(id)
-      if article_to_delete:
-            db.session.delete(article_to_delete)
-            synopsis_to_delete = Synopsis.query.filter_by(article_id = id).first()
-            if synopsis_to_delete:
-                  db.session.delete(synopsis_to_delete)
-            db.session.commit()
-            alert = {"type": "success",
-                  "text": "Article deleted!"}
-      else:
-            alert = {"type": "danger",
-                  "text": "Article was already removed."}
-      return alert
-      

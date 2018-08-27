@@ -1,4 +1,4 @@
-# User stories
+# User stories, updated 27.8.2018 16:36
 
 **User** is a person who engages with the application.
 
@@ -6,7 +6,7 @@
 
 **Issue** refers to a magazine issue.
 
-A **picture editor** is always an **editor** as well.
+An **admin** is always an **editor** as well.
 
 ## As a user
 
@@ -19,23 +19,22 @@ A **picture editor** is always an **editor** as well.
 ## As a logged-in user
 
 - [x] I can change the name and password associated to my account.
-- [ ] I can see articles in the system.
+- [x] I can see articles in the system.
   - [x] I can see the article's name
   - [ ] I can see the article's title, subtitle and table-of-contents text
   - [x] I can see the writer of the article
   - [x] I can see the editor-in-charge of the article
   - [ ] I can see the language consultant of the article
   - [ ] I can see the layout artist of the article
-  - [ ] I can see the writing status, editing status, language consultation status and all-around (layout) status of the article
+  - [x] I can see the writing status, editing status of the article
+  - [ ] I can see the language consultation status and all-around (layout) status of the article
   - [ ] I can see the amount of pages of the article
-- [ ] I can add names related to my account.
-- [ ] I can remove names related to my account.
-- [ ] I can see the unfinished tasks I am related to, so that I know what I have yet to be done.
+- [x] I can see the unfinished tasks I am related to, so that I know what I have yet to be done.
   - [x] I can see the unfinished articles whose writer I am.
   - [ ] I can see the unfinished articles whose language consultant I am.
   - [ ] I can see the unfinished picture units whose artist I am.
 - [ ] I can edit the status of a task I am related to, so that I can let other people know of my progress.
-  - [x] As a writer, I can edit the article's writing status
+  - [ ] As a writer, I can edit the article's writing status
   - [ ] As a language consultant, I can edit the article's language consultation status
   - [ ] As an artist, I can edit the picture unit's completition status
 - [ ] I can request editor previledges
@@ -58,31 +57,33 @@ A **picture editor** is always an **editor** as well.
   - [x] I can give the new article a writing status.
   - [x] I can give the new article a synopsis.
 - [x] I can see the unfinished articles whose editor-in-charge I am, so that I can keep track of their progress.
-  - [ ] I can add picture units to those articles, so that I can let the picture editor know that pictures are provided or needed.
-    - [ ] I can associate myself as the artist of those picture units.
+- [x] I can add picture units to articles, so that the picture editor knows that pictures are provided or needed.
+- [x] I can associate a user as the responsible person for those picture units.
 - [ ] I can see the articles whose layout artist I am, so that I can keep track of their progress and I will know when they are ready for layout phase.
 - [ ] I can edit all the information related to articles.
   - [x] I can edit the name of the article
   - [x] I can edit the issue associated with the article
   - [x] I can edit the writer of the article.
   - [x] I can change or add the editor-in-charge of the article.
+  - [x] I can edit the writing status of the article.
+  - [x] I can edit the editing status of the article.
+  - [x] I can edit the synopsis of the article.
+  - [ ] I can edit the language consultation status of the article.
+  - [ ] I can edit the layout artist of the article.
   - [ ] I can edit the amount of pages of the article.
   - [ ] I can edit the title of the article.
   - [ ] I can edit the subtitle of the article.
   - [ ] I can edit the table-of-contents text of the article.
-  - [ ] I can edit the writing status of the article.
-  - [ ] I can edit the editing status of the article.
-  - [ ] I can edit the language consultation status of the article.
-  - [ ] I can edit the layout artist of the article.
-  - [ ] I can edit the synopsis of the article.
-- [ ] I can see what tasks other users have been associated with, so that I can get a feeling of how they are proceeding.
+- [x] I can see what tasks other users have been associated with, so that I can get a feeling of how they are proceeding.
 - [ ] I can grant editor previledges to another user
 - [ ] I can associate a registered user with a dummy-account
-- [ ] I can update the status of a picture unit, so that I can let other editors know, for example, where the picture file is located
+- [ ] I can update info of a picture unit
+  - [ ] I can update the progress status of a picture unit
+  - [ ] I can update the description of a picture unit
+  - [ ] I can update the person responsible for a picture unit
 
-## As a logged-in user who is a picture editor
+## As a logged-in user who is an admin
 
-- [ ] I can add picture units to an article, so that editors can keep track of what pictures are coming to an article.
-- [ ] I can associate a person with a picture unit, so that people will know whose task is to do that picture.
-- [ ] I can edit all the information related to the picture units.
+- [x] I can delete issues from the system
+- [x] I can delete articles from the system
 - [ ] I can remove a picture unit, so that if I create a reduntant picture unit or if a picture order is cancelled, it will not be left hanging in the system, confusing users.

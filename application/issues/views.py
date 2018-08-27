@@ -2,11 +2,13 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.articles.models import Article, updateStatus, deleteArticle
+from application.articles.models import Article
+from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
+from application.issues.views_helper import create_new_issue, delete_issue
 
 from sqlalchemy.sql import text
 
@@ -16,43 +18,10 @@ def issues_index():
     alert = {}
 
     if request.method == "POST":
-
-        # create new issue
         if request.form.get('create', None):
-            if not current_user.editor:
-                return redirect(url_for("error403"))
-
-            form = IssueForm(request.form)
-
-            if form.validate():
-                issue = Issue(form.name.data)
-                db.session.add(issue)
-                db.session.commit()
-                # empty form
-                form = IssueForm(formdata=None)
-                alert = {"type": "success",
-                    "text": "New issue added to database!"}
-
-        # delete issue
+            create_new_issue(request, current_user)
         elif request.form.get('delete', None):
-            if not current_user.admin:
-                return redirect(url_for("error403"))
-            id = request.form["delete"]
-            issue_to_delete = Issue.query.get(int(id))
-            if not issue_to_delete:
-                alert = {"type": "danger",
-                    "text": "Issue was already deleted."}
-            else:
-                articles_in_issue = Article.query.filter_by(issue=id)
-
-                # related articles are not distroyed but made orphans
-                for article in articles_in_issue:
-                    article.set_issue(0)
-
-                db.session.delete(issue_to_delete)
-                db.session.commit()
-                alert = {"type": "success",
-                    "text": "Issue deleted succesfully!"}
+            delete_issue(request, current_user)
 
 
     query = text(
@@ -65,8 +34,6 @@ def issues_index():
         issues = issues,
         form = form,
         alert = alert)
-
-
 
 
 
@@ -86,13 +53,13 @@ def articles_in_issue(issue):
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            alert = update_status(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
-            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            alert = delete_article(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
@@ -114,7 +81,7 @@ def issue_by_id(id):
         return redirect(url_for("error404"))
     return redirect(url_for("articles_in_issue", issue=issue.name))
 
-@app.route("/<issue>/articles/new", methods=["GET"])
+@app.route("/<issue>/articles/new", methods=["GET", "POST"])
 @login_required
 def articles_form_for_issue(issue):
     try:
@@ -124,6 +91,13 @@ def articles_form_for_issue(issue):
     
     if not current_user.editor:
         return redirect(url_for("error403"))
+
+    if request.method == "POST":
+        # create a new article
+        if request.form.get('create_article', None):
+            return create_article(
+                current_user=current_user,
+                request=request)
 
     form = ArticleForm()
     form.writer.choices = getPeopleOptions()

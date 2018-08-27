@@ -1,41 +1,55 @@
 Account
 -
 id PK integer
+date_created datetime
+date_modified datetime
 username string
 name string
 pwd_hash string
 editor boolean
+admin boolean
 
 Name
 -
 id PK integer
+date_created datetime
+date_modified datetime
 name string
 account_id: FK >- Account.id
 
 Article
 -
 id PK integer
+date_created datetime
+date_modified datetime
 issue: FK >- Issue.id
+pages integer
 name string
 writer: FK >- Account.id
+writing_status integer
 editor-in-charge: FK >- Account.id
+editing_status integer
+language_consultant: FK >- Account.id
+language_consultation_status integer
+layout_artist: FK >- Account.id
+layout_status integer
+ready boolean
+length_in_chars integer
 created_by: FK >- Account.id
 
-PictureUnit
--
-id PK integer
-artist: FK >- Account.id
-article_id: FK >- Article.id
-description string
 
 Issue
 -
 id PK integer
+date_created datetime
+date_modified datetime
 number integer
 
 Synopsis
 -
 id PK integer
+date_created datetime
+date_modified datetime
 article: FK >- Article.id
 content string
 

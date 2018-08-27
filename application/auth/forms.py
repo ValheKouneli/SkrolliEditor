@@ -44,7 +44,7 @@ def username_only_alphanumerics_check(form, field):
     return 
 
 class RegisterForm(FlaskForm):
-    username = StringField("Username", validators = [validators.InputRequired, 
+    username = StringField("Username", validators = [validators.InputRequired(), 
         username_uniqueness_check, username_only_alphanumerics_check,
         validators.Length(min=4, max=10)])
     name = StringField("Name", validators = [validators.InputRequired(), 

@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, SelectField, StringField, validators, ValidationError
-from application.people.models import Name
-from application.auth.models import User
-from application.help import needs_a_bigger_input_field
+
+from application.help import getPeopleOptions, getEditorOptions, \
+    getIssueOptions, needs_a_bigger_input_field
 
 import re
 
@@ -25,4 +25,27 @@ class ArticleForm(FlaskForm):
 
         class Meta:
             csrf = False
+
+def create_article_form():
+    form = ArticleForm()
+    form = set_options(form)
+    return form
+
+def replicate_article_form(form):
+    replica = ArticleForm(form)
+    replica = set_options(replica)
+    return replica
+
+def set_options(articleform):
+    articleform.writer.choices = getPeopleOptions()
+    articleform.editorInCharge.choices = getEditorOptions()
+    articleform.issue.choices = getIssueOptions()
+    return articleform
+
+def set_article_according_to_form(article, form):
+    article.set_name(form.name.data)
+    article.set_writer(int(form.writer.data))
+    article.set_issue(int(form.issue.data))
+    article.set_editor(int(form.editorInCharge.data))
+    return article
         
