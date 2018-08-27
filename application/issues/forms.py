@@ -20,7 +20,7 @@ def is_correct_format(form, field):
     if not pattern.match(field.data):
         raise ValidationError(message)
     return
-
+    
 class IssueForm(FlaskForm):
     name = StringField("Issue number",
         validators = [validators.InputRequired(), is_unique, is_correct_format])
