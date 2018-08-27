@@ -178,8 +178,11 @@ def create_article(request, current_user):
 
       # default redirect address for new article is the page
       # showing all articles for the same issue
-      if not redirect_to and form.issue.data:
-            redirect_to = url_for('issue_by_id', id=form.issue.data)
+      if not redirect_to:
+            if form.issue.data:
+                  redirect_to = url_for('issue_by_id', id=form.issue.data)
+            else:
+                  redirect_to = url_for('articles_orphans')
 
       article = Article(form.name.data, current_user.id)
       article = set_article_according_to_form(article, form)
