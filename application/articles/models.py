@@ -1,9 +1,7 @@
 from application import db, os
 from application.help import getArticlesWithCondition
 from application.models import Base
-from application.articles.forms import ArticleForm, set_options, set_article_according_to_form
 from sqlalchemy.sql import text
-from flask import redirect, render_template, request, url_for
 
 class Article(Base):
 
