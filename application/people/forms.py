@@ -13,14 +13,14 @@ def does_not_start_with_whitespace(form, field):
     return
 
 class AliasForm(FlaskForm):
-    name = StringField("Name", validators=[validators.InputRequired(),
+    name = StringField("Name", validators=[validators.InputRequired,
         validators.Length(min=3, max=25), does_not_start_with_whitespace])
   
     class Meta:
         csrf = False
 
 class NameForm(FlaskForm):
-    name = StringField("Name", validators = [validators.InputRequired(), 
+    name = StringField("Name", validators = [validators.InputRequired, 
         validators.Length(min=1, max=25), name_only_contains_certain_characters])
 
     class Meta:

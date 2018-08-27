@@ -23,7 +23,7 @@ def is_correct_format(form, field):
 
 class IssueForm(FlaskForm):
     name = StringField("Issue number",
-        validators = [validators.InputRequired(), is_unique, is_correct_format])
+        validators = [validators.InputRequired, is_unique, is_correct_format])
 
     class Meta:
         csrf = False

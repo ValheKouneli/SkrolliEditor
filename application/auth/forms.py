@@ -47,11 +47,11 @@ class RegisterForm(FlaskForm):
     username = StringField("Username", validators = [validators.InputRequired, 
         username_uniqueness_check, username_only_alphanumerics_check,
         validators.Length(min=4, max=10)])
-    name = StringField("Name", validators = [validators.InputRequired(), 
+    name = StringField("Name", validators = [validators.InputRequired, 
         validators.Length(min=1, max=25), name_only_contains_certain_characters])
-    password = PasswordField("Password", validators = [validators.InputRequired(),
+    password = PasswordField("Password", validators = [validators.InputRequired,
         validators.Length(min=8, max=144), password_strength_check])
-    confirm = PasswordField("Confirm password", validators=[validators.InputRequired(),
+    confirm = PasswordField("Confirm password", validators=[validators.InputRequired,
         validators.EqualTo('password', message="Passwords must match.")])
 
     class Meta:
@@ -63,7 +63,7 @@ class UpdateAccountForm(FlaskForm):
     password = PasswordField("New password", validators = [new_password_strength_check,
         validators.Length(max=144)])
     confirm = PasswordField("Confirm password", [validators.EqualTo('password', message="Passwords must match.")])
-    oldpassword = PasswordField("Password", [validators.InputRequired()])
+    oldpassword = PasswordField("Password", [validators.InputRequired])
 
     class Meta:
         csrf = False
