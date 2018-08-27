@@ -13,7 +13,7 @@ class Article(Base):
       writer = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       writing_status = db.Column(db.Integer, nullable=False)
       language_consultant = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
-      lenght_in_chars = db.Column(db.Integer, nullable=True)
+      length_in_chars = db.Column(db.Integer, nullable=True)
       language_consultation_status = db.Column(db.Integer, nullable=False)
       layout_artist = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       layout_status = db.Column(db.Integer, nullable=False)
