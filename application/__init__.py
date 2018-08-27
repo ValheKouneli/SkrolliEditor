@@ -22,6 +22,7 @@ from application.people import models
 from application.auth import models
 from application.articles import models
 from application.issues import models
+from application.pictures import models
 
 
 # authentication
@@ -73,3 +74,4 @@ from application.people import views
 from application.auth import views
 from application.articles import views
 from application.issues import views
+from application.pictures import views

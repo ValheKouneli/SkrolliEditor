@@ -89,4 +89,11 @@ def name_only_contains_certain_characters(form, field):
         raise ValidationError(message)
     return
 
+# form validator,
+# sets a flag "bigger_input_field" to the field
+def needs_a_bigger_input_field():
+    def _needs_a_bigger_input_field(form, field):
+        pass
+    _needs_a_bigger_input_field.field_flags = ('bigger_input_field', )
+    return _needs_a_bigger_input_field
         

@@ -19,15 +19,15 @@
 
         {% if updating_article %}
         <input class="btn btn-primary"
-            name="update_article"
+            name="update_picture"
             type="submit"
-            action="{{ url_for('picture_update', article_id=article_id) }}"
+            action="{{ url_for('picture_update', article_id=article.id) }}"
             value="Update commission" />
         {% else %}
         <input class="btn btn-primary"
-            name="create_article" 
+            name="create_picture" 
             type="submit"
-            action="{{ url_for('picture_create', article_id=article_id) }}"
+            action="{{ url_for('pictures_form', article_id=article.id) }}"
             value="Add a new commission" />
         {% endif %}
     </dl>

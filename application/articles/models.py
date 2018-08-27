@@ -135,6 +135,7 @@ def updateStatus(request, current_user, id):
                   "text": "Something went wrong."}
       else:
             if form["writing_status"] is not None:
+                  print("writing status: ", int(form["writing_status"]))
                   article.writing_status = int(form["writing_status"])
             if form["editing_status"] is not None:
                   if int(form["editing_status"]) <= article.writing_status:
@@ -144,6 +145,7 @@ def updateStatus(request, current_user, id):
                   else:
                         alert = {"type": "danger",
                               "text": "Editing can not be ahead of writing!"}
+                  print("editing status: ", int(form["editing_status"]))
             db.session.commit()
 
       return alert

@@ -45,14 +45,26 @@ def articles_index():
 
 @app.route("/articles/<article_id>/", methods=["GET", "POST"])
 def articles_show(article_id):
-    article = getArticleWithId(int(article_id))
+    alert = {}
 
+    if request.method == "POST":
+        if not current_user and current_user.editor:
+            return redirect(url_for("error403"))
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = updateStatus(request=request, current_user=current_user, id=int(article_id))
+            if not alert:
+                return redirect(url_for("error403"))
+    
+    article = getArticleWithId(int(article_id))
     if not article:
         return redirect(url_for("error404"))
     
     return render_template("articles/article.html",
         article=article,
-        current_user=current_user)
+        current_user=current_user,
+        alert = alert)
 
 
 @app.route("/articles/new/", methods=["GET", "POST"])
