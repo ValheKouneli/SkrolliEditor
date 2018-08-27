@@ -43,6 +43,16 @@ def articles_index():
         open = open,
         topic = "All articles")
 
+@app.route("/articles/<article_id>/", methods=["GET", "POST"])
+def articles_show(article_id):
+    article = getArticleWithId(int(article_id))
+
+    if not article:
+        return redirect(url_for("error404"))
+    
+    return render_template("articles/article.html",
+        article=article,
+        current_user=current_user)
 
 
 @app.route("/articles/new/", methods=["GET", "POST"])

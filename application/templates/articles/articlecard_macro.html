@@ -1,7 +1,9 @@
-{% macro articlecard(article, current_user, synopsis, accordion_name, open=false) -%}
+{% macro articlecard(article, current_user, accordion_name="", open=false) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
 <div class="card rounded-0">
+    {% if accordion_name|length > 0 %}
+
     <div class="card-header text-left p-0 m-0"
         id="heading{{ article.id }}"
         data-toggle="collapse"
@@ -13,37 +15,51 @@
 
         <div class="btn btn-light p-0 text-left text-truncate rounded-0"
             style="width:100%;">
+
             <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
                 <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate" style="width:100%;">
                     {{ article.name }}
                 </div>
 
-                <div class="btn pl-1 pr-1 text-right">
-                    <div class="badge badge-pill badge-success"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="So far does not have a meaning.">
-
-                        Pics
-                    </div>
-                </div>
                 
-                <div class="btn pl-0 pr-1 text-right">
-                    &#9776;
-                </div>
-            </div>
+                    <div class="btn pl-1 pr-1 text-right">
+                        <a class="badge badge-pill badge-success"
+                            href="{{ url_for('articles_show', article_id=article.id) }}"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Link to article.">
 
-        </div>
-        
+                            Pics
+                        </a>
+                    </div>
+                
+                    <div class="btn pl-0 pr-1 text-right">
+                        &#9776;
+                    </div>
+            </div>
+        </div> 
     </div>
+
+    {% else %}
+
+    <div class="card-header font-weight-bold text-left">
+        <h2>{{ article.name }}</h2>
+    </div>
+
+    {% endif %}
+
+{% if accordion_name|length > 0 %}
+
     {% if open %}
         <div class="collapse show"
     {% else %}
         <div class="collapse"
     {% endif %}
-        id="collapse{{ article.id }}"
-        aria-labelledby="heading{{ article.id }}"
-        data-parent="#{{ accordion_name }}">
+            id="collapse{{ article.id }}"
+            aria-labelledby="heading{{ article.id }}"
+            data-parent="#{{ accordion_name }}">
+
+{% endif %}
 
         <div class="card-body px-1 pt-1 pb-0">   
             <form method="POST">
@@ -130,6 +146,18 @@
                 {% endif %}
             </p>
 
+            {% if accordion_name|length > 0 %}
+
+                <div class="card-footer text-center bg-white p-0">
+                    <a class="btn btn-light border-dark btn-block font-weight-bold"
+                        href="{{ url_for('articles_show', article_id=article.id) }}">
+                        
+                        More
+                    </a>
+                </div>
+
+            {% endif %}
+
             {% if current_user.editor %}
                 <div class="card-footer bg-white p-0">
                     <div class="btn-group p-0 m-0" style="width:100%;">
@@ -187,6 +215,11 @@
                 </div>
             {% endif %}
         </div>
+
+{% if accordion_name|length > 0 %}
+<!-- If accordion_name|length > 0, there is an extra div to be closed -->
     </div>
+{% endif %}
+
 </div>
 {%- endmacro %}

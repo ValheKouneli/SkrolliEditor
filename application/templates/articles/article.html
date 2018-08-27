@@ -11,6 +11,11 @@
 {% endif %}
 </p>
 
-{{ articlecard(article=article, synopsis=synopsis, current_user=current_user) }}
+<div class="row">
+    <div class="col col-md-6 col-sm-12">
+        {{ articlecard(article=article, current_user=current_user, open=True) }}
+    </div>
+</div>
+
 
 {% endblock %}
