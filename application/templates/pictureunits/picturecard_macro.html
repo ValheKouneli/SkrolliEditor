@@ -1,0 +1,196 @@
+{% macro articlecard(article, current_user, accordion_name="", open=false) -%}
+{% from "articles/progress_bar_macro.html" import progressbar %}
+
+<div class="card rounded-0">
+    {% if accordion_name|length > 0 %}
+
+        <div class="card-header text-left p-0 m-0"
+            id="heading{{ picture.id }}"
+            data-toggle="collapse"
+            data-target="#collapse{{ picture.id }}"
+            {% if open %}
+                aria-expanded="true"
+            {% endif %}
+            aria-controls="collapse{{ picture.id }}">
+
+            <div class="btn btn-light p-0 text-left text-truncate rounded-0"
+                style="width:100%;">
+
+                <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
+                    <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate"
+                        style="width:100%;">
+
+                        Pics -> {{ picture.article }}
+                    </div>
+
+                
+                        <div class="btn pl-1 pr-1 text-right">
+                            <a class="badge badge-pill badge-success"
+                                href="{{ url_for('articles_show', article_id=article.id) }}"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Link to article.">
+
+                                Text
+                            </a>
+                        </div>
+                
+                        <div class="btn pl-0 pr-1 text-right">
+                            &#9776;
+                        </div>
+                </div>
+            </div> 
+        </div>
+
+    {% else %}
+
+        <div class="card-header font-weight-bold text-left">
+            <h2>Picture commission #{{ picture.id }}</h2>
+        </div>
+
+    {% endif %}
+
+{% if accordion_name|length > 0 %}
+
+    {% if open %}
+        <div class="collapse show"
+    {% else %}
+        <div class="collapse"
+    {% endif %}
+            id="collapse{{ picture.id }}"
+            aria-labelledby="heading{{ picture.id }}"
+            data-parent="#{{ accordion_name }}">
+
+{% endif %}
+
+        <div class="card-body px-1 pt-1 pb-0">   
+            <form method="POST">
+                <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                <ul class="list-group list-group-flush" >
+                    <li class="list-group-item border-bottom p-1">
+                        <table style="width:100%;">
+                            <tr>
+                                <td class="py-0">
+                                    {% if picture.responsible %}
+                                        Responsible: {{ picture.responsible }}
+                                    {% else %}
+                                        Responsible: -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ progressbar(picture.status) }}
+                                </td>
+                            </tr>
+                            {% if current_user.editor %}
+                            <tr>
+                                <td class="pd-0 md-0">
+                                    <input class="slider pd-0 w-100"
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value="{{ picture.status }}"
+                                        class="slider"
+                                        name="status">
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </li>
+                    {% if current_user.editor %}
+                        <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
+                            <input class="btn btn-primary"
+                                type="submit"
+                                name="update_status"
+                                value="Update status">
+                        </li>
+                    {% endif %}
+                </ul>
+            </form>
+        
+            <p class="card-text">
+                {% if picture.description %}
+                    Description: {{ picture.description }}
+                {% else %}
+                    Description: -
+                {% endif %}
+            </p>
+
+            {% if accordion_name|length > 0 %}
+
+                <div class="card-footer text-center bg-white p-0">
+                    <a class="btn btn-light border-dark btn-block font-weight-bold"
+                        href="{{ url_for('pictures_show', picture_id=picture.id) }}">
+                        
+                        More
+                    </a>
+                </div>
+
+            {% endif %}
+
+            {% if current_user.editor %}
+                <div class="card-footer bg-white p-0">
+                    <div class="btn-group p-0 m-0" style="width:100%;">
+                        {% if current_user.admin %}
+                            <form method="POST" name="deleteform">
+                                <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                                <button class="btn bg-transparent text-danger p-0 m-0"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Delete commission"
+                                    type="submit"
+                                    name="delete"
+                                    value="submit">
+
+                                    <div class="btn-group">
+                                        <div class="btn btn-lg p-0">
+                                            &times;
+                                        </div>
+                                        <div class="btn btn-sm text-left p-0 mx-1 mt-1">
+                                        delete
+                                        </div>
+                                    </div>
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        <span style="width:100%">
+
+                        </span>
+
+                        <form method="GET"
+                            action="{{ url_for('picture_update', picture_id=picture.id) }}"
+                            name="editform">
+                            <button class="btn bg-transparent text-info text-right p-0 m-0"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Edit commission"
+                                type="submit"
+                                name="edit"
+                                value="submit">
+        
+                                <div class="btn-group p-0 m-0">
+        
+                                    <div class="btn btn-lg p-0">
+                                        &#9998;
+                                    </div>
+                                    <div class="btn btn-sm p-0 mx-1 mt-1">
+                                        edit
+                                    </div>
+                                </div>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+{% if accordion_name|length > 0 %}
+<!-- If accordion_name|length > 0, there is an extra div to be closed -->
+    </div>
+{% endif %}
+
+</div>
+{%- endmacro %}
