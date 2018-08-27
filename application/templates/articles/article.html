@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from "articles/progress_bar_macro.html" import progressbar %}
 {% from "articles/articlecard_macro.html" import articlecard %}
+{% from "pictures/picturecard_macro.html" import picturecard %}
 
 {% block body %}
 <p>
@@ -11,10 +11,16 @@
 {% endif %}
 </p>
 
+<h1 class="text-center text-info">{{ article.name }}</h1>
 <div class="row">
     <div class="col col-md-6 col-sm-12">
         {{ articlecard(article=article, current_user=current_user, open=True) }}
     </div>
+    {% for picture in pictures %}
+        <div class="col col-md-6 col-sm-12">
+            {{ picturecard(picture=picture, current_user=current_user) }}
+        </div>
+    {% endfor %}
 </div>
 
 

@@ -7,7 +7,7 @@ from application.articles.models import Article, Synopsis, \
 from application.articles.forms import ArticleForm
 from application.auth.models import User
 from application.help import getArticleWithId, getArticlesWithCondition, \
-    getPeopleOptions, getEditorOptions, getIssueOptions
+    getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
 
 
 
@@ -60,9 +60,11 @@ def articles_show(article_id):
     article = getArticleWithId(int(article_id))
     if not article:
         return redirect(url_for("error404"))
+    pictures = getPicturesForArticle(int(article_id)).fetchall()
     
     return render_template("articles/article.html",
         article=article,
+        pictures=pictures,
         current_user=current_user,
         alert = alert)
 

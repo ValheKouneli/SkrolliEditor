@@ -48,7 +48,11 @@ def pictures_form(article_id):
         form = form,
         article = article) 
 
+@app.route("/pictures/<picture_id>/", methods=["GET", "POST"])
+def picture_update(picture_id):
+    return redirect(url_for("index"))
 
+    
 def create_picture_form():
     form = PictureForm()
     form.responsible.choices = getPeopleOptions()

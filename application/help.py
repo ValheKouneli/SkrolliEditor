@@ -80,6 +80,24 @@ def getArticleWithId(id):
     except:
         return None
 
+def getPicturesForArticle(id):
+    if not isinstance(id, int):
+        return None
+    query = text(
+        "SELECT Picture.id AS id,"
+        " Picture.article_id AS article_id,"
+        " Picture.description AS description,"
+        " Article.name AS article,"
+        " Article.id AS article_id,"
+        " Responsible.name AS responsible,"
+        " Picture.status AS status"
+        " FROM Picture"
+        " LEFT JOIN Account Responsible ON Picture.responsible = Responsible.id"
+        " LEFT JOIN Article ON Picture.article_id = Article.id"
+        " WHERE Picture.article_id = %d" % id
+    )
+    return db.engine.execute(query)
+
 def name_only_contains_certain_characters(form, field):
     message = 'Name contains illegal characters or does not start with a capital letter.'
 

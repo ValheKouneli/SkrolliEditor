@@ -1,4 +1,4 @@
-{% macro articlecard(article, current_user, accordion_name="", open=false) -%}
+{% macro picturecard(picture, current_user, accordion_name="", open=false) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
 <div class="card rounded-0">
@@ -44,7 +44,7 @@
 
     {% else %}
 
-        <div class="card-header font-weight-bold text-left">
+        <div class="card-header bg-dark text-white font-weight-bold text-left">
             <h2>Picture commission #{{ picture.id }}</h2>
         </div>
 
@@ -102,7 +102,7 @@
                         <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
                             <input class="btn btn-primary"
                                 type="submit"
-                                name="update_status"
+                                name="update_commission_status"
                                 value="Update status">
                         </li>
                     {% endif %}
@@ -140,7 +140,7 @@
                                     data-placement="top"
                                     title="Delete commission"
                                     type="submit"
-                                    name="delete"
+                                    name="delete_commission"
                                     value="submit">
 
                                     <div class="btn-group">
@@ -167,7 +167,7 @@
                                 data-placement="top"
                                 title="Edit commission"
                                 type="submit"
-                                name="edit"
+                                name="edit_commission"
                                 value="submit">
         
                                 <div class="btn-group p-0 m-0">
