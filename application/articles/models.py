@@ -1,7 +1,10 @@
 from application import db, os
 from application.help import getArticlesWithCondition
 from application.models import Base
+from application.articles.forms import ArticleForm, set_options, set_article_according_to_form
 from sqlalchemy.sql import text
+from flask import redirect, render_template, request, url_for
+from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 
 class Article(Base):
 
@@ -158,4 +161,35 @@ def deleteArticle(request, current_user, id):
             alert = {"type": "danger",
                   "text": "Article was already removed."}
       return alert
-      
+
+
+def create_article(request, current_user):
+      redirect_to = None
+
+      if request.form.get('redirect_to', None):
+            redirect_to = request.form["redirect_to"]
+                
+      form = ArticleForm(request.form)
+      form = set_options(form)
+
+      if not form.validate():
+            return render_template("articles/new.html", \
+                  form = form, redirect_to=redirect_to)
+
+      # default redirect address for new article is the page
+      # showing all articles for the same issue
+      if not redirect_to and form.issue.data:
+            redirect_to = url_for('issue_by_id', id=form.issue.data)
+
+      article = Article(form.name.data, current_user.id)
+      article = set_article_according_to_form(article, form)
+
+      db.session().add(article)
+      db.session().commit()
+    
+      if len(form.synopsis.data) > 0:
+            synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
+            db.session().add(synopsis)
+            db.session().commit()
+    
+      return redirect(redirect_to)
