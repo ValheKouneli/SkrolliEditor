@@ -1,7 +1,7 @@
 from application import db
 from application.models import Base
 
-class PictureUnit(Base):
+class Picture(Base):
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=True)
     description = db.Column(db.String, nullable=True)
     status = db.Column(db.Integer, nullable=False)
