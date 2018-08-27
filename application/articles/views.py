@@ -2,8 +2,8 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.articles.models import Article, Synopsis, \
-    updateStatus, deleteArticle, create_article
+from application.articles.models import Article, Synopsis
+from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm, create_article_form, \
     set_article_according_to_form, replicate_article_form
 from application.auth.models import User
@@ -23,13 +23,13 @@ def articles_index():
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            alert = update_status(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
-            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            alert = delete_article(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
@@ -152,13 +152,13 @@ def articles_orphans():
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            alert = update_status(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
-            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            alert = delete_article(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 

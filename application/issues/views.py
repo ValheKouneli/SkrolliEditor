@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app, db
-from application.articles.models import Article, updateStatus, deleteArticle, create_article
+from application.articles.models import Article
+from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
@@ -86,13 +87,13 @@ def articles_in_issue(issue):
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = updateStatus(request=request, current_user=current_user, id=int(id))
+            alert = update_status(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
         elif request.form.get('delete', None):
             # returns None if user is not authorized
-            alert = deleteArticle(request=request, current_user=current_user, id=int(id))
+            alert = delete_article(request=request, current_user=current_user, id=int(id))
             if not alert:
                 return redirect(url_for("error403"))
 
