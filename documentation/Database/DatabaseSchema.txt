@@ -7,6 +7,7 @@ username string
 name string
 pwd_hash string
 editor boolean
+admin boolean
 
 Name
 -
