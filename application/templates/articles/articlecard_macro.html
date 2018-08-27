@@ -4,47 +4,49 @@
 <div class="card rounded-0">
     {% if accordion_name|length > 0 %}
 
-    <div class="card-header text-left p-0 m-0"
-        id="heading{{ article.id }}"
-        data-toggle="collapse"
-        data-target="#collapse{{ article.id }}"
-        {% if open %}
-            aria-expanded="true"
-        {% endif %}
-        aria-controls="collapse{{ article.id }}">
+        <div class="card-header text-left p-0 m-0"
+            id="heading{{ article.id }}"
+            data-toggle="collapse"
+            data-target="#collapse{{ article.id }}"
+            {% if open %}
+                aria-expanded="true"
+            {% endif %}
+            aria-controls="collapse{{ article.id }}">
 
-        <div class="btn btn-light p-0 text-left text-truncate rounded-0"
-            style="width:100%;">
+            <div class="btn btn-light p-0 text-left text-truncate rounded-0"
+                style="width:100%;">
 
-            <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
-                <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate" style="width:100%;">
-                    {{ article.name }}
+                <div class="btn-group p-0 m-0 text-truncate" style="width:100%;">
+                    <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate"
+                        style="width:100%;">
+
+                        {{ article.name }}
+                    </div>
+
+                
+                        <div class="btn pl-1 pr-1 text-right">
+                            <a class="badge badge-pill badge-success"
+                                href="{{ url_for('articles_show', article_id=article.id) }}"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Link to article.">
+
+                                Pics
+                            </a>
+                        </div>
+                
+                        <div class="btn pl-0 pr-1 text-right">
+                            &#9776;
+                        </div>
                 </div>
-
-                
-                    <div class="btn pl-1 pr-1 text-right">
-                        <a class="badge badge-pill badge-success"
-                            href="{{ url_for('articles_show', article_id=article.id) }}"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Link to article.">
-
-                            Pics
-                        </a>
-                    </div>
-                
-                    <div class="btn pl-0 pr-1 text-right">
-                        &#9776;
-                    </div>
-            </div>
-        </div> 
-    </div>
+            </div> 
+        </div>
 
     {% else %}
 
-    <div class="card-header font-weight-bold text-left">
-        <h2>{{ article.name }}</h2>
-    </div>
+        <div class="card-header font-weight-bold text-left">
+            <h2>{{ article.name }}</h2>
+        </div>
 
     {% endif %}
 
