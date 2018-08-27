@@ -8,6 +8,7 @@ from application.articles.forms import ArticleForm
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
+from application.issues.views_helper import create_new_issue, delete_issue
 
 from sqlalchemy.sql import text
 
@@ -17,43 +18,10 @@ def issues_index():
     alert = {}
 
     if request.method == "POST":
-
-        # create new issue
         if request.form.get('create', None):
-            if not current_user.editor:
-                return redirect(url_for("error403"))
-
-            form = IssueForm(request.form)
-
-            if form.validate():
-                issue = Issue(form.name.data)
-                db.session.add(issue)
-                db.session.commit()
-                # empty form
-                form = IssueForm(formdata=None)
-                alert = {"type": "success",
-                    "text": "New issue added to database!"}
-
-        # delete issue
+            create_new_issue(request, current_user)
         elif request.form.get('delete', None):
-            if not current_user.admin:
-                return redirect(url_for("error403"))
-            id = request.form["delete"]
-            issue_to_delete = Issue.query.get(int(id))
-            if not issue_to_delete:
-                alert = {"type": "danger",
-                    "text": "Issue was already deleted."}
-            else:
-                articles_in_issue = Article.query.filter_by(issue=id)
-
-                # related articles are not distroyed but made orphans
-                for article in articles_in_issue:
-                    article.set_issue(0)
-
-                db.session.delete(issue_to_delete)
-                db.session.commit()
-                alert = {"type": "success",
-                    "text": "Issue deleted succesfully!"}
+            delete_issue(request, current_user)
 
 
     query = text(
@@ -66,8 +34,6 @@ def issues_index():
         issues = issues,
         form = form,
         alert = alert)
-
-
 
 
 
