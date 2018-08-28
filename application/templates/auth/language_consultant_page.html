@@ -11,17 +11,26 @@
 </p>
 
 
-<div class="row m-1">
+<div class="row m-0">
         {% if articles|length > 0 %}
             <div class="col col-md-3 col-xs-12 p-1">
-                <div class="h3 text-info">Articles without a language consultant</div>
+                <div class="h3 text-info">Articles waiting</div>
                 {% for article in articles %}
-                    {{ article.name }}
-
+                <div class="row m-0">
                     <form method="POST">
                         <input type="hidden" name="grab" value="{{ article.id }}">
-                        <input type="submit" value="Grab" class="btn btn-default">
+                        <div class="h4 text-dark mb-0">
+                            {{ article.name}}
+                            
+                            <button class="badge border-0 badge-primary text-white"
+                                type="submit"
+                                value="submit">
+
+                                Take
+                            </button>
+                        </div>
                     </form>
+                </div>  
                 {% endfor %}
             </div>
         {% endif %}
@@ -30,12 +39,20 @@
             <div class="col col-md-3 col-xs-12 p-1">
                 <div class="h3 text-info">My articles in progress</div>
                 {% for article in my_articles %}
-                    {{ article.name }}
-
-                    <form method="POST">
-                        <input type="hidden" name="mark_ready" value="{{ article.id }}">
-                        <input type="submit" value="Ready" class="btn btn-success">
-                    </form>
+                    <div class="row m-0">
+                        <form method="POST">
+                            <input type="hidden" name="mark_ready" value="{{ article.id }}">
+                            <div class="h4 text-dark mb-0">
+                                {{ article.name}}
+                                
+                                <button class="badge border-0 badge-success text-white"
+                                    type="submit"
+                                    value="submit">
+                                    Ready
+                                </button>
+                            </div>
+                        </form>
+                    </div>  
                 {% endfor %}
             </div>
         {% endif %}
