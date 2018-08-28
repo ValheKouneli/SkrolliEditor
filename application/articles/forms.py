@@ -17,7 +17,7 @@ def is_a_proper_name(form, field):
 def is_not_same_as_writer(form, field):
     message = "Editor-in-charge can not be the same as the writer."
 
-    if field.data == form.writer.data:
+    if field.data != 0 and field.data == form.writer.data:
         raise ValidationError(message)
     return
 
