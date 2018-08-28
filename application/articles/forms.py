@@ -14,12 +14,21 @@ def is_a_proper_name(form, field):
         raise ValidationError(message)
     return
 
+def is_not_same_as_writer(form, field):
+    message = "Editor-in-charge can not be the same as the writer."
+
+    if field.data == form.writer.data:
+        raise ValidationError(message)
+    return
+
 class ArticleForm(FlaskForm):
         name = StringField("Article name", validators=[validators.InputRequired(),
             validators.Length(min=1, max=30), is_a_proper_name])
         issue = SelectField("Issue", coerce=int)
         writer = SelectField("Writer", coerce=int)
-        editorInCharge = SelectField("Editor-in-charge", coerce=int)
+        editorInCharge = SelectField("Editor-in-charge",
+            validators=[is_not_same_as_writer],
+            coerce=int)
         synopsis = StringField("Synopsis", validators=[needs_a_bigger_input_field()])
 
 

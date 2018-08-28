@@ -23,7 +23,7 @@ class PictureForm(FlaskForm):
         validators=[isOneOfTypes, validators.InputRequired()], coerce=str)
     description = StringField("Description",
         validators = [
-            validators.InputRequired(),
+            validators.DataRequired(),
             validators.Length(min=10, max=200),
             needs_a_bigger_input_field()
             ])
