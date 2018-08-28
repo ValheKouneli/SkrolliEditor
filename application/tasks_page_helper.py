@@ -65,9 +65,16 @@ def react_to_post_request(request, current_user):
                 response["alert"] = alert
                 return response
             elif article.editing_status < 100:
-                alert = {"type": "dange",
+                alert = {"type": "danger",
                     "text": "Article's status has changed and" + \
                     " it is not ready for language checking."}
+                response["alert"] = alert
+                return response
+            elif ((article.writer == current_user.id or
+                article.editor_in_charge == current_user.id) and
+                not current_user.admin):
+                alert = {"type": "danger",
+                    "text": "You are the editor or writer of this article."}
                 response["alert"] = alert
                 return response
             else:
