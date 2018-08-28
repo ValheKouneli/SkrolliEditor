@@ -6,5 +6,5 @@ INSERT INTO issue (name, current) VALUES ('2018.3', 1);
 INSERT INTO issue (name, current) VALUES ('2018.4', 0);
 INSERT INTO account (id, name, username, editor, admin, language_consultant, picture_editor, layout_artist) VALUES (2, 'Jari Jamppa', 'jartsa', 0, 0, 0, 0, 0);
 INSERT INTO name (name, user_id) VALUES ('Jari Jamppa', 2);
-INSERT INTO article (created_by, ready, name, issue, writer, editor_in_charge, editing_status, writing_status, layout_status, language_consultation_status) VALUES (1, 0, 'Rakentelujuttu', 1, 2, 1, 50, 100, 0, 0);
-INSERT INTO article (created_by, ready, name, issue, writer, editing_status, writing_status, layout_status, language_consultation_status) VALUES (1, 0, 'Retrojuttu', 1, 1, 0, 50, 0, 0);
+INSERT INTO article (created_by, ready, name, issue, writer, editor_in_charge, editing_status, writing_status, layout_status, language_checked) VALUES (1, 0, 'Rakentelujuttu', 1, 2, 1, 50, 100, 0, 0);
+INSERT INTO article (created_by, ready, name, issue, writer, editing_status, writing_status, layout_status, language_checked) VALUES (1, 0, 'Retrojuttu', 1, 1, 0, 50, 0, 0);

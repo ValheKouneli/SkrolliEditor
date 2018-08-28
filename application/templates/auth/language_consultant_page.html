@@ -2,25 +2,40 @@
 
 {% block body %}
 <span class="h1 text-info">
-    Articles waiting to be marked ready
+    Articles waiting for language consultation
 </span>
 
 
 <div class="row m-1">
         {% if articles|length > 0 %}
             <div class="col col-md-3 col-xs-12 p-1">
+                <div class="h3 text-info">Articles without a language consultant</div>
                 {% for article in articles %}
                     {{ article.name }}
 
                     <form method="POST">
-                        <input type="hidden" name="article_id" value="{{ article.id }}">
+                        <input type="hidden" name="grab" value="{{ article.id }}">
+                        <input type="submit" value="Grab" class="btn btn-default">
+                    </form>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if my_articles|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <div class="h3 text-info">My articles in progress</div>
+                {% for article in my_articles %}
+                    {{ article.name }}
+
+                    <form method="POST">
+                        <input type="hidden" name="mark_ready" value="{{ article.id }}">
                         <input type="submit" value="Ready" class="btn btn-success">
                     </form>
                 {% endfor %}
             </div>
         {% endif %}
 
-        {% if articles|length == 0 %}
+        {% if articles|length == 0 and my_articles|length == 0 %}
             <div class="col">
                 <h2> No articles </h2>
             </div>

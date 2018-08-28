@@ -114,30 +114,70 @@ def language_consultant_page():
         if not current_user.language_consultant:
             return redirect(url_for("error403"))
 
-        try:
-            id = int(request.form["article_id"])
-        except:
-            message = "Request to mark article ready failed, because either" + \
-                " parameter article_id was missing or it was not an integer."
-            return render_template("error500.html", message=message)
-        
-        article = Article.query.get(id)
-        if not article:
-            return redirect(url_for("error404"))
-        article.ready = True
-        db.session.commit()
-        alert = {"type": "success",
-            "text": "Article '%s' marked ready!" % article.name }
-        # fall trough
+
+        # mark article as language_consultation_status = True
+        if request.form.get("mark_ready", None):
+            try:
+                id = int(request.form["mark_ready"])
+            except:
+                message = "Request to mark article 'language checked' failed, because either" + \
+                    " parameter mark_ready (value=article.id) was missing or it was not an integer."
+                return render_template("error500.html", message=message)
+            
+            article = Article.query.get(id)
+            if not article:
+                return redirect(url_for("error404"))
+            article.language_checked = True
+            db.session.commit()
+            alert = {"type": "success",
+                "text": "Article '%s' marked 'language checked'!" % article.name }
+            # fall trough
+
+
+        # make article's language consultant the current user
+        elif request.form.get("grab", None):
+            try:
+                id = int(request.form["grab"])
+            except:
+                message = "Request to make yourself article's language consultant" + \
+                    " failed, because either" + \
+                    " parameter grab (value=article.id) was missing or it was not an integer."
+                return render_template("error500.html", message=message)
+            
+            article = Article.query.get(id)
+            if not article:
+                return redirect(url_for("error404"))
+            if article.language_consultant != None:
+                alert = {"type": "danger",
+                    "text": "Someone was faster than you!"}
+            elif article.editing_status < 100:
+                alert = {"type": "dange",
+                    "text": "Article's status has changed and" + \
+                    " it is not ready for language checking."}
+            else:
+                article.language_consultant = current_user.id
+                db.session.commit()
+                alert = {"type": "success",
+                    "text": "Article '%s' is added to your task list!" % article.name }
+            # fall trough
 
     articles = getArticlesWithCondition(
         "(Article.editing_status = 100" + \
         " AND Article.writing_status = 100" + \
-        " AND NOT Article.ready)")
+        " AND NOT Article.language_checked" + \
+        " AND Article.language_consultant IS NULL)")
     articles = articles.fetchall()
+
+    my_articles = getArticlesWithCondition(
+        "(Article.editing_status = 100" + \
+        " AND Article.writing_status = 100" + \
+        " AND NOT Article.language_checked" + \
+        " AND Article.language_consultant = %s)" % current_user.id)
+    my_articles = my_articles.fetchall()
 
     return render_template("auth/language_consultant_page.html",
         articles = articles,
+        my_articles = my_articles,
         current_user = current_user,
         alert = alert)   
 
