@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% from "pictures/picturecard_macro.html" import picturecard %}
+
+{% block body %}
+<span class="h1 text-info">
+    Pictures
+</span>
+
+
+<div class="row m-1">
+        {% if pictures|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <div class="accordion" id="pictures">
+                    {% for picture in pictures %}
+                        {{ picturecard(picture, current_user, "pictures",
+                            open = (True if open and open|int == picture.id else False)) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if pictures|length == 0 %}
+            <div class="col">
+                <h2> No pictures </h2>
+            </div>
+        {% endif %}
+{% endblock %}

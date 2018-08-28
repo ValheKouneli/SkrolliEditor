@@ -3,11 +3,33 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.articles.models import Article
-from application.help import getPeopleOptions
+from application.help import getPeopleOptions, getPicturesWithCondition
 from application.pictures.forms import PictureForm, create_picture_form, replicate_picture_form
 from application.pictures.models import Picture
 from application.pictures.views_helper import show_prefilled_form, update_picture
 from application.auth.models import User
+from application.kanban_page_helper import react_to_post_request
+
+@app.route('/pictures/', methods=["GET", "POST"])
+def pictures_index():
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        response = react_to_post_request(request, current_user)
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall through
+
+    pictures = getPicturesWithCondition("0=0").fetchall()
+
+    return render_template("pictures/list.html",
+        pictures=pictures,
+        alert = alert,
+        open = open)
 
 @app.route('/articles/<article_id>/new_picture_commission/', methods=["GET", "POST"])
 @login_required

@@ -88,7 +88,7 @@ def getPicturesForArticle(id):
 
 # DANGER DANGER never call this function without
 # making sure that the condition is safe
-def getPicturesWithCondition(condition):
+def getPicturesWithCondition(condition="0=0"):
     query = text(
         "SELECT Picture.id AS id,"
         " Picture.type AS type,"
