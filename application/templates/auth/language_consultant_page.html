@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<span class="h1 text-info">
+    Articles waiting to be marked ready
+</span>
+
+
+<div class="row m-1">
+        {% if articles|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                {% for article in articles %}
+                    {{ article.name }}
+
+                    <form method="POST">
+                        <input type="hidden" name="article_id" value="{{ article.id }}">
+                        <input type="submit" value="Ready" class="btn btn-success">
+                    </form>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if articles|length == 0 %}
+            <div class="col">
+                <h2> No articles </h2>
+            </div>
+        {% endif %}
+{% endblock %}

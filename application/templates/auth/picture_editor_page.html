@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<span class="h1 text-info">
+    Pictures waiting to be marked ready
+</span>
+
+
+<div class="row m-1">
+        {% if pictures|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <dl>
+                    {% for picture in pictures %}
+                        <dt>{{ picture.type }} &rarr; {{ picture.article }} </dt>
+                        <dd>{{ picture.description }}</dd>
+
+                        <form method="POST">
+                            <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                            <input type="submit" value="Ready" class="btn btn-success">
+                        </form>
+                    {% endfor %}
+                </dl>
+            </div>
+        {% endif %}
+
+        {% if pictures|length == 0 %}
+            <div class="col">
+                <h2> No pictures </h2>
+            </div>
+        {% endif %}
+{% endblock %}

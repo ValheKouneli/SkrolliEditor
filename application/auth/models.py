@@ -15,6 +15,9 @@ class User(Base):
     password = db.Column(db.String(144), nullable=True)
     editor = db.Column(db.Boolean(), nullable=False)
     admin = db.Column(db.Boolean(), nullable=False)
+    language_consultant = db.Column(db.Boolean(), nullable=False)
+    picture_editor = db.Column(db.Boolean(), nullable=False)
+    layout_artist = db.Column(db.Boolean(), nullable=False)
 
     names = db.relationship("Name", backref='account', lazy=True)
     articles_writing = db.relationship("Article", foreign_keys=[Article.writer], lazy=True)
@@ -30,6 +33,9 @@ class User(Base):
             self.password = ""
         self.editor = False
         self.admin = False
+        self.language_consultant = False
+        self.picture_editor = False
+        self.layout_artist = False
 
     def get_id(self):
         return self.id

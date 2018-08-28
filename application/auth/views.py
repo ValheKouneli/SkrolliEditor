@@ -7,7 +7,9 @@ from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
 from application.articles.views_helper import update_status, delete_article
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.articles.models import Article
+from application.pictures.models import Picture
 from application.tasks_page_helper import react_to_post_request
+from application.help import getArticlesWithCondition, getPicturesWithCondition, getPictureWithId
 
 
 @app.route("/auth/login/", methods = ["GET", "POST"])
@@ -102,3 +104,75 @@ def mypage():
         open = open,
         alert = alert,
         user_id=current_user.id)
+
+@app.route("/auth/languageconsultant/", methods = ["GET", "POST"])
+@login_required
+def language_consultant_page():
+    alert = {}
+
+    if request.method == "POST":
+        if not current_user.language_consultant:
+            return redirect(url_for("error403"))
+
+        try:
+            id = int(request.form["article_id"])
+        except:
+            message = "Request to mark article ready failed, because either" + \
+                " parameter article_id was missing or it was not an integer."
+            return render_template("error500.html", message=message)
+        
+        article = Article.query.get(id)
+        if not article:
+            return redirect(url_for("error404"))
+        article.ready = True
+        db.session.commit()
+        alert = {"type": "success",
+            "text": "Article '%s' marked ready!" % article.name }
+        # fall trough
+
+    articles = getArticlesWithCondition(
+        "(Article.editing_status = 100" + \
+        " AND Article.writing_status = 100" + \
+        " AND NOT Article.ready)")
+    articles = articles.fetchall()
+
+    return render_template("auth/language_consultant_page.html",
+        articles = articles,
+        current_user = current_user,
+        alert = alert)   
+
+
+@app.route("/auth/pictureeditor/", methods=["GET", "POST"])
+@login_required
+def picture_editor_page():
+    alert = {}
+
+    if request.method == "POST":
+        if not current_user.picture_editor:
+            return redirect(url_for("error403"))
+
+        try:
+            id = int(request.form["picture_id"])
+        except:
+            message = "Request to mark picture ready failed, because either" + \
+                " parameter picture_id was missing or it was not an integer."
+            return render_template("error500.html", message=message)
+        
+        picture = getPictureWithId(id)
+        if not picture:
+            return redirect(url_for("error404"))
+        picture.ready = True
+        db.session.commit()
+        alert = {"type": "success",
+            "text": "%s for article %s marked ready!" % (picture.type, picture.article) }
+        # fall trough
+
+    pictures = getPicturesWithCondition(
+        "(Picture.status = 100" + \
+        " AND NOT Picture.ready)")
+    pictures = pictures.fetchall()
+
+    return render_template("auth/picture_editor_page.html",
+        pictures = pictures,
+        current_user = current_user,
+        alert = alert)

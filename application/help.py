@@ -65,7 +65,7 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " LEFT JOIN Issue ON Article.issue = Issue.id"
         " LEFT JOIN Synopsis ON Synopsis.article_id = Article.id"
         " WHERE %s" % condition +\
-        " GROUP BY Article.id, Article.ready, Article.name, Issue.name, Writer.name, Editor.name, Synopsis.content" + \
+        " GROUP BY Article.id, Issue.name, Article.ready, Synopsis.content, Article.name, Article.writer, Writer.name, Editor.name" + \
         howmany + order
     )
     return db.engine.execute(query)
@@ -86,9 +86,24 @@ def getPicturesForArticle(id):
     condition = "Picture.article_id = %d" % id
     return getPicturesWithCondition(condition)
 
+def getPictureWithId(id):
+    if not isinstance(id, int):
+        return None
+    resultArray = getPicturesAmountCondition(amount=1, condition="Picture.id = %d" % id)
+    return resultArray.first()
+
+def getPicturesWithCondition(condition="0=0"):
+    return getPicturesAmountCondition(condition=condition)
+
 # DANGER DANGER never call this function without
 # making sure that the condition is safe
-def getPicturesWithCondition(condition="0=0"):
+def getPicturesAmountCondition(amount=1, condition="0=0"):
+    howmany = ""
+    order = ""
+    if amount > 0:
+        howmany = " LIMIT %d" % int(amount)
+    if amount != 1:
+        order = " ORDER BY Article.name"
     query = text(
         "SELECT Picture.id AS id,"
         " Picture.type AS type,"
@@ -100,10 +115,14 @@ def getPicturesWithCondition(condition="0=0"):
         " Picture.status AS status"
         " FROM Picture"
         " LEFT JOIN Account Responsible ON Picture.responsible = Responsible.id"
-        " LEFT JOIN Article ON Picture.article_id = Article.id"
-        " WHERE %s" % condition
+        " LEFT JOIN Article Article ON Picture.article_id = Article.id"
+        " WHERE %s" % condition + \
+        " GROUP BY Picture.id, Picture.type, Picture.article_id, Picture.description, Article.name,"
+        " Article.id, Responsible.name, Picture.status" +
+        howmany + order
     )
     return db.engine.execute(query)
+    
 
 def name_only_contains_certain_characters(form, field):
     message = 'Name contains illegal characters or does not start with a capital letter.'
