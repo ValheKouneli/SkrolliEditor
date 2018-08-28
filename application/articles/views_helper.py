@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request, url_for
 from application.articles.models import Article, Synopsis
+from application.pictures.models import Picture
 from application.articles.forms import ArticleForm, set_options, set_article_according_to_form
 from application import db
 
@@ -39,6 +40,12 @@ def delete_article(request, current_user, id):
             synopsis_to_delete = Synopsis.query.filter_by(article_id = id).first()
             if synopsis_to_delete:
                   db.session.delete(synopsis_to_delete)
+            pictures = Picture.query.filter_by(article_id = id)
+            
+            # pictures are made orphans
+            for picture in pictures:
+                  picture.article_id = None
+
             db.session.commit()
             alert = {"type": "success",
                   "text": "Article deleted!"}

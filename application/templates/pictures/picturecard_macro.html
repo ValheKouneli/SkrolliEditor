@@ -134,13 +134,12 @@
                     <div class="btn-group p-0 m-0" style="width:100%;">
                         {% if current_user.admin %}
                             <form method="POST" name="deleteform">
-                                <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                                <input type="hidden" name="delete_picture" value="{{ picture.id }}">
                                 <button class="btn bg-transparent text-danger p-0 m-0"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                    title="Delete commission"
+                                    title="Delete picture"
                                     type="submit"
-                                    name="delete_commission"
                                     value="submit">
 
                                     <div class="btn-group">
