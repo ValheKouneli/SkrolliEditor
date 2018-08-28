@@ -10,6 +10,7 @@ from application.auth.models import User
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.help import getArticleWithId, getArticlesWithCondition, \
     getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
+from application.kanban_page_helper import react_to_post_request
 
 
 
@@ -19,20 +20,14 @@ def articles_index():
     open = 0
 
     if request.method == "POST":
-        id = request.form["article_id"]
-        open = id
+        response = react_to_post_request(request, current_user)
 
-        if request.form.get('update_status', None):
-            # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
-
-        elif request.form.get('delete', None):
-            # returns None if user is not authorized
-            alert = delete_article(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     # show all articles
     return render_template("articles/editor_view.html", 
@@ -201,24 +196,15 @@ def articles_orphans():
     alert = {}
     open = 0
 
-    alert = {}
-    open = 0
-
     if request.method == "POST":
-        id = request.form["article_id"]
-        open = id
+        response = react_to_post_request(request, current_user)
 
-        if request.form.get('update_status', None):
-            # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
-
-        elif request.form.get('delete', None):
-            # returns None if user is not authorized
-            alert = delete_article(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(None),

@@ -5,6 +5,7 @@ from application import app, db
 from application.auth.models import User
 from application.people.models import Name
 from application.people.forms import NameForm, AliasForm
+from application.tasks_page_helper import react_to_post_request
 
 @app.route("/people/", methods=["GET", "POST"])
 def people_index():
@@ -111,8 +112,20 @@ def delete_name(name_id, user_id):
     return redirect(url_for("person_edit", user_id=user_id))
 
 
-@app.route("/people/<user_id>/", methods=["GET"])
+@app.route("/people/<user_id>/", methods=["GET", "POST"])
 def show_tasks(user_id):
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        response = react_to_post_request(request, current_user)
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
+
     user = User.query.get(int(user_id))
     if not user:
         return redirect(url_for("error404"))
