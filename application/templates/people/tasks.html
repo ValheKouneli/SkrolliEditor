@@ -3,6 +3,11 @@
 {% from "pictures/picturecard_macro.html" import picturecard %}
 
 {% block body %}
+<p>
+    <a class="btn border-info btn-basic m-2" href="{{ url_for('people_index') }}">
+        Show all users
+    </a>
+</p>
 <span class="h1 text-info">
     {{ posessive_form }} tasks
     {% if current_user and current_user.editor %}

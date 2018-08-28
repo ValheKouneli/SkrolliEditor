@@ -17,7 +17,7 @@
         action="{{ url_for('pictures_form', article_id=article.id) }}">
         
         <span class="h1 text-info mb-0">
-                {{ article.name }}
+            Overall view for "{{ article.name }}"
         </span>
 
         {% if current_user.editor %}
@@ -40,6 +40,23 @@
 
     </form>
 </span>
+
+<p>
+    <span class="h4 text-info mb-2">
+        {% if article.issue %}
+            Planned for issue: {{ article.issue }}
+        {% else %}
+            This article is not planned for any particular issue
+            
+            {% if current_user.editor %}
+                <a class="btn btn-basic border-info"
+                    href="{{ url_for('article_update', article_id=article.id) }}">
+                    Plan
+                </a>
+            {% endif %}
+        {% endif %}
+    </span>
+</p>
 
 
 <div class="row m-0 p-0">
