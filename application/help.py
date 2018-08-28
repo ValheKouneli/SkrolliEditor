@@ -85,6 +85,7 @@ def getPicturesForArticle(id):
         return None
     query = text(
         "SELECT Picture.id AS id,"
+        " Picture.type AS type,"
         " Picture.article_id AS article_id,"
         " Picture.description AS description,"
         " Article.name AS article,"

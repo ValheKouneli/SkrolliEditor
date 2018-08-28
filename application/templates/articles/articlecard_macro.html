@@ -4,7 +4,7 @@
 <div class="card rounded-0">
     {% if accordion_name|length > 0 %}
 
-        <div class="card-header text-left p-0 m-0"
+        <div class="card-header text-left p-0 m-0 rounded-0"
             id="heading{{ article.id }}"
             data-toggle="collapse"
             data-target="#collapse{{ article.id }}"
@@ -44,8 +44,8 @@
 
     {% else %}
 
-        <div class="card-header bg-info text-white font-weight-bold text-left">
-            <h2>{{ article.name }}</h2>
+        <div class="card-header bg-info text-white font-weight-bold text-left rounded-0 p-2">
+            <h4>Text: {{ article.name }}</h4>
         </div>
 
     {% endif %}

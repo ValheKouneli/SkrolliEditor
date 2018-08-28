@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.articles.models import Article
 from application.help import getPeopleOptions
-from application.pictures.forms import PictureForm
+from application.pictures.forms import PictureForm, create_picture_form, replicate_picture_form
 from application.pictures.models import Picture
 from application.auth.models import User
 
@@ -30,7 +30,7 @@ def pictures_form(article_id):
         form = replicate_picture_form(request.form)
 
         if form.validate:
-            p = Picture(id, form.description.data)
+            p = Picture(id, form.description.data, form.type.data)
             user_id = form.responsible.data
             if user_id:
                 user = User.query.get(user_id)
@@ -51,14 +51,3 @@ def pictures_form(article_id):
 @app.route("/pictures/<picture_id>/", methods=["GET", "POST"])
 def picture_update(picture_id):
     return redirect(url_for("index"))
-
-    
-def create_picture_form():
-    form = PictureForm()
-    form.responsible.choices = getPeopleOptions()
-    return form
-
-def replicate_picture_form(form):
-    replica = PictureForm(form)
-    replica.responsible.choises = getPeopleOptions()
-    return replica
