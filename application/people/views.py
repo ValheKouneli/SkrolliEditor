@@ -137,11 +137,13 @@ def show_tasks(user_id):
     articles_writing = user.get_articles_writing().fetchall()
     articles_editing = user.get_articles_editing().fetchall()
     pictures_responsible = user.get_pictures_responsible().fetchall()
+    articles_language_checking = user.get_articles_language_checking().fetchall()
 
     return render_template("people/tasks.html",
         articles_writing = articles_writing,
         articles_editing = articles_editing,
         pictures_responsible = pictures_responsible,
+        language_checking = language_checking,
         posessive_form = "" + name + "'s",
         system_name = user.name,
         person_is = name + " is",

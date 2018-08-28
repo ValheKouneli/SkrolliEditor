@@ -9,12 +9,14 @@ def react_to_post_request(request, current_user):
 
     # if request is related to an artile, fetch the article
     if (request.form.get('update_status', None) or
-        request.form.get('delete', None)):
+        request.form.get('delete', None) or
+        request.form.get('mark_ready', None) or
+        request.form.get('grab', None)):
 
         try:
             id = int(request.form["article_id"])
         except:
-            message = "Article status update or delete request did not contain parameter 'article_id'."
+            message = "Article related request did not contain parameter 'article_id'."
             response["redirect"] = render_template("error500.html", message=message)
             return response
 
@@ -37,6 +39,44 @@ def react_to_post_request(request, current_user):
             response["alert"] = alert
             return response
 
+        # request is to mark article's language checked
+        elif request.form('mark_ready', None):
+            if (not current_user.language_consultant and
+                article.language_consultant == current_user.id):
+
+                response["redirect"] = redirect(url_for("error403"))
+                return response
+            article.language_checked = True
+            db.session.commit()
+            alert = {"type": "success",
+                "text": "Article '%s' marked 'language checked'" % article.name}
+            response["alert"] = alert
+            return response
+
+        # request is to make current user article's language consultant
+        elif request.form.get("grab", None):
+            if not current_user.language_consultant:
+                response["redirect"] = redirect(url_for("error403"))
+                return response
+
+            if article.language_consultant != None:
+                alert = {"type": "danger",
+                    "text": "Someone was faster than you!"}
+                response["alert"] = alert
+                return response
+            elif article.editing_status < 100:
+                alert = {"type": "dange",
+                    "text": "Article's status has changed and" + \
+                    " it is not ready for language checking."}
+                response["alert"] = alert
+                return response
+            else:
+                article.language_consultant = current_user.id
+                db.session.commit()
+                alert = {"type": "success",
+                    "text": "Article '%s' is added to your task list!" % article.name }
+                response["alert"] = alert
+                return response
 
         # request is to delete article
         elif request.form.get('delete', None):

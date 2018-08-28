@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "articles/articlecard_macro.html" import articlecard %}
 {% from "pictures/picturecard_macro.html" import picturecard %}
+{% from "auth/language_checking_macro.html" import language_checking %}
 
 {% block body %}
 <p>
@@ -54,6 +55,15 @@
                             open = (True if open and open|int == picture.id else False)) }}
                     {% endfor %}
                 </div>
+            </div>
+        {% endif %}
+
+        {% if articles_language_checking|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <h2 class="text text-info">{{ person_is }} checking language for</h2>
+                {% for article in articles_language_checking %}
+                    {{ language_checking(article) }}
+                {% endfor %}
             </div>
         {% endif %}
 

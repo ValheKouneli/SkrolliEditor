@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "auth/language_checking_macro.html" import language_checking %}
 
 {% block body %}
 <span class="h2 text-info">
@@ -16,21 +17,30 @@
             <div class="col col-md-3 col-xs-12 p-1">
                 <div class="h3 text-info">Articles waiting</div>
                 {% for article in articles %}
-                <div class="row m-0">
-                    <form method="POST">
-                        <input type="hidden" name="grab" value="{{ article.id }}">
-                        <div class="h4 text-dark mb-0">
-                            {{ article.name}}
-                            
-                            <button class="badge border-0 badge-primary text-white"
-                                type="submit"
-                                value="submit">
+                <div class="row m-1 p-0">
+                        <div class="col col-12 m-0 p-0">
+                            <form method="POST">
+                                <input type="hidden" name="grab" value="{{ article.id }}">
+                                <div class="btn-group h4 text-dark mb-0"
+                                    style="width:100%;">
 
-                                Take
-                            </button>
+                                    <div>
+                                        {{ article.name}}
+                                    </div>
+                                    
+                                    <span style="width:100%">
+
+                                    </span>
+
+                                    <button class="btn btn-group rounded-left text-right btn-info text-white"
+                                        type="submit"
+                                        value="submit">
+                                        Grab
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>  
+                    </div>  
                 {% endfor %}
             </div>
         {% endif %}
@@ -39,20 +49,7 @@
             <div class="col col-md-3 col-xs-12 p-1">
                 <div class="h3 text-info">My articles in progress</div>
                 {% for article in my_articles %}
-                    <div class="row m-0">
-                        <form method="POST">
-                            <input type="hidden" name="mark_ready" value="{{ article.id }}">
-                            <div class="h4 text-dark mb-0">
-                                {{ article.name}}
-                                
-                                <button class="badge border-0 badge-success text-white"
-                                    type="submit"
-                                    value="submit">
-                                    Ready
-                                </button>
-                            </div>
-                        </form>
-                    </div>  
+                    {{ language_checking(article) }}
                 {% endfor %}
             </div>
         {% endif %}

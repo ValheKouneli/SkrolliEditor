@@ -97,3 +97,7 @@ class User(Base):
     def get_pictures_responsible(self):
         condition = "Picture.responsible = %d" % self.id
         return getPicturesWithCondition(condition)
+    
+    def get_articles_language_checking(self):
+        condition = "Article.language_consultant = %d" % self.id
+        return getArticlesWithCondition(condition)

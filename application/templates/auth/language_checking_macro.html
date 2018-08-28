@@ -1,0 +1,28 @@
+{% macro language_checking(article) -%}
+
+<div class="row m-1 p-0">
+    <div class="col col-12 m-0 p-0">
+        <form method="POST">
+            <input type="hidden" name="mark_ready" value="{{ article.id }}">
+            <div class="btn-group h4 text-dark mb-0"
+                style="width:100%;">
+
+                <div>
+                    {{ article.name}}
+                </div>
+                
+                <span style="width:100%">
+
+                </span>
+
+                <button class="btn btn-group rounded-left text-right btn-success text-white"
+                    type="submit"
+                    value="submit">
+                    Ready
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{%- endmacro %}
