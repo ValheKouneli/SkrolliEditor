@@ -1,9 +1,14 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<span class="h1 text-info">
-    Articles waiting for language consultation
+<span class="h2 text-info">
+    Language consultant
 </span>
+<p>
+    <span class="h7 text-info">
+        Articles waiting for language consultation
+    </span>
+</p>
 
 
 <div class="row m-1">
@@ -36,8 +41,8 @@
         {% endif %}
 
         {% if articles|length == 0 and my_articles|length == 0 %}
-            <div class="col">
-                <h2> No articles </h2>
+            <div class="col p-0 m-0">
+                    <span class="text-dark h4"> No articles </span>
             </div>
         {% endif %}
 {% endblock %}

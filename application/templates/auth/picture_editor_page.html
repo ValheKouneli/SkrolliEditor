@@ -1,9 +1,14 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<span class="h1 text-info">
-    Pictures waiting to be marked ready
-</span>
+<span class="h2 text-info">
+        Picture editor
+    </span>
+    <p>
+        <span class="h7 text-info">
+            Pictures waiting to be marked ready
+        </span>
+    </p>
 
 
 <div class="row m-1">
@@ -24,8 +29,8 @@
         {% endif %}
 
         {% if pictures|length == 0 %}
-            <div class="col">
-                <h2> No pictures </h2>
+            <div class="col m-0 p-0">
+                <span class="text-dark h4"> No pictures </span>
             </div>
         {% endif %}
 {% endblock %}
