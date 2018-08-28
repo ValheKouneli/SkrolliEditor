@@ -83,6 +83,12 @@ def getArticleWithId(id):
 def getPicturesForArticle(id):
     if not isinstance(id, int):
         return None
+    condition = "Picture.article_id = %d" % id
+    return getPicturesWithCondition(condition)
+
+# DANGER DANGER never call this function without
+# making sure that the condition is safe
+def getPicturesWithCondition(condition):
     query = text(
         "SELECT Picture.id AS id,"
         " Picture.type AS type,"
@@ -95,7 +101,7 @@ def getPicturesForArticle(id):
         " FROM Picture"
         " LEFT JOIN Account Responsible ON Picture.responsible = Responsible.id"
         " LEFT JOIN Article ON Picture.article_id = Article.id"
-        " WHERE Picture.article_id = %d" % id
+        " WHERE %s" % condition
     )
     return db.engine.execute(query)
 

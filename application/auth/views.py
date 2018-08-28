@@ -4,7 +4,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
-from application.articles.views_helper import update_status
+from application.articles.views_helper import update_status, delete_article
+from application.pictures.views_helper import update_picture_status, delete_picture
+from application.articles.models import Article
 
 
 @app.route("/auth/login/", methods = ["GET", "POST"])
@@ -81,17 +83,59 @@ def mypage():
     open = 0
 
     if request.method == "POST":
-        article_id = request.form["article_id"]
-        open = article_id
-        alert = update_status(request=request, current_user=current_user, id=article_id)
-        if not alert:
-            return redirect(url_for("error403"))
+        # if request is related to an artile, fetch the article
+        if (request.form.get('update_status', None) or
+            request.form.get('delete', None)):
+
+            try:
+                id = int(request.form["article_id"])
+            except:
+                message = "Article status update or delete request did not contain parameter 'article_id'."
+                return render_template("error500.html", message=message)
+            article = Article.query.get(id)
+            if not article:
+                return redirect(url_for("error404"))
+
+            if request.form.get('update_status', None):
+                # returns None if user is not authorized
+                alert = update_status(request, article, current_user)
+                if not alert:
+                    return redirect(url_for("error403"))
+                try:
+                    open = request.form["article_id"]
+                except:
+                    open = 0
+                # FALL THROUGH
+
+            elif request.form.get('delete', None):
+                alert = delete_article(request, article, current_user)
+                if not alert:
+                    return redirect(url_for("error403"))
+
+        elif request.form.get('delete_picture', None):
+            # returns None if user is not authorized
+            alert = delete_picture(request, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            # FALL THROUGH
+
+        elif request.form.get('update_picture_status', None):
+            # returns None if user is not authorized
+            alert = update_picture_status(request, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            try:
+                open = request.form["picture_id"]
+            except:
+                open = 0
+            # FALL THROUGH
 
     return render_template("people/tasks.html",
         person_is = "I am",
         posessive_form = "My",
         system_name = current_user.name,
-        articles_writing = current_user.get_articles_writing(),
-        articles_editing = current_user.get_articles_editing(),
+        articles_writing = current_user.get_articles_writing().fetchall(),
+        articles_editing = current_user.get_articles_editing().fetchall(),
+        pictures_responsible = current_user.get_pictures_responsible().fetchall(),
         open = open,
         alert = alert)

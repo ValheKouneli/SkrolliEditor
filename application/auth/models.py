@@ -1,5 +1,5 @@
 from application import db, os
-from application.help import getArticlesWithCondition
+from application.help import getArticlesWithCondition, getPicturesWithCondition
 from application.models import Base
 from application.people.models import Name
 from application.articles.models import Article
@@ -87,3 +87,7 @@ class User(Base):
     def get_articles_editing(self):
         condition = "(Article.ready = %s AND Article.editor_in_charge = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
         return getArticlesWithCondition(condition)
+
+    def get_pictures_responsible(self):
+        condition = "Picture.responsible = %d" % self.id
+        return getPicturesWithCondition(condition)

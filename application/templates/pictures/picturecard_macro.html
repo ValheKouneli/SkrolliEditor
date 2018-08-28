@@ -20,13 +20,13 @@
                     <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate"
                         style="width:100%;">
 
-                        {{ picture.type }} -> {{ picture.article }}
+                        {{ picture.type }} &rarr; {{ picture.article }}
                     </div>
 
                 
                         <div class="btn pl-1 pr-1 text-right">
                             <a class="badge badge-pill badge-success"
-                                href="{{ url_for('articles_show', article_id=article.id) }}"
+                                href="TODO"
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 title="Link to article.">
@@ -121,7 +121,7 @@
 
                 <div class="card-footer text-center bg-white p-0">
                     <a class="btn btn-light border-dark btn-block font-weight-bold"
-                        href="{{ url_for('pictures_show', picture_id=picture.id) }}">
+                        href="{{ url_for('articles_show', article_id=picture.article_id) }}">
                         
                         More
                     </a>
