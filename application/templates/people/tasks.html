@@ -3,7 +3,15 @@
 {% from "pictures/picturecard_macro.html" import picturecard %}
 
 {% block body %}
-<h1 class="text-info">{{ posessive_form }} tasks</h1>
+<span class="h1 text-info">
+    {{ posessive_form }} tasks
+    {% if current_user and current_user.editor %}
+        <a class="btn btn-info"
+            href="{{ url_for('new_article_for_writer', user_id=user_id) }}">
+            New article
+        </a>
+    {% endif %}
+</span>
 <p>Name in system: {{ system_name }}</p>
 
 

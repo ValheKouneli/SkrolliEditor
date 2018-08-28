@@ -2,6 +2,8 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
+from application.articles.views_helper import create_article
+from application.articles.forms import create_article_form
 from application.auth.models import User
 from application.people.models import Name
 from application.people.forms import NameForm, AliasForm
@@ -142,7 +144,40 @@ def show_tasks(user_id):
         pictures_responsible = pictures_responsible,
         posessive_form = "" + name + "'s",
         system_name = user.name,
-        person_is = name + " is")
+        person_is = name + " is",
+        user_id=user.id)
+
+@app.route("/people/<user_id>/new_article/", methods=["GET", "POST"])
+@login_required
+def new_article_for_writer(user_id):
+    if not current_user.editor:
+        return redirect(url_for("error403"))
+
+    try:
+        id = int(user_id)
+    except:
+        message = "Provided user id is not a number."
+        return render_template("error500.html", message=message)
+    user = User.query.get(id)
+    
+    if not user:
+        return redirect(url_for("error404"))
+
+    if request.method == "POST":
+        # create a new article
+        if request.form.get('create_article', None):
+            return create_article(
+                current_user=current_user,
+                request=request)
+    
+    form = create_article_form()
+    form.writer.data = id
+    redirect_to = request.referrer
+
+    return render_template("/articles/new.html",
+        form=form,
+        redirect_to = redirect_to)
+
 
 def get_people():
     people = []

@@ -100,4 +100,5 @@ def mypage():
         articles_editing = current_user.get_articles_editing().fetchall(),
         pictures_responsible = current_user.get_pictures_responsible().fetchall(),
         open = open,
-        alert = alert)
+        alert = alert,
+        user_id=current_user.id)
