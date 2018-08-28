@@ -7,6 +7,7 @@ from application.articles.views_helper import update_status, delete_article, cre
 from application.articles.forms import ArticleForm, create_article_form, \
     set_article_according_to_form, replicate_article_form
 from application.auth.models import User
+from application.pictures.views_helper import update_picture_status
 from application.help import getArticleWithId, getArticlesWithCondition, \
     getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
 
@@ -54,10 +55,18 @@ def articles_show(article_id):
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = updateStatus(request=request, current_user=current_user, id=int(article_id))
+            alert = update_status(request=request, current_user=current_user, id=int(article_id))
             if not alert:
                 return redirect(url_for("error403"))
-    
+
+        elif request.form.get('update_picture_status', None):
+            # return None if user is not authorized
+            alert = update_picture_status(request=request, current_user=current_user, id=int(article_id))
+            if not alert:
+                return redirect(url_for("error403"))
+
+            #FALL THROUGH: after changes, show the same page with the alert
+
     article = getArticleWithId(int(article_id))
     if not article:
         return redirect(url_for("error404"))
