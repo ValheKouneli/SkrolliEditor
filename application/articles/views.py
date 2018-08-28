@@ -48,6 +48,14 @@ def articles_index():
 @app.route("/articles/<article_id>/", methods=["GET", "POST"])
 def articles_show(article_id):
     alert = {}
+    try:
+        id = int(article_id)
+    except:
+        return redirect(url_for("error404"))
+
+    article = Article.query.get(id)
+    if not article:
+        return redirect(url_for("error404"))
 
     if request.method == "POST":
         if not current_user and current_user.editor:
@@ -55,22 +63,34 @@ def articles_show(article_id):
 
         if request.form.get('update_status', None):
             # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(article_id))
+            alert = update_status(request, article, current_user)
             if not alert:
                 return redirect(url_for("error403"))
+            # FALL THROUGH
 
         elif request.form.get('update_picture_status', None):
             # returns None if user is not authorized
-            alert = update_picture_status(request=request, current_user=current_user)
+            alert = update_picture_status(request, current_user)
             if not alert:
                 return redirect(url_for("error403"))
+            # FALL THROUGH
 
-            #FALL THROUGH: after changes, show the same page with the alert
         elif request.form.get('delete_picture', None):
             # returns None if user is not authorized
             alert = delete_picture(request, current_user)
             if not alert:
                 return redirect(url_for("error403"))
+            # FALL THROUGH
+
+        elif request.form.get('delete', None):
+            alert = delete_article(request, article, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            if article.issue:
+                return redirect(url_for("issue_by_id", id=article.issue))
+            else:
+                return redirect(url_for("articles_orphans"))
+
 
     article = getArticleWithId(int(article_id))
     if not article:

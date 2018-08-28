@@ -3,9 +3,15 @@
 
 {% block body %}
 {% if updating_picture %}
-<h1 class="text-info">Edit picture commission for article "{{ article.name }}"</h1>
+
+    {% if article and article.name %}
+        <h1 class="text-info">Edit picture commission for article "{{ article.name }}"</h1>
+    {% else %}
+        <h1 class="text-info">Edit orphan picture commission</h1>
+    {% endif %}
+
 {% else %}
-<h1 class="text-info">Commission pictures for article "{{ article.name }}"</h1>
+    <h1 class="text-info">Commission pictures for article "{{ article.name }}"</h1>
 {% endif %}
 
 <form class="form form-horizontal" role="form" method="POST">
@@ -17,11 +23,15 @@
             <input class="hidden" type="hidden" name="redirect_to" value="{{ redirect_to }}">
         {% endif %}
 
-        {% if updating_article %}
+        {% if picture and picture.id %}
+            <input class="hidden" type="hidden" name="picture_id" value="{{ picture.id }}">
+        {% endif %}
+
+        {% if updating_picture %}
         <input class="btn btn-primary"
             name="update_picture"
             type="submit"
-            action="{{ url_for('picture_update', article_id=article.id) }}"
+            action="{{ url_for('picture_update', picture_id=picture.id) }}"
             value="Update commission" />
         {% else %}
         <input class="btn btn-primary"

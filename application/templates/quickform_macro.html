@@ -4,7 +4,7 @@
         <dt class="p-0 m-0 mt-2"> {{ field.label(class="m-0") }} {% if field.flags.required %}<span class="text-danger">*</span>{% endif %}
             <dd class="p-0 m-0">
                 {% if field.flags.bigger_input_field %}
-                    <textarea name="{{ field.name }}" id="{{ field.id }}" rows="3"></textarea>
+                    <textarea type="input" name="{{ field.name }}" id="{{ field.id }}" rows="3">{{ field.data }}</textarea>
                 {% else %}
                     {{ field }}
                 {% endif %}

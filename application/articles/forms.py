@@ -29,11 +29,14 @@ class ArticleForm(FlaskForm):
 def create_article_form():
     form = ArticleForm()
     form = set_options(form)
+    form.synopsis.data = ""
     return form
 
 def replicate_article_form(form):
     replica = ArticleForm(form)
     replica = set_options(replica)
+    if not replica.synopsis.data:
+        replica.synopsis.data = ""
     return replica
 
 def set_options(articleform):
