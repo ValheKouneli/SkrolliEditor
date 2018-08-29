@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for
 from application.articles.views_helper import update_status, delete_article
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.articles.models import Article
+from application import db
 
 # returns a dict that tells what to do next
 def react_to_post_request(request, current_user):
