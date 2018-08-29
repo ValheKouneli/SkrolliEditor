@@ -26,7 +26,15 @@
 
                 
                         <div class="btn pl-1 pr-1 text-right">
+                        {% if article.picture_amount|int == 0 %}
+                            <a class="badge badge-pill badge-dark"
+                        {% elif article.picture_status_sum|int // article.picture_amount|int == 0 %}
+                            <a class="badge badge-pill badge-danger"
+                        {% elif article.picture_status_sum|int // article.picture_amount|int == 100 %}
                             <a class="badge badge-pill badge-success"
+                        {% else %}
+                            <a class="badge badge-pill badge-warning"
+                        {% endif %}
                                 href="{{ url_for('articles_show', article_id=article.id) }}"
                                 data-toggle="tooltip"
                                 data-placement="top"

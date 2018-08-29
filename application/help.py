@@ -61,13 +61,16 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
         " Article.editor_in_charge AS editor_id,"
         " Writer.name AS writer,"
         " Editor.name AS editor_in_charge,"
-        " LanguageConsultant.name AS language_consultant"
+        " LanguageConsultant.name AS language_consultant,"
+        " PictureStatus.sum AS picture_status_sum,"
+        " PictureStatus.amount AS picture_amount"
         " FROM Article"
         " LEFT JOIN Account Writer ON Article.writer = Writer.id"
         " LEFT JOIN Account Editor ON Article.editor_in_charge = Editor.id"
         " LEFT JOIN Account LanguageConsultant ON Article.language_consultant = LanguageConsultant.id"
         " LEFT JOIN Issue ON Article.issue = Issue.id"
         " LEFT JOIN Synopsis ON Synopsis.article_id = Article.id"
+        " LEFT JOIN (SELECT article_id, SUM(status) AS sum, COUNT(id) AS amount FROM picture) PictureStatus ON PictureStatus.article_id = Article.id"
         " WHERE %s" % condition +\
         " GROUP BY Article.id, Issue.name, Article.ready, Synopsis.content, Article.name, Article.writer, Writer.name, Editor.name, LanguageConsultant.name" + \
         howmany + order
@@ -136,6 +139,16 @@ def name_only_contains_certain_characters(form, field):
     if not pattern.match(field.data):
         raise ValidationError(message)
     return
+
+def get_number_and_sum_of_picture_statuses_for_article(article_id):
+    if not isinstance(article_id, int):
+        return None
+    query = "SELECT SUM(status) AS sum, COUNT(id) AS amount FROM picture WHERE article_id = %d" % article_id
+    avg = db.engine.execute(query)
+    if not avg:
+        return -1
+    else:
+        return avg
 
 # form validator,
 # sets a flag "bigger_input_field" to the field
