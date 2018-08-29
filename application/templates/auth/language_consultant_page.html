@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% from "auth/language_checking_macro.html" import language_checking %}
+
+{% block body %}
+<span class="h2 text-info">
+    Language consultant
+</span>
+<p>
+    <span class="h7 text-info">
+        Articles waiting for language consultation
+    </span>
+</p>
+
+
+<div class="row m-0">
+        {% if articles|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <div class="h3 text-info">Articles waiting</div>
+                {% for article in articles %}
+                <div class="row m-1 p-0">
+                        <div class="col col-12 m-0 p-0">
+                            <form method="POST">
+                                <input type="hidden" name="grab" value="{{ article.id }}">
+                                <div class="btn-group h4 text-dark mb-0"
+                                    style="width:100%;">
+
+                                    <div>
+                                        {{ article.name}}
+                                    </div>
+                                    
+                                    <span style="width:100%">
+
+                                    </span>
+            {% set user_is_editing_this = current_user.id != article.editor_in_charge %}
+            {% set user_is_writing_this = current_user.id != article.writer %}
+            {% if current_user.admin or (not user_is_editing_this and not user_is_writing_this) %}
+                                    <button class="btn btn-group rounded-left text-right btn-info text-white"
+                                        type="submit"
+                                        value="submit">
+                                        Grab
+                                    </button>
+            {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>  
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if my_articles|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <div class="h3 text-info">My articles in progress</div>
+                {% for article in my_articles %}
+                    {{ language_checking(article) }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if articles|length == 0 and my_articles|length == 0 %}
+            <div class="col p-0 m-0">
+                    <span class="text-dark h4"> No articles </span>
+            </div>
+        {% endif %}
+{% endblock %}

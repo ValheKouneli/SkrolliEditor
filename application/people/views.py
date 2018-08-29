@@ -2,9 +2,12 @@ from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
+from application.articles.views_helper import create_article
+from application.articles.forms import create_article_form
 from application.auth.models import User
 from application.people.models import Name
 from application.people.forms import NameForm, AliasForm
+from application.tasks_page_helper import react_to_post_request
 
 @app.route("/people/", methods=["GET", "POST"])
 def people_index():
@@ -111,8 +114,20 @@ def delete_name(name_id, user_id):
     return redirect(url_for("person_edit", user_id=user_id))
 
 
-@app.route("/people/<user_id>/", methods=["GET"])
+@app.route("/people/<user_id>/", methods=["GET", "POST"])
 def show_tasks(user_id):
+    alert = {}
+    open = 0
+
+    if request.method == "POST":
+        response = react_to_post_request(request, current_user)
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
+
     user = User.query.get(int(user_id))
     if not user:
         return redirect(url_for("error404"))
@@ -121,13 +136,50 @@ def show_tasks(user_id):
 
     articles_writing = user.get_articles_writing().fetchall()
     articles_editing = user.get_articles_editing().fetchall()
+    pictures_responsible = user.get_pictures_responsible().fetchall()
+    articles_language_checking = user.get_articles_language_checking().fetchall()
 
     return render_template("people/tasks.html",
         articles_writing = articles_writing,
         articles_editing = articles_editing,
+        pictures_responsible = pictures_responsible,
+        language_checking = language_checking,
         posessive_form = "" + name + "'s",
         system_name = user.name,
-        person_is = name + " is")
+        person_is = name + " is",
+        user_id=user.id)
+
+@app.route("/people/<user_id>/new_article/", methods=["GET", "POST"])
+@login_required
+def new_article_for_writer(user_id):
+    if not current_user.editor:
+        return redirect(url_for("error403"))
+
+    try:
+        id = int(user_id)
+    except:
+        message = "Provided user id is not a number."
+        return render_template("error500.html", message=message)
+    user = User.query.get(id)
+    
+    if not user:
+        return redirect(url_for("error404"))
+
+    if request.method == "POST":
+        # create a new article
+        if request.form.get('create_article', None):
+            return create_article(
+                current_user=current_user,
+                request=request)
+    
+    form = create_article_form()
+    form.writer.data = id
+    redirect_to = request.referrer
+
+    return render_template("/articles/new.html",
+        form=form,
+        redirect_to = redirect_to)
+
 
 def get_people():
     people = []

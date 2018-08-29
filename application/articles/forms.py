@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, SelectField, StringField, validators, ValidationError
-from application.help import getPeopleOptions, getEditorOptions, getIssueOptions
+
+from application.help import getPeopleOptions, getEditorOptions, \
+    getIssueOptions, needs_a_bigger_input_field
+
 import re
 
 def is_a_proper_name(form, field):
@@ -11,19 +14,21 @@ def is_a_proper_name(form, field):
         raise ValidationError(message)
     return
 
-# sets a flag "bigger_input_field" to the field
-def needs_a_bigger_input_field():
-    def _needs_a_bigger_input_field(form, field):
-        pass
-    _needs_a_bigger_input_field.field_flags = ('bigger_input_field', )
-    return _needs_a_bigger_input_field
+def is_not_same_as_writer(form, field):
+    message = "Editor-in-charge can not be the same as the writer."
+
+    if field.data != 0 and field.data == form.writer.data:
+        raise ValidationError(message)
+    return
 
 class ArticleForm(FlaskForm):
         name = StringField("Article name", validators=[validators.InputRequired(),
             validators.Length(min=1, max=30), is_a_proper_name])
         issue = SelectField("Issue", coerce=int)
         writer = SelectField("Writer", coerce=int)
-        editorInCharge = SelectField("Editor-in-charge", coerce=int)
+        editorInCharge = SelectField("Editor-in-charge",
+            validators=[is_not_same_as_writer],
+            coerce=int)
         synopsis = StringField("Synopsis", validators=[needs_a_bigger_input_field()])
 
 
@@ -33,11 +38,14 @@ class ArticleForm(FlaskForm):
 def create_article_form():
     form = ArticleForm()
     form = set_options(form)
+    form.synopsis.data = ""
     return form
 
 def replicate_article_form(form):
     replica = ArticleForm(form)
     replica = set_options(replica)
+    if not replica.synopsis.data:
+        replica.synopsis.data = ""
     return replica
 
 def set_options(articleform):

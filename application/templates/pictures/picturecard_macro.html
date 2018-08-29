@@ -1,17 +1,17 @@
-{% macro articlecard(article, current_user, accordion_name="", open=false) -%}
+{% macro picturecard(picture, current_user, accordion_name="", open=false) -%}
 {% from "articles/progress_bar_macro.html" import progressbar %}
 
 <div class="card rounded-0">
     {% if accordion_name|length > 0 %}
 
         <div class="card-header text-left p-0 m-0 rounded-0"
-            id="heading{{ article.id }}"
+            id="heading{{ picture.id }}"
             data-toggle="collapse"
-            data-target="#collapse{{ article.id }}"
+            data-target="#collapse{{ picture.id }}"
             {% if open %}
                 aria-expanded="true"
             {% endif %}
-            aria-controls="collapse{{ article.id }}">
+            aria-controls="collapse{{ picture.id }}">
 
             <div class="btn btn-light p-0 text-left text-truncate rounded-0"
                 style="width:100%;">
@@ -20,41 +20,37 @@
                     <div class="btn pl-1 pr-0 text-left font-weight-bold text-truncate"
                         style="width:100%;">
 
-                        {{ article.name }}
-                        
+                        {{ picture.type }} &rarr; {{ picture.article }}
                     </div>
 
-                
-                        <div class="btn pl-1 pr-1 text-right">
-                        {% if article.picture_amount|int == 0 %}
-                            <a class="badge badge-pill badge-dark"
-                        {% elif article.picture_status_sum|int // article.picture_amount|int == 0 %}
-                            <a class="badge badge-pill badge-danger"
-                        {% elif article.picture_status_sum|int // article.picture_amount|int == 100 %}
-                            <a class="badge badge-pill badge-success"
-                        {% else %}
-                            <a class="badge badge-pill badge-warning"
-                        {% endif %}
-                                href="{{ url_for('articles_show', article_id=article.id) }}"
-                                data-toggle="tooltip"
-                                data-placement="top"
-                                title="Link to article.">
+                    <div class="btn pl-1 pr-1 text-right">
+                    {% if picture.writing_status|int == 100 %}
+                        <a class="badge badge-pill badge-success"
+                    {% elif picture.writing_status|int >= 40 %}
+                        <a class="badge badge-pill badge-warning"
+                    {% else %}
+                        <a class="badge badge-pill badge-danger"
+                    {% endif %}
+                            href="{{ url_for('articles_show', article_id=picture.article_id) }}"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Link to article.">
 
-                                Pics
-                            </a>
-                        </div>
-                
-                        <div class="btn pl-0 pr-1 text-right">
-                            &#9776;
-                        </div>
+                            Text
+                        </a>
+                    </div>
+            
+                    <div class="btn pl-0 pr-1 text-right">
+                        &#9776;
+                    </div>
                 </div>
             </div> 
         </div>
 
     {% else %}
 
-        <div class="card-header bg-info text-white font-weight-bold text-left rounded-0 p-2">
-            <h4>Text: {{ article.name }}</h4>
+        <div class="card-header bg-dark text-white font-weight-bold text-left rounded-0 p-2">
+            <h4>{{ picture.type }}</h4>
         </div>
 
     {% endif %}
@@ -66,61 +62,30 @@
     {% else %}
         <div class="collapse"
     {% endif %}
-            id="collapse{{ article.id }}"
-            aria-labelledby="heading{{ article.id }}"
+            id="collapse{{ picture.id }}"
+            aria-labelledby="heading{{ picture.id }}"
             data-parent="#{{ accordion_name }}">
 
 {% endif %}
 
         <div class="card-body px-1 pt-1 pb-0">   
             <form method="POST">
-                <input type="hidden" name="article_id" value="{{ article.id }}">
+                <input type="hidden" name="picture_id" value="{{ picture.id }}">
                 <ul class="list-group list-group-flush" >
-                    <li class="list-group-item p-1">
-                        <table style="width:100%;">
-                            <tr>
-                                <td class="py-0">
-                                    {% if article.writer %}
-                                        Writer: {{ article.writer }}
-                                    {% else %}
-                                        Writer: -
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {{ progressbar(article.writing_status) }}
-                                </td>
-                            </tr>
-                            {% if current_user.editor %}
-                                <tr>
-                                    <td>
-                                        <input class="slider w-100"
-                                            type="range"
-                                            min="0"
-                                            max="100"
-                                            value="{{ article.writing_status }}"
-                                            class="slider"
-                                            name="writing_status">
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        </table>
-                    </li>
                     <li class="list-group-item border-bottom p-1">
                         <table style="width:100%;">
                             <tr>
                                 <td class="py-0">
-                                    {% if article.editor_in_charge %}
-                                        Editor: {{ article.editor_in_charge }}
+                                    {% if picture.responsible %}
+                                        Responsible: {{ picture.responsible }}
                                     {% else %}
-                                        Editor: -
+                                        Responsible: -
                                     {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    {{ progressbar(article.editing_status) }}
+                                    {{ progressbar(picture.status) }}
                                 </td>
                             </tr>
                             {% if current_user.editor %}
@@ -130,9 +95,9 @@
                                         type="range"
                                         min="0"
                                         max="100"
-                                        value="{{ article.editing_status }}"
+                                        value="{{ picture.status }}"
                                         class="slider"
-                                        name="editing_status">
+                                        name="status">
                                 </td>
                             </tr>
                             {% endif %}
@@ -142,7 +107,7 @@
                         <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
                             <input class="btn btn-primary"
                                 type="submit"
-                                name="update_status"
+                                name="update_picture_status"
                                 value="Update status">
                         </li>
                     {% endif %}
@@ -150,10 +115,10 @@
             </form>
         
             <p class="card-text">
-                {% if article.synopsis %}
-                    Synopsis: {{ article.synopsis }}
+                {% if picture.description %}
+                    Description: {{ picture.description }}
                 {% else %}
-                    Synopsis: -
+                    Description: -
                 {% endif %}
             </p>
 
@@ -161,7 +126,7 @@
 
                 <div class="card-footer text-center bg-white p-0">
                     <a class="btn btn-light border-dark btn-block font-weight-bold"
-                        href="{{ url_for('articles_show', article_id=article.id) }}">
+                        href="{{ url_for('articles_show', article_id=picture.article_id) }}">
                         
                         More
                     </a>
@@ -174,13 +139,12 @@
                     <div class="btn-group p-0 m-0" style="width:100%;">
                         {% if current_user.admin %}
                             <form method="POST" name="deleteform">
-                                <input type="hidden" name="article_id" value="{{ article.id }}">
+                                <input type="hidden" name="delete_picture" value="{{ picture.id }}">
                                 <button class="btn bg-transparent text-danger p-0 m-0"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                    title="Delete article"
+                                    title="Delete picture"
                                     type="submit"
-                                    name="delete"
                                     value="submit">
 
                                     <div class="btn-group">
@@ -200,14 +164,14 @@
                         </span>
 
                         <form method="GET"
-                            action="{{ url_for('article_update', article_id=article.id) }}"
+                            action="{{ url_for('picture_update', picture_id=picture.id) }}"
                             name="editform">
                             <button class="btn bg-transparent text-info text-right p-0 m-0"
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                title="Edit article"
+                                title="Edit commission"
                                 type="submit"
-                                name="edit"
+                                name="edit_commission"
                                 value="submit">
         
                                 <div class="btn-group p-0 m-0">

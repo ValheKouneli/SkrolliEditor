@@ -8,9 +8,14 @@ from flask_login import current_user
 @app.route("/")
 def index():
     if current_user.is_authenticated:
+        if current_user.picture_editor:
+            return redirect(url_for("picture_editor_page"))
+        elif current_user.language_consultant:
+            return redirect(url_for("language_consultant_page"))
+
         return redirect(url_for("mypage"))
     else:
-        return render_template("index.html")
+        return redirect(url_for("auth_login"))
 
 @app.route("/404/")
 def error404():

@@ -1,37 +1,73 @@
 {% extends "layout.html" %}
 {% from "articles/articlecard_macro.html" import articlecard %}
+{% from "pictures/picturecard_macro.html" import picturecard %}
+{% from "auth/language_checking_macro.html" import language_checking %}
 
 {% block body %}
-<h1 class="text-info">{{ posessive_form }} tasks</h1>
+<p>
+    <a class="btn border-info btn-basic m-2" href="{{ url_for('people_index') }}">
+        Show all users
+    </a>
+</p>
+<span class="h1 text-info">
+    {{ posessive_form }} tasks
+    {% if current_user and current_user.editor %}
+        <a class="btn btn-info"
+            href="{{ url_for('new_article_for_writer', user_id=user_id) }}">
+            New article
+        </a>
+    {% endif %}
+</span>
 <p>Name in system: {{ system_name }}</p>
 
 
 <div class="row m-1">
-        {% if articles_writing %}
-            <div class="col p-1" style="max-width: 20%;">
+        {% if articles_writing|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
                 <h2 class="text text-info">{{ person_is }} writing</h2>
                 <div class="accordion" id="writing">
                     {% for article in articles_writing %}
-                        {{ articlecard(article, current_user, synopsis, "writing",
+                        {{ articlecard(article, current_user, "writing",
                             open = (True if open and open|int == article.id else False)) }}
                     {% endfor %}
                 </div>
             </div>
         {% endif %}
 
-        {% if articles_editing %}
-            <div class="col p-1" style="max-width: 20%;">
+        {% if articles_editing|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
                 <h2 class="text text-info">{{ person_is }} editing</h2>
                 <div class="accordion" id="editing">
                     {% for article in articles_editing %}
-                        {{ articlecard(article, current_user, synopsis, "editing",
+                        {{ articlecard(article, current_user, "editing",
                             open = (True if open and open|int == article.id else False)) }}
                     {% endfor %}
                 </div>
             </div>
         {% endif %}
 
-        {% if not articles_writing and not articles_editing %}
+        {% if pictures_responsible|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <h2 class="text text-info">{{ person_is }} responsible for</h2>
+                <div class="accordion" id="pictures_responsible">
+                    {% for picture in pictures_responsible %}
+                        {{ picturecard(picture, current_user, "pictures_responsible",
+                            open = (True if open and open|int == picture.id else False)) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if articles_language_checking|length > 0 %}
+            <div class="col col-md-3 col-xs-12 p-1">
+                <h2 class="text text-info">{{ person_is }} checking language for</h2>
+                {% for article in articles_language_checking %}
+                    {{ language_checking(article) }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if articles_writing|length == 0 and articles_editing|length == 0 and pictures_responsible|length == 0 %}
             <div class="col">
                 <h2> No tasks </h2>
             </div>

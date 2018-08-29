@@ -1,50 +1,46 @@
 from flask import redirect, render_template, request, url_for
 from application.articles.models import Article, Synopsis
+from application.pictures.models import Picture
 from application.articles.forms import ArticleForm, set_options, set_article_according_to_form
 from application import db
 
-def update_status(request, current_user, id):
+def update_status(request, article, current_user):
       if not current_user.editor:
             return None
-        
       form = request.form
-      article = Article.query.get(id)
 
-      if not article:
-            alert = {"type": "danger",
-                  "text": "Something went wrong."}
-      else:
-            if form["writing_status"] is not None:
-                  article.writing_status = int(form["writing_status"])
-            if form["editing_status"] is not None:
-                  if int(form["editing_status"]) <= article.writing_status:
-                        article.editing_status = int(form["editing_status"])
-                        alert = {"type": "success",
-                              "text": "Status updated!"}
-                  else:
-                        alert = {"type": "danger",
-                              "text": "Editing can not be ahead of writing!"}
-            db.session.commit()
+      if form["writing_status"] is not None:
+            article.writing_status = int(form["writing_status"])
+      if form["editing_status"] is not None:
+            if int(form["editing_status"]) <= article.writing_status:
+                  article.editing_status = int(form["editing_status"])
+                  alert = {"type": "success",
+                        "text": "Status updated!"}
+            else:
+                  alert = {"type": "danger",
+                        "text": "Editing can not be ahead of writing!"}
+      db.session.commit()
 
       return alert
 
 
-def delete_article(request, current_user, id):
+def delete_article(request, article, current_user):
       if not current_user.admin:
             return None
             
-      article_to_delete = Article.query.get(id)
-      if article_to_delete:
-            db.session.delete(article_to_delete)
-            synopsis_to_delete = Synopsis.query.filter_by(article_id = id).first()
-            if synopsis_to_delete:
-                  db.session.delete(synopsis_to_delete)
-            db.session.commit()
-            alert = {"type": "success",
-                  "text": "Article deleted!"}
-      else:
-            alert = {"type": "danger",
-                  "text": "Article was already removed."}
+      db.session.delete(article)
+      synopsis_to_delete = Synopsis.query.filter_by(article_id = article.id).first()
+      if synopsis_to_delete:
+            db.session.delete(synopsis_to_delete)
+      pictures = Picture.query.filter_by(article_id = article.id)
+
+      for picture in pictures:
+            db.session.delete(picture)
+      
+      db.session.commit()
+      alert = {"type": "success",
+            "text": "Article deleted!"}
+
       return alert
 
 

@@ -7,11 +7,8 @@
 {% else %}
 <h1 class="text-info">Create a new article</h1>
 {% endif %}
-{% if updating_article %}
+
 <form class="form form-horizontal" role="form" method="POST">
-{% else %}
-<form class="form form-horizontal" role="form" method="POST">
-{% endif %}
     <dl>
         {{ quickform(form) }}
         {% if redirect_to %}

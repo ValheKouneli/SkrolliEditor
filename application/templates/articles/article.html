@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from "articles/progress_bar_macro.html" import progressbar %}
 {% from "articles/articlecard_macro.html" import articlecard %}
+{% from "pictures/picturecard_macro.html" import picturecard %}
 
 {% block body %}
 <p>
@@ -11,6 +11,69 @@
 {% endif %}
 </p>
 
-{{ articlecard(article=article, synopsis=synopsis, current_user=current_user) }}
+
+<span class="text-center p-0 m-0">
+    <form method="GET"
+        action="{{ url_for('pictures_form', article_id=article.id) }}">
+        
+        <span class="h1 text-info mb-0">
+            Overall view for "{{ article.name }}"
+        </span>
+
+        {% if current_user.editor %}
+            <button class="btn btn-group btn-group-lg bg-transparent p-0 m-0 mb-2"
+                type="submit"
+                value="submit">
+            
+                <div class="btn-group btn-group-lg p-0 m-2"
+                    role="group">
+
+                    <div class="btn btn-success rounded-left btn-lg m-0">
+                        +
+                    </div>
+                    <div class="btn btn-dark btn-lg m-0">
+                        Add picture
+                    </div>
+                </div>
+            </button>
+        {% endif %}
+
+    </form>
+</span>
+
+<p>
+    <span class="h4 text-info mb-2">
+        {% if article.issue %}
+            Planned for issue: {{ article.issue }}
+        {% else %}
+            This article is not planned for any particular issue
+            
+            {% if current_user.editor %}
+                <a class="btn btn-basic border-info"
+                    href="{{ url_for('article_update', article_id=article.id) }}">
+                    Plan
+                </a>
+            {% endif %}
+        {% endif %}
+    </span>
+</p>
+
+
+<div class="row m-0 p-0">
+    <div class="col col-md-6 col-sm-12 m-0 mb-1 px-1 p-0">
+        {{ articlecard(article=article, current_user=current_user, open=True) }}
+    </div>
+    
+    <div class="col col-md-6 col-sm-12 m-0 mb-1 px-1 p-0">
+        {% for picture in pictures %}
+            <div class="row">
+                <div class="col col-md-12 col-sm-12">
+                    {{ picturecard(picture=picture, current_user=current_user) }}
+                </div>
+            </div>
+        {% endfor %}
+    </div> 
+</div>
+
 
 {% endblock %}

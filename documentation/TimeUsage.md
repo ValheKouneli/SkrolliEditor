@@ -121,7 +121,7 @@ Daily time usage
 
 ## Week 5, 20.-24.8.2018
 
-**Total: 22h 45 min**
+**Total: 25h 45 min**
 
 * Mon: 10h
   * Tweaking article list UI
@@ -155,3 +155,21 @@ Daily time usage
   * TODO: Normalize database?
   * TODO: Update database diagram
   * Feature: delete users
+* Friday: 3h ?
+  * ?
+
+## Week 6, 27.-31.8.2018
+
+**Total: 15h**
+
+* Monday 5 h
+  * Feature: Picture units
+  * Feature: add pictures
+* Tuesday 10 h
+  * Feature: edit and delete pictures
+  * Feature: list pictures
+  * Feature: new roles: picture_editor, language_consultant, layout_artist
+  * feature: picture editor can mark pictures ready
+  * feature: language_consultant can set themselves as the language consultant of an article
+  * feature: language_consultant of an article can mark it language_checked
+  * TODO: admin can make users editors, language consultant, picture editors and layout artists

@@ -4,11 +4,12 @@ from flask_login import login_user, login_required, logout_user, current_user
 from application import app, db
 from application.articles.models import Article
 from application.articles.views_helper import update_status, delete_article, create_article
-from application.articles.forms import ArticleForm
+from application.articles.forms import ArticleForm, create_article_form
 from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
 from application.issues.views_helper import create_new_issue, delete_issue
+from application.kanban_page_helper import react_to_post_request
 
 from sqlalchemy.sql import text
 
@@ -48,20 +49,14 @@ def articles_in_issue(issue):
     open = 0
 
     if request.method == "POST":
-        id = request.form["article_id"]
-        open = id
+        response = react_to_post_request(request, current_user)
 
-        if request.form.get('update_status', None):
-            # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
-
-        elif request.form.get('delete', None):
-            # returns None if user is not authorized
-            alert = delete_article(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(int(issueid)),
@@ -74,14 +69,14 @@ def articles_in_issue(issue):
         topic = "Articles " + issue,
         issue = issue)
 
-@app.route("/issues/<id>", methods=["GET"])
+@app.route("/issues/<id>/", methods=["GET"])
 def issue_by_id(id):
     issue = Issue.query.get(id)
     if not issue:
         return redirect(url_for("error404"))
     return redirect(url_for("articles_in_issue", issue=issue.name))
 
-@app.route("/<issue>/articles/new", methods=["GET", "POST"])
+@app.route("/<issue>/articles/new/", methods=["GET", "POST"])
 @login_required
 def articles_form_for_issue(issue):
     try:
@@ -99,10 +94,7 @@ def articles_form_for_issue(issue):
                 current_user=current_user,
                 request=request)
 
-    form = ArticleForm()
-    form.writer.choices = getPeopleOptions()
-    form.editorInCharge.choices = getEditorOptions()
-    form.issue.choices = getIssueOptions()
+    form = create_article_form()
     form.issue.data = issueid
 
     return render_template("/articles/new.html", form=form)

@@ -1,5 +1,5 @@
 from application import db, os
-from application.help import getArticlesWithCondition
+from application.help import getArticlesWithCondition, getPicturesWithCondition
 from application.models import Base
 from application.people.models import Name
 from application.articles.models import Article
@@ -15,6 +15,9 @@ class User(Base):
     password = db.Column(db.String(144), nullable=True)
     editor = db.Column(db.Boolean(), nullable=False)
     admin = db.Column(db.Boolean(), nullable=False)
+    language_consultant = db.Column(db.Boolean(), nullable=False)
+    picture_editor = db.Column(db.Boolean(), nullable=False)
+    layout_artist = db.Column(db.Boolean(), nullable=False)
 
     names = db.relationship("Name", backref='account', lazy=True)
     articles_writing = db.relationship("Article", foreign_keys=[Article.writer], lazy=True)
@@ -30,6 +33,9 @@ class User(Base):
             self.password = ""
         self.editor = False
         self.admin = False
+        self.language_consultant = False
+        self.picture_editor = False
+        self.layout_artist = False
 
     def get_id(self):
         return self.id
@@ -86,4 +92,12 @@ class User(Base):
 
     def get_articles_editing(self):
         condition = "(Article.ready = %s AND Article.editor_in_charge = %d)" % (("false" if os.environ.get("HEROKU") else "0"), self.id)
+        return getArticlesWithCondition(condition)
+
+    def get_pictures_responsible(self):
+        condition = "Picture.responsible = %d" % self.id
+        return getPicturesWithCondition(condition)
+    
+    def get_articles_language_checking(self):
+        condition = "Article.language_consultant = %d" % self.id
         return getArticlesWithCondition(condition)

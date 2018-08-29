@@ -4,7 +4,12 @@ from flask_login import login_user, login_required, logout_user, current_user
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
-from application.articles.views_helper import update_status
+from application.articles.views_helper import update_status, delete_article
+from application.pictures.views_helper import update_picture_status, delete_picture
+from application.articles.models import Article
+from application.pictures.models import Picture
+from application.tasks_page_helper import react_to_post_request
+from application.help import getArticlesWithCondition, getPicturesWithCondition, getPictureWithId
 
 
 @app.route("/auth/login/", methods = ["GET", "POST"])
@@ -21,7 +26,11 @@ def auth_login():
 
 
     login_user(user)
-    return redirect(url_for("index")) 
+    next = request.form.get("next_address")
+    if next and next != "None": 
+        return redirect(next)
+    
+    return redirect(url_for("index"))
 
 @app.route("/auth/logout/")
 def auth_logout():
@@ -81,17 +90,92 @@ def mypage():
     open = 0
 
     if request.method == "POST":
-        article_id = request.form["article_id"]
-        open = article_id
-        alert = update_status(request=request, current_user=current_user, id=article_id)
-        if not alert:
-            return redirect(url_for("error403"))
+        response = react_to_post_request(request, current_user)
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     return render_template("people/tasks.html",
         person_is = "I am",
         posessive_form = "My",
         system_name = current_user.name,
-        articles_writing = current_user.get_articles_writing(),
-        articles_editing = current_user.get_articles_editing(),
+        articles_writing = current_user.get_articles_writing().fetchall(),
+        articles_editing = current_user.get_articles_editing().fetchall(),
+        pictures_responsible = current_user.get_pictures_responsible().fetchall(),
+        articles_language_checking = current_user.get_articles_language_checking().fetchall(),
         open = open,
+        alert = alert,
+        user_id=current_user.id)
+
+@app.route("/auth/languageconsultant/", methods = ["GET", "POST"])
+def language_consultant_page():
+    alert = {}
+
+    if request.method == "POST":
+        response = react_to_post_request(request, current_user)
+
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            # fall trough
+
+    articles = getArticlesWithCondition(
+        "(Article.editing_status = 100" + \
+        " AND Article.writing_status = 100" + \
+        " AND NOT Article.language_checked" + \
+        " AND Article.language_consultant IS NULL)")
+    articles = articles.fetchall()
+
+    my_articles = None
+    if current_user.is_authenticated():
+        my_articles = getArticlesWithCondition(
+            "(Article.editing_status = 100" + \
+            " AND Article.writing_status = 100" + \
+            " AND NOT Article.language_checked" + \
+            " AND Article.language_consultant = %s)" % current_user.id)
+        my_articles = my_articles.fetchall()
+
+    return render_template("auth/language_consultant_page.html",
+        articles = articles,
+        my_articles = my_articles,
+        current_user = current_user,
+        alert = alert)   
+
+
+@app.route("/auth/pictureeditor/", methods=["GET", "POST"])
+def picture_editor_page():
+    alert = {}
+
+    if request.method == "POST":
+        if not current_user.picture_editor:
+            return redirect(url_for("error403"))
+
+        try:
+            id = int(request.form["picture_id"])
+        except:
+            message = "Request to mark picture ready failed, because either" + \
+                " parameter picture_id was missing or it was not an integer."
+            return render_template("error500.html", message=message)
+        
+        picture = getPictureWithId(id)
+        if not picture:
+            return redirect(url_for("error404"))
+        picture.ready = True
+        db.session.commit()
+        alert = {"type": "success",
+            "text": "%s for article %s marked ready!" % (picture.type, picture.article) }
+        # fall trough
+
+    pictures = getPicturesWithCondition(
+        "(Picture.status = 100" + \
+        " AND NOT Picture.ready)")
+    pictures = pictures.fetchall()
+
+    return render_template("auth/picture_editor_page.html",
+        pictures = pictures,
+        current_user = current_user,
         alert = alert)

@@ -7,8 +7,10 @@ from application.articles.views_helper import update_status, delete_article, cre
 from application.articles.forms import ArticleForm, create_article_form, \
     set_article_according_to_form, replicate_article_form
 from application.auth.models import User
+from application.pictures.views_helper import update_picture_status, delete_picture
 from application.help import getArticleWithId, getArticlesWithCondition, \
-    getPeopleOptions, getEditorOptions, getIssueOptions
+    getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
+from application.kanban_page_helper import react_to_post_request
 
 
 
@@ -18,20 +20,14 @@ def articles_index():
     open = 0
 
     if request.method == "POST":
-        id = request.form["article_id"]
-        open = id
+        response = react_to_post_request(request, current_user)
 
-        if request.form.get('update_status', None):
-            # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
-
-        elif request.form.get('delete', None):
-            # returns None if user is not authorized
-            alert = delete_article(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     # show all articles
     return render_template("articles/editor_view.html", 
@@ -44,6 +40,63 @@ def articles_index():
         open = open,
         topic = "All articles")
 
+@app.route("/articles/<article_id>/", methods=["GET", "POST"])
+def articles_show(article_id):
+    alert = {}
+    try:
+        id = int(article_id)
+    except:
+        return redirect(url_for("error404"))
+
+    article = Article.query.get(id)
+    if not article:
+        return redirect(url_for("error404"))
+
+    if request.method == "POST":
+        if not current_user and current_user.editor:
+            return redirect(url_for("error403"))
+
+        if request.form.get('update_status', None):
+            # returns None if user is not authorized
+            alert = update_status(request, article, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            # FALL THROUGH
+
+        elif request.form.get('update_picture_status', None):
+            # returns None if user is not authorized
+            alert = update_picture_status(request, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            # FALL THROUGH
+
+        elif request.form.get('delete_picture', None):
+            # returns None if user is not authorized
+            alert = delete_picture(request, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            # FALL THROUGH
+
+        elif request.form.get('delete', None):
+            alert = delete_article(request, article, current_user)
+            if not alert:
+                return redirect(url_for("error403"))
+            if article.issue:
+                return redirect(url_for("issue_by_id", id=article.issue))
+            else:
+                return redirect(url_for("articles_orphans"))
+
+
+    article = getArticleWithId(int(article_id))
+    if not article:
+        return redirect(url_for("error404"))
+    pictures = getPicturesForArticle(int(article_id)).fetchall()
+    
+    return render_template("articles/article.html",
+        article=article,
+        pictures=pictures,
+        current_user=current_user,
+        alert = alert)
 
 
 @app.route("/articles/new/", methods=["GET", "POST"])
@@ -143,24 +196,15 @@ def articles_orphans():
     alert = {}
     open = 0
 
-    alert = {}
-    open = 0
-
     if request.method == "POST":
-        id = request.form["article_id"]
-        open = id
+        response = react_to_post_request(request, current_user)
 
-        if request.form.get('update_status', None):
-            # returns None if user is not authorized
-            alert = update_status(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
-
-        elif request.form.get('delete', None):
-            # returns None if user is not authorized
-            alert = delete_article(request=request, current_user=current_user, id=int(id))
-            if not alert:
-                return redirect(url_for("error403"))
+        if response["redirect"]:
+            return response["redirect"]
+        else:
+            alert = response["alert"]
+            open = response["open"]
+            # fall trough
 
     return render_template("articles/editor_view.html", 
         planned_articles = Article.get_all_planned_articles(None),

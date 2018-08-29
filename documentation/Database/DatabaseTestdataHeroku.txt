@@ -1,10 +1,10 @@
-INSERT INTO account (id, name, username, password, editor, admin) VALUES (1, 'Admin', 'admin', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, True);
-INSERT INTO account (id, name, username, password, editor, admin) VALUES (2, 'Testi Editor', 'editor', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, False);
+INSERT INTO account (id, name, username, password, editor, admin, language_consultant, picture_editor, layout_artist) VALUES (1, 'Admin', 'admin', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, True, True, True, True);
+INSERT INTO account (id, name, username, password, editor, admin, language_consultant, picture_editor, layout_artist) VALUES (2, 'Testi Editor', 'editor', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, False, False, False, False);
 INSERT INTO name (name, user_id) VALUES ('Testi Editor', 2);
 INSERT INTO name (name, user_id) VALUES ('Admin', 1);
 INSERT INTO name (name, user_id) VALUES ('Testi Käyttäjä', 2);
 INSERT INTO issue (name, current) VALUES ('2018.3', True);
-INSERT INTO account (id, name, editor, admin) VALUES (3, 'Jari Jamppa', False, False);
+INSERT INTO account (id, name, editor, admin, language_consultant, picture_editor, layout_artist) VALUES (3, 'Jari Jamppa', False, False, False, False, False);
 INSERT INTO name (name, user_id) VALUES ('Jari Jamppa', 3);
-INSERT INTO article (name, issue, writer, editor_in_charge, writing_status, editing_status, language_consultation_status, layout_status, ready, created_by) VALUES ('Rakentelujuttu', 1, 2, 1, 50, 10, 0, 0, False, 1);
-INSERT INTO article (name, issue, writer, writing_status, editing_status, language_consultation_status, layout_status, ready, created_by) VALUES ('Retrojuttu', 1, 1, 90, 50, 0, 0, False, 1);
+INSERT INTO article (name, issue, writer, editor_in_charge, writing_status, editing_status, language_checked, layout_status, ready, created_by) VALUES ('Rakentelujuttu', 1, 2, 1, 50, 10, False, 0, False, 1);
+INSERT INTO article (name, issue, writer, writing_status, editing_status, language_checked, layout_status, ready, created_by) VALUES ('Retrojuttu', 1, 1, 90, 50, False, 0, False, 1);

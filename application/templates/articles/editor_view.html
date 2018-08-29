@@ -22,50 +22,53 @@
 <hr class="style1 m-0"></hr>
 
 <div class="row">
-    <div class="col p-1" style="max-width: 20%;">
+    <div class="col col-md-2 col-xs-12 p-1">
         <h2 class="text-info">Planned</h2>
         <div class="accordion" id="planned">
             {% for article in planned_articles %}
-                {{ articlecard(article, current_user, synopsis, "planned",
+                {{ articlecard(article, current_user, "planned",
                     open = (True if open and open|int == article.id else False)) }}
             {% endfor %}
         </div>
     </div>
-    <div class="col p-1" style="max-width: 20%;">
+    <div class="col col-md-2 col-xs-12 p-1">
         <h2 class="text-info">Draft</h2>
         <div class="accordion" id="draft">
             {% for article in draft_articles %}
-                {{ articlecard(article, current_user, synopsis, "draft",
+                {{ articlecard(article, current_user, "draft",
                     open = (True if open and open|int == article.id else False)) }}
             {% endfor %}
         </div>
     </div>
-    <div class="col p-1" style="max-width: 20%;">
+    <div class="col col-md-2 col-xs-12 p-1">
         <h2 class="text-info">Written</h2>
         <div class="accordion" id="written">
             {% for article in written_articles %}
-                {{ articlecard(article, current_user, synopsis, "written",
+                {{ articlecard(article, current_user, "written",
                     open = (True if open and open|int == article.id else False)) }}
             {% endfor %}
         </div>
     </div>
-    <div class="col p-1" style="max-width: 20%;">
+    <div class="col col-md-2 col-xs-12 p-1">
         <h2 class="text-info">Edited</h2>
         <div class="accordion" id="edited">
             {% for article in edited_articles %}
-                {{ articlecard(article, current_user, synopsis, "edited",
+                {{ articlecard(article, current_user, "edited",
                     open = (True if open and open|int == article.id else False)) }}
             {% endfor %}
         </div>
     </div>
-    <div class="col p-1" style="max-width: 20%;">
+    <div class="col col-md-2 col-xs-12 p-1">
         <h2 class="text-info">Finished</h2>
         <div class="accordion" id="finished">
             {% for article in finished_articles %}
-                {{ articlecard(article, current_user, synopsis, "finished",
+                {{ articlecard(article, current_user, "finished",
                     open = (True if open and open|int == article.id else False)) }}
             {% endfor %}
         </div>
+    </div>
+    <div class="col col-md-2 col-xs-12 p-1">
+        <!-- Filler column -->
     </div>
 </div>
 

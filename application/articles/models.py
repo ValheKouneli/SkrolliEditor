@@ -14,7 +14,7 @@ class Article(Base):
       writing_status = db.Column(db.Integer, nullable=False)
       language_consultant = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       length_in_chars = db.Column(db.Integer, nullable=True)
-      language_consultation_status = db.Column(db.Integer, nullable=False)
+      language_checked = db.Column(db.Boolean, nullable=False)
       layout_artist = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=True)
       layout_status = db.Column(db.Integer, nullable=False)
       ready = db.Column(db.Boolean, nullable=False)
@@ -27,7 +27,7 @@ class Article(Base):
             self.ready = False
             self.editing_status = 0
             self.writing_status = 0
-            self.language_consultation_status = 0
+            self.language_checked = False
             self.layout_status = 0
             self.created_by = created_by
 
@@ -90,7 +90,7 @@ class Article(Base):
       @staticmethod
       def get_all_finished_articles(issue=0):
             issuecondition = get_issue_condition(issue)
-            condition = "Article.ready = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
+            condition = "Article.language_checked = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
                   issuecondition
             return getArticlesWithCondition(condition)
 

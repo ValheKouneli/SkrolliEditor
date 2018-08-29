@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% from "quickform_macro.html" import quickform %}
+
+{% block body %}
+{% if updating_picture %}
+
+    {% if article and article.name %}
+        <h1 class="text-info">Edit picture commission for article "{{ article.name }}"</h1>
+    {% else %}
+        <h1 class="text-info">Edit orphan picture commission</h1>
+    {% endif %}
+
+{% else %}
+    <h1 class="text-info">Commission pictures for article "{{ article.name }}"</h1>
+{% endif %}
+
+<form class="form form-horizontal" role="form" method="POST">
+
+    <dl>
+        {{ quickform(form) }}
+
+        {% if redirect_to %}
+            <input class="hidden" type="hidden" name="redirect_to" value="{{ redirect_to }}">
+        {% endif %}
+
+        {% if picture and picture.id %}
+            <input class="hidden" type="hidden" name="picture_id" value="{{ picture.id }}">
+        {% endif %}
+
+        {% if updating_picture %}
+        <input class="btn btn-primary"
+            name="update_picture"
+            type="submit"
+            action="{{ url_for('picture_update', picture_id=picture.id) }}"
+            value="Update commission" />
+        {% else %}
+        <input class="btn btn-primary"
+            name="create_picture" 
+            type="submit"
+            action="{{ url_for('pictures_form', article_id=article.id) }}"
+            value="Add a new commission" />
+        {% endif %}
+    </dl>
+</form>
+{% endblock %}
