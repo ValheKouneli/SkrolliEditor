@@ -31,9 +31,10 @@ def pictures_index():
         alert = alert,
         open = open)
 
-@app.route('/articles/<article_id>/new_picture_commission/', methods=["GET", "POST"])
+@app.route('/pictures/new_picture_commission_for/<article_id>/', methods=["GET", "POST"])
 @login_required
 def pictures_form(article_id):
+    print("HERE")
     if not current_user.editor:
         return redirect(url_for("error404"))
     
@@ -58,6 +59,8 @@ def pictures_form(article_id):
                     p.responsible = user_id
             db.session.add(p)
             db.session.commit()
+
+            print("HERE2")
             
             return redirect(url_for("articles_show", article_id=article_id))
 

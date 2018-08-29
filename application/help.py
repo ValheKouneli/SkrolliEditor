@@ -44,6 +44,8 @@ def getArticlesAmountCondition(amount=0, condition="(0=0)"):
     order = ""
     if amount > 0:
         howmany = " LIMIT %d" % int(amount)
+    elif amount == 0:
+        howmany = ""
     if amount != 1:
         order = " ORDER BY Issue.name"
     query = text(
@@ -86,7 +88,7 @@ def getPicturesForArticle(id):
     if not isinstance(id, int):
         return None
     condition = "Picture.article_id = %d" % id
-    return getPicturesWithCondition(condition)
+    return getPicturesWithCondition(condition=condition)
 
 def getPictureWithId(id):
     if not isinstance(id, int):
@@ -99,7 +101,7 @@ def getPicturesWithCondition(condition="0=0"):
 
 # DANGER DANGER never call this function without
 # making sure that the condition is safe
-def getPicturesAmountCondition(amount=1, condition="0=0"):
+def getPicturesAmountCondition(amount=0, condition="0=0"):
     howmany = ""
     order = ""
     if amount > 0:
