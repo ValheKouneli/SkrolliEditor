@@ -19,10 +19,13 @@
                         <dt>{{ picture.type }} &rarr; {{ picture.article }} </dt>
                         <dd>{{ picture.description }}</dd>
 
-                        <form method="POST">
-                            <input type="hidden" name="picture_id" value="{{ picture.id }}">
-                            <input type="submit" value="Ready" class="btn btn-success">
-                        </form>
+                        {% if current_user and (current_user.picture_editor or current_user.admin) %}
+                            <form method="POST">
+                                <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                                <input type="submit" value="Ready" class="btn btn-success">
+                            </form>
+                        {% endif %}
+
                     {% endfor %}
                 </dl>
             </div>

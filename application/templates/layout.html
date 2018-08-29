@@ -62,24 +62,22 @@
                               </div>
                           </div>
                       </li>
-                      {% if current_user and current_user.admin %}
-                        <li class="nav-item mr-1">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle"
-                                  type="button"
-                                  data-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false">
-                                  
-                                  View as
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="{{ url_for('picture_editor_page') }}"> Picture editor </a>
-                                  <a class="dropdown-item" href="{{ url_for('language_consultant_page') }}"> Language consultant </a>
-                                </div>
-                            </div>
-                        </li>
-                      {% endif %}
+                      <li class="nav-item mr-1">
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                                
+                                View as
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ url_for('picture_editor_page') }}"> Picture editor </a>
+                                <a class="dropdown-item" href="{{ url_for('language_consultant_page') }}"> Language consultant </a>
+                              </div>
+                          </div>
+                      </li>
                     </ul>
                 </div>
 

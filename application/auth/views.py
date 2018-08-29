@@ -107,7 +107,6 @@ def mypage():
         user_id=current_user.id)
 
 @app.route("/auth/languageconsultant/", methods = ["GET", "POST"])
-@login_required
 def language_consultant_page():
     alert = {}
 
@@ -127,12 +126,14 @@ def language_consultant_page():
         " AND Article.language_consultant IS NULL)")
     articles = articles.fetchall()
 
-    my_articles = getArticlesWithCondition(
-        "(Article.editing_status = 100" + \
-        " AND Article.writing_status = 100" + \
-        " AND NOT Article.language_checked" + \
-        " AND Article.language_consultant = %s)" % current_user.id)
-    my_articles = my_articles.fetchall()
+    my_articles = None
+    if current_user.is_authenticated():
+        my_articles = getArticlesWithCondition(
+            "(Article.editing_status = 100" + \
+            " AND Article.writing_status = 100" + \
+            " AND NOT Article.language_checked" + \
+            " AND Article.language_consultant = %s)" % current_user.id)
+        my_articles = my_articles.fetchall()
 
     return render_template("auth/language_consultant_page.html",
         articles = articles,
@@ -142,7 +143,6 @@ def language_consultant_page():
 
 
 @app.route("/auth/pictureeditor/", methods=["GET", "POST"])
-@login_required
 def picture_editor_page():
     alert = {}
 
