@@ -40,7 +40,11 @@
                                 data-placement="top"
                                 title="Link to article.">
 
-                                Pics
+                                {% if article.picture_amount|int == 0 %}
+                                    No pics
+                                {% else %}
+                                    Pics
+                                {% endif %}
                             </a>
                         </div>
                 
