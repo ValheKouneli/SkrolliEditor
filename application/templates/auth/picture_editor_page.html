@@ -16,8 +16,15 @@
             <div class="col col-md-3 col-xs-12 p-1">
                 <dl>
                     {% for picture in pictures %}
-                        <dt>{{ picture.type }} &rarr; {{ picture.article }} </dt>
-                        <dd>{{ picture.description }}</dd>
+                        <dt>
+                            {{ picture.type }} &rarr; 
+                            <a href="{{ url_for('articles_show', article_id=picture.article_id) }}">
+                                {{ picture.article }}
+                            </a>
+                        </dt>
+                        <dd>
+                            {{ picture.description }}
+                        </dd>
 
                         {% if current_user and (current_user.picture_editor or current_user.admin) %}
                             <form method="POST">
