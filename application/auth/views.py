@@ -131,7 +131,7 @@ def language_consultant_page():
     articles = articles.fetchall()
 
     my_articles = None
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         my_articles = getArticlesWithCondition(
             "(Article.editing_status = 100" + \
             " AND Article.writing_status = 100" + \
