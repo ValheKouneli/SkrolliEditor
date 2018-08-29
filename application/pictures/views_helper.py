@@ -5,7 +5,7 @@ from application.pictures.forms import replicate_picture_form, create_picture_fo
 from application import db
 
 def update_picture_status(request, current_user):
-    if not current_user.editor:
+    if not current_user.has_role("EDITOR"):
         return None
         
     form = request.form
@@ -46,7 +46,7 @@ def update_picture_status(request, current_user):
     return alert
 
 def delete_picture(request, current_user):
-    if not current_user.admin:
+    if not current_user.has_role("ADMIN"):
         return None
 
     try:

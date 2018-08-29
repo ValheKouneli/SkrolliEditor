@@ -8,9 +8,9 @@ from flask_login import current_user
 @app.route("/")
 def index():
     if current_user.is_authenticated:
-        if current_user.picture_editor:
+        if current_user.is_authenticated and current_user.has_role("PICTURE_EDITOR"):
             return redirect(url_for("picture_editor_page"))
-        elif current_user.language_consultant:
+        elif current_user.is_authenticated and current_user.has_role("LANGUAGE_CONSULTANT"):
             return redirect(url_for("language_consultant_page"))
 
         return redirect(url_for("mypage"))

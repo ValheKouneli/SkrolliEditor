@@ -41,7 +41,7 @@ def react_to_post_request(request, current_user):
 
         # request is to mark article's language checked
         elif request.form('mark_ready', None):
-            if (not current_user.language_consultant and
+            if (not current_user.has_role("LANGUAGE_CONSULTANT") and
                 article.language_consultant == current_user.id):
 
                 response["redirect"] = redirect(url_for("error403"))
@@ -55,7 +55,7 @@ def react_to_post_request(request, current_user):
 
         # request is to make current user article's language consultant
         elif request.form.get("grab", None):
-            if not current_user.language_consultant:
+            if not current_user.has_role("LANGUAGE_CONSULTANT"):
                 response["redirect"] = redirect(url_for("error403"))
                 return response
 
@@ -72,7 +72,7 @@ def react_to_post_request(request, current_user):
                 return response
             elif ((article.writer == current_user.id or
                 article.editor_in_charge == current_user.id) and
-                not current_user.admin):
+                not current_user.has_role("ADMIN")):
                 alert = {"type": "danger",
                     "text": "You are the editor or writer of this article."}
                 response["alert"] = alert

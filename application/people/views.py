@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.articles.views_helper import create_article
 from application.articles.forms import create_article_form
 from application.auth.models import User
@@ -16,7 +16,7 @@ def people_index():
 
     if request.method == "POST":
         if request.form.get('create_dummy_user', None):
-            if not current_user.editor:
+            if not current_user.has_role("EDITOR"):
                 return redirect(url_for("error403"))
             
             form = NameForm(request.form)
@@ -33,7 +33,7 @@ def people_index():
                     "text": "New dummy user created!"}
         
         elif request.form.get('delete', None):
-            if not current_user.admin:
+            if not current_user.has_role("ADMIN"):
                 return redirect(url_for("error403"))
 
             id = int(request.form["id"])
@@ -59,15 +59,13 @@ def people_index():
 
 
 @app.route("/people/<user_id>/edit", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def person_edit(user_id):
 
     alert = {}
     form = AliasForm()
     
     if request.method == "POST":
-        if not current_user.editor:
-            return redirect(url_for("error403"))
 
         form = AliasForm(request.form)
 
@@ -103,11 +101,8 @@ def person_edit(user_id):
 
 
 @app.route("/people/<user_id>/delete_name/<name_id>", methods=["POST"])
-@login_required
+@login_required(role="EDITOR")
 def delete_name(name_id, user_id):
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
     name_to_delete = Name.query.filter_by(id = name_id).first()
     db.session.delete(name_to_delete)
     db.session.commit()
@@ -143,18 +138,15 @@ def show_tasks(user_id):
         articles_writing = articles_writing,
         articles_editing = articles_editing,
         pictures_responsible = pictures_responsible,
-        language_checking = language_checking,
+        language_checking = articles_language_checking,
         posessive_form = "" + name + "'s",
         system_name = user.name,
         person_is = name + " is",
         user_id=user.id)
 
 @app.route("/people/<user_id>/new_article/", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def new_article_for_writer(user_id):
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
     try:
         id = int(user_id)
     except:

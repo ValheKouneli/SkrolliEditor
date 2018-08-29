@@ -15,7 +15,7 @@ id PK integer
 date_created datetime
 date_modified datetime
 name string
-account_id: FK >- Account.id
+user_id: FK >- Account.id
 
 Article
 -

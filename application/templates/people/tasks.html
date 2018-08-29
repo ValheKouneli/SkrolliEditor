@@ -11,7 +11,7 @@
 </p>
 <span class="h1 text-info">
     {{ posessive_form }} tasks
-    {% if current_user and current_user.editor %}
+    {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
         <a class="btn btn-info"
             href="{{ url_for('new_article_for_writer', user_id=user_id) }}">
             New article
