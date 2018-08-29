@@ -40,7 +40,7 @@ def react_to_post_request(request, current_user):
             return response
 
         # request is to mark article's language checked
-        elif request.form('mark_ready', None):
+        elif request.form.get('mark_ready', None):
             if (not current_user.language_consultant and
                 article.language_consultant == current_user.id):
 
