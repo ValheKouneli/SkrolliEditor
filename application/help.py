@@ -118,6 +118,7 @@ def getPicturesAmountCondition(amount=0, condition="0=0"):
         " Picture.description AS description,"
         " Article.name AS article,"
         " Article.id AS article_id,"
+        " Article.writing_status AS writing_status,"
         " Responsible.name AS responsible,"
         " Picture.status AS status"
         " FROM Picture"

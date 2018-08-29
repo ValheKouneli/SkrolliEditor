@@ -23,21 +23,26 @@
                         {{ picture.type }} &rarr; {{ picture.article }}
                     </div>
 
-                
-                        <div class="btn pl-1 pr-1 text-right">
-                            <a class="badge badge-pill badge-success"
-                                href="{{ url_for('articles_show', article_id=picture.article_id) }}"
-                                data-toggle="tooltip"
-                                data-placement="top"
-                                title="Link to article.">
+                    <div class="btn pl-1 pr-1 text-right">
+                    {% if picture.writing_status|int == 100 %}
+                        <a class="badge badge-pill badge-success"
+                    {% elif picture.writing_status|int >= 40 %}
+                        <a class="badge badge-pill badge-warning"
+                    {% else %}
+                        <a class="badge badge-pill badge-danger"
+                    {% endif %}
+                            href="{{ url_for('articles_show', article_id=picture.article_id) }}"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Link to article.">
 
-                                Text
-                            </a>
-                        </div>
-                
-                        <div class="btn pl-0 pr-1 text-right">
-                            &#9776;
-                        </div>
+                            Text
+                        </a>
+                    </div>
+            
+                    <div class="btn pl-0 pr-1 text-right">
+                        &#9776;
+                    </div>
                 </div>
             </div> 
         </div>
