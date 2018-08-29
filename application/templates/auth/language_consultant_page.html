@@ -13,7 +13,7 @@
 
 
 <div class="row m-0">
-        {% if articles|length > 0 %}
+        {% if articles and articles|length > 0 %}
             <div class="col col-md-3 col-xs-12 p-1">
                 <div class="h3 text-info">Articles waiting</div>
                 {% for article in articles %}
@@ -49,7 +49,7 @@
             </div>
         {% endif %}
 
-        {% if my_articles|length > 0 %}
+        {% if my_articles and my_articles|length > 0 %}
             <div class="col col-md-3 col-xs-12 p-1">
                 <div class="h3 text-info">My articles in progress</div>
                 {% for article in my_articles %}
