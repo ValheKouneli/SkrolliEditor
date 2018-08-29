@@ -27,7 +27,7 @@ def auth_login():
 
     login_user(user)
     next = request.form.get("next_address")
-    if next != "None": 
+    if next and next != "None": 
         return redirect(next)
     
     return redirect(url_for("index"))
