@@ -15,7 +15,7 @@ def index():
 
         return redirect(url_for("mypage"))
     else:
-        return render_template("index.html")
+        return redirect(url_for("auth_login"))
 
 @app.route("/404/")
 def error404():
