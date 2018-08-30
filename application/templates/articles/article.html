@@ -20,7 +20,7 @@
             Overall view for "{{ article.name }}"
         </span>
 
-        {% if current_user.editor %}
+        {% if current_user and current_user.editor %}
             <button class="btn btn-group btn-group-lg bg-transparent p-0 m-0 mb-2"
                 type="submit"
                 value="submit">
@@ -48,7 +48,7 @@
         {% else %}
             This article is not planned for any particular issue
             
-            {% if current_user.editor %}
+            {% if current_user and current_user.editor %}
                 <a class="btn btn-basic border-info"
                     href="{{ url_for('article_update', article_id=article.id) }}">
                     Plan

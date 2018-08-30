@@ -3,7 +3,7 @@
 
 {% block body %}
 <h1 class="text-info">All users</h1>
-{% if current_user.admin %}
+{% if current_user and current_user.admin %}
   <p>
     <form class="form form-horizontal" method="POST">
         {{ quickform(form) }}
@@ -16,7 +16,7 @@
 {% if people %}
   <table class="table table-sm">
     <tr>
-    {% if current_user.editor %}
+    {% if current_user and current_user.editor %}
       <th>Edit</th>
     {% endif %}
       <th>Name</th>
@@ -25,7 +25,7 @@
     </tr>
     {% for person in people %}
     <tr class="pb-0 mb-0">
-      {% if current_user.editor %}
+      {% if current_user and current_user.editor %}
       <td class="pb-0 mb-0">
           <a href="{{ url_for('person_edit', user_id=person.id) }}">Edit</a>
           
