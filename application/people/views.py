@@ -143,7 +143,7 @@ def show_tasks(user_id):
         articles_writing = articles_writing,
         articles_editing = articles_editing,
         pictures_responsible = pictures_responsible,
-        language_checking = language_checking,
+        articles_language_checking = articles_language_checking,
         posessive_form = "" + name + "'s",
         system_name = user.name,
         person_is = name + " is",
