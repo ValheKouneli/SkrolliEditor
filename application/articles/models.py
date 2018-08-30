@@ -83,7 +83,7 @@ class Article(Base):
             issuecondition = get_issue_condition(issue)
             condition = "article.editing_status = 100 AND" + \
                   " article.writing_status = 100 AND" + \
-                  " Article.ready = %s" % ("false" if os.environ.get("HEROKU") else "0") + \
+                  " Article.language_checked = %s" % ("false" if os.environ.get("HEROKU") else "0") + \
                   issuecondition
             return getArticlesWithCondition(condition)
 
