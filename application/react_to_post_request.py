@@ -26,6 +26,8 @@ def react_to_post_request(request, current_user):
             response["redirect"] = redirect(url_for("error404"))
             return response
 
+        response["open"] = id
+
 
         # request is to update article status
         if request.form.get('update_status', None):
@@ -33,12 +35,10 @@ def react_to_post_request(request, current_user):
             alert = update_status(request, article, current_user)
             if not alert:
                 response["redirect"] = redirect(url_for("error403"))
-            try:
-                response["open"] = request.form["article_id"]
-            except:
-                response["open"] = 0
             response["alert"] = alert
             return response
+
+
 
         # request is to mark article's language checked
         elif request.form.get('mark_ready', None):

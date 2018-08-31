@@ -9,7 +9,7 @@ from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
 from application.issues.views_helper import create_new_issue, delete_issue
-from application.kanban_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 
 from sqlalchemy.sql import text
 

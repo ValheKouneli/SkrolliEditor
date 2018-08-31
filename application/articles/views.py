@@ -10,7 +10,7 @@ from application.auth.models import User
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.help import getArticleWithId, getArticlesWithCondition, \
     getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
-from application.kanban_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 
 
 
