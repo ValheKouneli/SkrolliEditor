@@ -47,7 +47,7 @@ def delete_issue(request, current_user):
     alert = {"type": "success",
         "text": "Issue deleted succesfully!"}
 
-    return what_to_render(form, alert)
+    return what_to_render(request.form, alert)
 
 def what_to_render(form, alert):
     query = text(
