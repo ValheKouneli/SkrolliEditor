@@ -5,7 +5,9 @@ from application.articles.forms import ArticleForm, set_options, set_article_acc
 from application import db
 
 def update_status(request, article, current_user):
-      if not current_user.has_role("EDITOR"):
+      if not (current_user and
+            current_user.has_role("EDITOR")):
+            
             return None
       form = request.form
 
@@ -25,7 +27,9 @@ def update_status(request, article, current_user):
 
 
 def delete_article(request, article, current_user):
-      if not current_user.has_role("ADMIN"):
+      if not (current_user and
+            current_user.has_role("ADMIN")):
+
             return None
             
       db.session.delete(article)
@@ -45,6 +49,11 @@ def delete_article(request, article, current_user):
 
 
 def create_article(request, current_user):
+      if not (current_user and
+            current_user.has_role("EDITOR")):
+            
+            return None
+
       redirect_to = None
 
       if request.form.get('redirect_to', None):

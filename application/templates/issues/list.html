@@ -6,7 +6,7 @@
 
 <div class="row">
 
-{% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
+{% if current_user and current_user.has_role("EDITOR") %}
     <div class="col-12 mb-2 ml-2">
         <form class="form form-horizontal"
             role="form"
@@ -33,7 +33,7 @@
                         </p>
                     </div>
                     <footer class="text-right m-0">
-                        {% if current_user.is_authenticated and current_user.has_role("ADMIN") %}
+                        {% if current_user and current_user.has_role("ADMIN") %}
                             <form class="form form-horizontal"
                                 role="form"
                                 method="POST">

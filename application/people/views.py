@@ -32,7 +32,7 @@ def people_index():
 
         # request is to create new dummy user
         if request.form.get('create_dummy_user', None):
-            if not current_user.has_role("EDITOR"):
+            if not (current_user and current_user.has_role("EDITOR")):
                 return redirect(url_for("error403"))
             
             form = NameForm(request.form)
@@ -51,7 +51,7 @@ def people_index():
         
         # request is to delete user
         elif request.form.get('delete', None):
-            if not current_user.has_role("ADMIN"):
+            if not (current_user and current_user.has_role("ADMIN")):
                 return redirect(url_for("error403"))
 
             if user:
@@ -72,7 +72,7 @@ def people_index():
             
         # request is to make user editor
         elif request.form.get('make_editor', None):
-            if not current_user.has_role("ADMIN"):
+            if not (current_user and current_user.has_role("ADMIN")):
                 return redirect(url_for("error403"))
 
             if not user:
@@ -90,7 +90,7 @@ def people_index():
 
         # request is to make user not-editor
         elif request.form.get('remove_editor', None):
-            if not current_user.has_role("ADMIN"):
+            if not (current_user and current_user.has_role("ADMIN")):
                 return redirect(url_for("error403"))
 
             if not user:

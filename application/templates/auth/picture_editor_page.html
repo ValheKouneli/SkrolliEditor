@@ -26,7 +26,7 @@
                             {{ picture.description }}
                         </dd>
 
-                        {% if current_user.is_authenticated and (current_user.has_role("PICTURE_EDITOR") or current_user.has_role("ADMIN")) %}
+                        {% if current_user and (current_user.has_role("PICTURE_EDITOR") or current_user.has_role("ADMIN")) %}
                             <form method="POST">
                                 <input type="hidden" name="picture_id" value="{{ picture.id }}">
                                 <input type="submit" value="Ready" class="btn btn-success">

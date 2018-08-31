@@ -131,7 +131,7 @@ def language_consultant_page():
     articles = articles.fetchall()
 
     my_articles = None
-    if current_user.is_authenticated:
+    if current_user:
         my_articles = getArticlesWithCondition(
             "(Article.editing_status = 100" + \
             " AND Article.writing_status = 100" + \
@@ -151,7 +151,8 @@ def picture_editor_page():
     alert = {}
 
     if request.method == "POST":
-        if not current_user.has_role("PICTURE_EDITOR"):
+        if not (current_user and
+            current_user.has_role("PICTURE_EDITOR")):
             return redirect(url_for("error403"))
 
         try:
