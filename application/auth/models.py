@@ -122,7 +122,7 @@ class User(Base):
         return getPicturesWithCondition(condition)
     
     def get_articles_language_checking(self):
-        condition = "Article.language_consultant = %d" % self.id
+        condition = "Article.language_consultant = %d AND NOT Article.language_checked" % self.id
         return getArticlesWithCondition(condition)
 
 class UserRole(Base):
