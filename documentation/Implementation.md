@@ -14,3 +14,5 @@ The database is not completely normalized. But in the last days before the cours
 Article's synopsis is in its separate table, but more of its field could have their own table as well.
 
 I did not implement paging as per the course requirements, because I heard about this requirement when there was only a couple of days of the course left, and I had more important features to do. It would be easy to do, however, using the LIMIT and OFFSET keywords in the database query.
+
+Most of the pages should be nice to view even on mobile...

@@ -22,6 +22,8 @@ https://skrollieditor.herokuapp.com/
 
 [On implementation](/documentation/Implementation.md)
 
+[Todo](/documentation/Todo.md)
+
 ## Project definition
 
 The aim of this project is to create a web application for the editorial team of Skrolli magazine that can eventually replace the current system for managing the editorial process of Skrolli.
