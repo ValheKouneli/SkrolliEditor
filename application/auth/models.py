@@ -44,12 +44,8 @@ class User(Base):
 # credit partially to anonOstrich/peliloki/
 
     def roles(self):
-        query = text(
-            "SELECT role.name FROM role"
-            " WHERE role.id IN"
-            " (SELECT role_id FROM userrole WHERE user_id = %d)" % self.id
-        )
-        return db.engine.execute(query).fetchall()
+        return Role.query.join(Role.user_roles).filter_by(user_id=self.id).all()
+
 
     def has_role(self, role_name):
         roles = self.roles()
@@ -59,11 +55,11 @@ class User(Base):
         return False
 
     # parameters are role objects
-    def add_roles(self, roles):
+    def add_roles(self, *roles):
         def create_user_role(r):
             return UserRole(user_id = self.id, role_id = r.id)
         
-        user_roles = (lambda role: create_user_role(role), roles)
+        user_roles = map(create_user_role, roles)
         db.session.add_all(user_roles)
         db.session.commit()
 

@@ -4,7 +4,8 @@ from flask_login import current_user
 from application import app, db, login_required
 from application.articles.views_helper import create_article
 from application.articles.forms import create_article_form
-from application.auth.models import User
+from application.articles.models import Article
+from application.auth.models import User, Role, UserRole
 from application.people.models import Name
 from application.people.forms import NameForm, AliasForm
 from application.react_to_post_request import react_to_post_request
@@ -15,6 +16,21 @@ def people_index():
     alert = {}
 
     if request.method == "POST":
+
+        # if request is related to an existing User, fetch user
+        if (request.form.get('delete', None) or 
+            request.form.get('make_editor', None) or
+            request.form.get('remove_editor', None)):
+
+            try:
+                id = int(request.form['id'])
+            except:
+                message = "User related request did not contain required parameter id (int)."
+                return render_template("error500.html", message=message)
+
+            user = User.query.get(id)
+
+        # request is to create new dummy user
         if request.form.get('create_dummy_user', None):
             if not current_user.has_role("EDITOR"):
                 return redirect(url_for("error403"))
@@ -31,24 +47,72 @@ def people_index():
 
                 alert = {"type": "success",
                     "text": "New dummy user created!"}
+            # fall through
         
+        # request is to delete user
         elif request.form.get('delete', None):
             if not current_user.has_role("ADMIN"):
                 return redirect(url_for("error403"))
 
-            id = int(request.form["id"])
-            user_to_delete = User.query.get(id)
-            if user_to_delete:
+            if user:
                 names = Name.query.filter_by(user_id = id)
+                roles = UserRole.query.filter_by(user_id = id)
                 for name in names:
                     db.session.delete(name)
-                db.session.delete(user_to_delete) 
+                for role in roles:
+                    db.session.delte(role)
+                db.session.delete(user) 
                 db.session.commit()
                 alert = {"type": "success",
                     "text": "User succesfully deleted!"}
             else:
                 alert = {"type": "danger",
                     "text": "Somebody already deleted that user."}
+            # fall through
+            
+        # request is to make user editor
+        elif request.form.get('make_editor', None):
+            if not current_user.has_role("ADMIN"):
+                return redirect(url_for("error403"))
+
+            if not user:
+                alert = {"type": "danger",
+                    "text": "User was deleted."}
+            else:
+                editor = Role.query.filter_by(name="EDITOR").first()
+                if not editor:
+                    message = "There is no role 'EDITOR' in the database!"
+                    return render_template("error500.html", message=message)
+                user.add_role(editor)
+                alert = {"type": "success",
+                    "text": "User %s is now editor!" % user.name}
+            # fall through
+
+        # request is to make user not-editor
+        elif request.form.get('remove_editor', None):
+            if not current_user.has_role("ADMIN"):
+                return redirect(url_for("error403"))
+
+            if not user:
+                alert = {"type": "danger",
+                    "text": "User was deleted."}
+            else:
+                editor = Role.query.filter_by(name="EDITOR").first()
+                if not editor:
+                    message = "There is no role 'EDITOR' in the database!"
+                    return render_template("error500.html", message=message)
+                editor_roles = UserRole.query.filter_by(user_id = user.id, role_id = editor.id)
+                for role in editor_roles:
+                    db.session.delete(role)
+
+                articles = Article.query.filter_by(editor_in_charge = id)
+                for article in articles:
+                    article.editor_in_charge = None
+                db.session.commit()
+                alert = {"type": "success",
+                    "text": "User %s is no longer editor!" % user.name}
+                # fall through
+
             
     return render_template("/people/list.html",
         people = get_people(),
@@ -182,5 +246,5 @@ def get_people():
         if person.username:
             username = person.username
         names = Name.query.filter_by(user_id=person.id)
-        people.append({'id': person.id, 'username': username, 'name': name, 'names': names})
+        people.append({'person': person, 'names': names})
     return people

@@ -11,7 +11,9 @@ def format_as_pair_id_name(options):
 
 def getPeopleOptions():
     query = text(
-        "SELECT Account.name AS name, Account.id AS id FROM Account"
+        "SELECT Account.name AS name,"
+        " Account.id AS id"
+        " FROM Account"
         " GROUP BY Account.name, Account.id"
         " ORDER BY Account.name"
     )
