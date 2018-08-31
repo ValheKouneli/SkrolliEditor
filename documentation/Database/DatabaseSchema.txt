@@ -6,8 +6,17 @@ date_modified datetime
 username string
 name string
 pwd_hash string
-editor boolean
-admin boolean
+
+Role
+-
+id PK integer
+name string
+
+UserRole
+-
+id PK integer
+user_id: FK >- Account.id
+role_id: FK >- Role.id
 
 Name
 -
@@ -15,7 +24,7 @@ id PK integer
 date_created datetime
 date_modified datetime
 name string
-user_id: FK >- Account.id
+account_id: FK >- Account.id
 
 Article
 -
@@ -30,7 +39,7 @@ writing_status integer
 editor-in-charge: FK >- Account.id
 editing_status integer
 language_consultant: FK >- Account.id
-language_consultation_status integer
+language_checked boolean
 layout_artist: FK >- Account.id
 layout_status integer
 ready boolean
@@ -52,4 +61,13 @@ date_created datetime
 date_modified datetime
 article: FK >- Article.id
 content string
+
+Picture
+-
+id PK integer
+article_id: FK >- Article.id
+responsible: FK >- Account.id
+type string
+status integer
+ready boolean
 

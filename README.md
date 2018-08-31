@@ -1,6 +1,8 @@
 # SkrolliEditor
 
-Web application to help the editorial process of Skrolli
+This is a school project for Helsinki University's course Database Application.
+
+A web application to help the editorial process of Skrolli
 
 https://skrollieditor.herokuapp.com/
 
@@ -15,6 +17,10 @@ https://skrollieditor.herokuapp.com/
 [How to use](/documentation/HowToUse.md)
 
 [Deployment](/documentation/Deployment.md)
+
+[Database diagram](/documentation/Database/DatabaseDiagram.png)
+
+[On implementation](/documentation/Implementation.md)
 
 ## Project definition
 

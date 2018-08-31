@@ -6,19 +6,13 @@
 
 **Issue** refers to a magazine issue.
 
-An **admin** is always an **editor** as well.
+An **admin** is always an **editor**, **language consultant** and **picture editor** as well (not enforced).
+
+A **picture editor** is always an **editor** as well (not enforced).
 
 ## As a user
 
 - [x] I can create an account, so that I can be logged-in.
-
-## As a user who has an account
-
-- [x] I can log-in so that I can do things I otherwise could not.
-
-## As a logged-in user
-
-- [x] I can change the name and password associated to my account.
 - [x] I can see articles in the system.
   - [x] I can see the article's name
   - [ ] I can see the article's title, subtitle and table-of-contents text
@@ -27,18 +21,22 @@ An **admin** is always an **editor** as well.
   - [ ] I can see the language consultant of the article
   - [ ] I can see the layout artist of the article
   - [x] I can see the writing status, editing status of the article
-  - [ ] I can see the language consultation status and all-around (layout) status of the article
+  - [x] I can see the language consultation status of the article
+  - [ ] I can see the layout status of the article
   - [ ] I can see the amount of pages of the article
+
+## As a user who has an account
+
+- [x] I can log-in so that I can do things I otherwise could not.
+
+## As a logged-in user
+
+- [x] I can change the name and password associated to my account.
+
 - [x] I can see the unfinished tasks I am related to, so that I know what I have yet to be done.
   - [x] I can see the unfinished articles whose writer I am.
-  - [ ] I can see the unfinished articles whose language consultant I am.
-  - [ ] I can see the unfinished picture units whose artist I am.
-- [ ] I can edit the status of a task I am related to, so that I can let other people know of my progress.
-  - [ ] As a writer, I can edit the article's writing status
-  - [ ] As a language consultant, I can edit the article's language consultation status
-  - [ ] As an artist, I can edit the picture unit's completition status
-- [ ] I can request editor previledges
-- [ ] I can request to be associated with an existing dummy-account
+  - [x] I can see the unfinished articles whose language consultant I am.
+  - [x] I can see the unfinished picture units whose artist I am.
 
 ## As a logged-in user who is an editor
 
@@ -50,8 +48,6 @@ An **admin** is always an **editor** as well.
   - [x] I can associate the article to an issue
   - [x] I can associate an editor as the editor-in-charge of the new article.
   - [x] I can associate a person as the writer of the new article.
-  - [ ] I can associate a person as the language consultant of the new article.
-  - [ ] I can associate an editor as the layout artist of the new article.
   - [ ] I can give the new article a title, subtitle and a table-of-contents text.
   - [ ] I can give the new article an amount of pages.
   - [x] I can give the new article a writing status.
@@ -68,22 +64,32 @@ An **admin** is always an **editor** as well.
   - [x] I can edit the writing status of the article.
   - [x] I can edit the editing status of the article.
   - [x] I can edit the synopsis of the article.
-  - [ ] I can edit the language consultation status of the article.
-  - [ ] I can edit the layout artist of the article.
   - [ ] I can edit the amount of pages of the article.
-  - [ ] I can edit the title of the article.
-  - [ ] I can edit the subtitle of the article.
-  - [ ] I can edit the table-of-contents text of the article.
 - [x] I can see what tasks other users have been associated with, so that I can get a feeling of how they are proceeding.
-- [ ] I can grant editor previledges to another user
-- [ ] I can associate a registered user with a dummy-account
-- [ ] I can update info of a picture unit
-  - [ ] I can update the progress status of a picture unit
-  - [ ] I can update the description of a picture unit
-  - [ ] I can update the person responsible for a picture unit
+- [x] I can update info of a picture unit
+  - [x] I can update the progress status of a picture unit
+  - [x] I can update the description of a picture unit
+  - [x] I can update the person responsible for a picture unit
+
+## As a logged-in user who is a language consultant
+
+- [x] I can mark myself as the language consultant of an article that is 100% written and edited so that other language consultants know not to language check this article
+- [x] I can mark articles whose language consultant I am as being language-checked
+
+## As a logged-in user who is a picture editor
+
+- [x] I can mark pictures that are 100% done (status is 100) as being ready
+
+## As a logged-in user who is a layout artist
+
+- [ ] I can mark articles that are language-checked and whose pictures are ready as ready.
 
 ## As a logged-in user who is an admin
 
 - [x] I can delete issues from the system
 - [x] I can delete articles from the system
-- [ ] I can remove a picture unit, so that if I create a reduntant picture unit or if a picture order is cancelled, it will not be left hanging in the system, confusing users.
+- [x] I can grant editor previledges to another user
+- [x] I can take editor previledges away from a user
+- [x] I can remove a picture unit, so that if I create a reduntant picture unit or if a picture order is cancelled, it will not be left hanging in the system, confusing users.
+- [x] I can remove users
+- [ ] I can associate a registered user with a dummy-account

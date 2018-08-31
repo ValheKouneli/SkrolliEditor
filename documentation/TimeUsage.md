@@ -160,7 +160,7 @@ Daily time usage
 
 ## Week 6, 27.-31.8.2018
 
-**Total: 24h**
+**Total: 32h**
 
 * Monday 5 h
   * Feature: Picture units
@@ -172,11 +172,14 @@ Daily time usage
   * feature: picture editor can mark pictures ready
   * feature: language_consultant can set themselves as the language consultant of an article
   * feature: language_consultant of an article can mark it language_checked
-  * TODO: admin can make users editors, language consultant, picture editors and layout artists
 * Wednesday 8h?
   * starting to implement putting user roles into a separate database table
 * Thursday 1h
   * demo
-* Friday
+* Friday 8h?
+  * Finished making separate table for user roles. Now it works. Fixed a lot of bugs.
+  * Merged to master. Fixed some more bugs.
+  * Updated documentation.
+  * Feature: admin can make users editors and not-editors
   * TODO: picture status can not be changed if picture is marked ready
   * TODO: article status can not be changed if language_checked = True
