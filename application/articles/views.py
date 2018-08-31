@@ -6,10 +6,10 @@ from application.articles.models import Article, Synopsis
 from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm, create_article_form, \
     set_article_according_to_form, replicate_article_form
-from application.auth.models import User
+from application.auth.models import User, getEditorOptions
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.help import getArticleWithId, getArticlesWithCondition, \
-    getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
+    getPeopleOptions, getIssueOptions, getPicturesForArticle
 from application.react_to_post_request import react_to_post_request
 
 

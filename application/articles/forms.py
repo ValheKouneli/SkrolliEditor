@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, SelectField, StringField, validators, ValidationError
 
-from application.help import getPeopleOptions, getEditorOptions, \
+from application.help import getPeopleOptions, \
     getIssueOptions, needs_a_bigger_input_field
+from application.auth.models import getEditorOptions
 
 import re
 

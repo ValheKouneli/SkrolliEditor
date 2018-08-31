@@ -1,5 +1,5 @@
 from application import db, os, bcrypt
-from application.help import getArticlesWithCondition, getPicturesWithCondition
+from application.help import getArticlesWithCondition, getPicturesWithCondition, format_as_pair_id_name
 from application.models import Base
 from application.people.models import Name
 from application.articles.models import Article
@@ -144,3 +144,11 @@ class Role(Base):
 
     def __init__(self, name):
         self.name = name
+
+def getEditorOptions():
+    users = User.query.all()
+    editors = []
+    for user in users:
+        if user.has_role("EDITOR"):
+            editors.append(user)
+    return format_as_pair_id_name(editors)

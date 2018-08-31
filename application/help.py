@@ -19,17 +19,6 @@ def getPeopleOptions():
     )
     return format_as_pair_id_name(db.engine.execute(query))
 
-def getEditorOptions():
-    query = text(
-        "SELECT Account.name AS name, Account.id AS id FROM Account"
-        " INNER JOIN"
-        " (SELECT id FROM UserRole WHERE role_id = (SELECT FIRST(id) FROM Role WHERE name = 'EDITOR')) Editors"
-        " ON Account.id = Editors.id"
-        " GROUP BY Account.name, Account.id"
-        " ORDER BY Account.name"
-    )
-    return format_as_pair_id_name(db.engine.execute(query))
-
 def getIssueOptions():
     query = text(
         "SELECT id, name FROM Issue ORDER BY name"

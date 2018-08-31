@@ -5,9 +5,10 @@ from application import app, db, login_required
 from application.articles.models import Article
 from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm, create_article_form
-from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
+from application.help import getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
+from application.auth.models import getEditorOptions
 from application.issues.views_helper import create_new_issue, delete_issue
 from application.react_to_post_request import react_to_post_request
 
