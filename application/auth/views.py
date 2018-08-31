@@ -151,7 +151,7 @@ def picture_editor_page():
     alert = {}
 
     if request.method == "POST":
-        if not (current_user and
+        if not (current_user.is_authenticated and
             current_user.has_role("PICTURE_EDITOR")):
             return redirect(url_for("error403"))
 

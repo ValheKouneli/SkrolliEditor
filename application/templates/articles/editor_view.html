@@ -5,7 +5,7 @@
 
 <div class="lead text-info text-center m-0">
     {{ topic }}
-    {% if current_user and current_user.has_role("EDITOR") %}
+    {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
         {% if issue %}
             <a class="btn btn-sm btn-primary mb-1 ml-3"
                 href="{{ url_for('articles_form_for_issue', issue=issue) }}">

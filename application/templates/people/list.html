@@ -3,7 +3,7 @@
 
 {% block body %}
 <h1 class="text-info">All users</h1>
-{% if current_user and current_user.has_role("ADMIN") %}
+{% if current_user.is_authenticated and current_user.has_role("ADMIN") %}
   <p>
     <form class="form form-horizontal" method="POST">
         {{ quickform(form) }}
@@ -16,7 +16,7 @@
 {% if people %}
   <table class="table table-sm">
     <tr>
-    {% if current_user and current_user.has_role("EDITOR") %}
+    {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
       <th>Edit</th>
     {% endif %}
       <th>Name</th>
@@ -25,7 +25,7 @@
     </tr>
     {% for person in people %}
     <tr class="pb-0 mb-0">
-      {% if current_user and current_user.has_role("EDITOR") %}
+      {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
       <td class="pb-0 mb-0">
           <a href="{{ url_for('person_edit', user_id=person.person.id) }}">Edit</a>
           
@@ -40,7 +40,7 @@
       {% endif %}
       <td class="pb-0 mb-0">
         <a href="{{ url_for('show_tasks', user_id=person.person.id) }}">{{ person.person.name }}</a>
-        {% if person.person.username and current_user and current_user.has_role("ADMIN") and not person.person.has_role("EDITOR") %}
+        {% if person.person.username and current_user.is_authenticated and current_user.has_role("ADMIN") and not person.person.has_role("EDITOR") %}
           <form method="POST">
             <input type="hidden" name="id" value="{{ person.person.id }}">
             <input class="btn btn-primary"
@@ -48,7 +48,7 @@
               value="Make editor"
               name="make_editor">
           </form>
-        {% elif current_user and current_user.has_role("ADMIN") and person.person.has_role("EDITOR") %}
+        {% elif current_user.is_authenticated and current_user.has_role("ADMIN") and person.person.has_role("EDITOR") %}
         <form method="POST">
             <input type="hidden" name="id" value="{{ person.person.id }}">
             <input class="btn btn-danger"

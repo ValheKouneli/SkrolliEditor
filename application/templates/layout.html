@@ -52,7 +52,7 @@
                                 Menu
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {% if current_user %}
+                                {% if current_user.is_authenticated %}
                                   <a class="dropdown-item" href="{{ url_for('mypage') }}"> My page </a>
                                 {% endif %}
                                 <a class="dropdown-item" href="{{ url_for('articles_index') }}"> Articles </a>
@@ -82,7 +82,7 @@
                 </div>
 
                   <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                      {% if current_user %}
+                      {% if current_user.is_authenticated %}
                       
                         <li class="nav-item dropdown dropdown-menu-right align-right mr-1">
                           <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
