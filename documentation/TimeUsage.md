@@ -160,7 +160,7 @@ Daily time usage
 
 ## Week 6, 27.-31.8.2018
 
-**Total: 15h**
+**Total: 24h**
 
 * Monday 5 h
   * Feature: Picture units
@@ -173,3 +173,10 @@ Daily time usage
   * feature: language_consultant can set themselves as the language consultant of an article
   * feature: language_consultant of an article can mark it language_checked
   * TODO: admin can make users editors, language consultant, picture editors and layout artists
+* Wednesday 8h?
+  * starting to implement putting user roles into a separate database table
+* Thursday 1h
+  * demo
+* Friday
+  * TODO: picture status can not be changed if picture is marked ready
+  * TODO: article status can not be changed if language_checked = True
