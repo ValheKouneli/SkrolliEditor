@@ -8,7 +8,7 @@ from application.articles.views_helper import update_status, delete_article
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.articles.models import Article
 from application.pictures.models import Picture
-from application.tasks_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 from application.help import getArticlesWithCondition, getPicturesWithCondition, getPictureWithId
 
 
