@@ -161,7 +161,7 @@ def picture_editor_page():
                 " parameter picture_id was missing or it was not an integer."
             return render_template("error500.html", message=message)
         
-        picture = getPictureWithId(id)
+        picture = Picture.query.get(id)
         if not picture:
             return redirect(url_for("error404"))
         picture.ready = True
