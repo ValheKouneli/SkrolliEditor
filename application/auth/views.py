@@ -167,7 +167,7 @@ def picture_editor_page():
         picture.ready = True
         db.session.commit()
         alert = {"type": "success",
-            "text": "%s for article %s marked ready!" % (picture.type, picture.article) }
+            "text": "Picture marked ready!" }
         # fall trough
 
     pictures = getPicturesWithCondition(
