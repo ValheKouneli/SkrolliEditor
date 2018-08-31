@@ -41,7 +41,7 @@ def react_to_post_request(request, current_user):
 
 
         # request is to mark article's language checked
-        elif request.form('mark_ready', None):
+        elif request.form.get('mark_ready', None):
             if (not current_user.has_role("LANGUAGE_CONSULTANT") and
                 article.language_consultant == current_user.id):
 
