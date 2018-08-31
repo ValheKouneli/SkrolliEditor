@@ -24,7 +24,7 @@ https://skrollieditor.herokuapp.com/
 
 [Todo](/documentation/Todo.md)
 
-[In Finnish, TSOHAA VARTEN](/documentation/SuomeksiTsohaaVarten.md)
+[In Finnish, TSOHAA VARTEN](/documentation/SuomeksiKurssiaVarten.md)
 
 ## Project definition
 
