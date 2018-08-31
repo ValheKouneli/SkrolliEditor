@@ -2,6 +2,8 @@ TODO
 ====
 
 * Remove the issues from the github page (except the peer reviews)
+* Editing status can not be changed if article does not have an editor
+* Writing status can not be changed if article does not have a writer
 * Admin can make other users language consultants, picture editors etc.
 * Article/picture status can not be changed after being marked ready
 * Simplify the UI

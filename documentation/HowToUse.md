@@ -1,7 +1,26 @@
 How to Use
 ==========
 
-SkrolliEditor application supports six types of user accounts: **admin**, **editor**, **language consultant**, **picture editor** and **assistant**. Admin has all the other roles as well. Assistant accounts do not have any special previledges, and at the moment; they can only view the content in the system and not manipulate it. Only picture editor can mark pictures ready, and only language consultants can mark articles 'language checked' i.e. 'Finished'. Editor accounts have all the other priviledges to manipulate the data except to delete users, issues and articles. Only admins can delete them. Admin can make other registered users editors. At the moment, there is no way to make other users picture editors or language consultants. Newly registered users have assistant accounts.
+## The editorial process of Skrolli
+
+First, there is an issue. Skrolli publishes four issues per year, and sometimes English language issues.
+Then there are articles. Article starts as an idea ('planned'). It might have a writer, but not necessarily. For example, we migh just decide that __someone__ should write an article about the latest Assembly.
+
+The article writer can be anyone. They do not work on the article on their own, but the article always has an **editor-in-charge** (vastuutoimittaja) who takes care of the article. The editor-in-charge edits the text and takes care that the article is finished in time.
+
+The article will need pictures, of course. There are different types of pictures, such as graphs, photographs and illustrations. The person who draws the illustation or takes the photo is often not the same as the writer of the article. The people responsible for the pictures are come outside of the editorial team. Just like in the case of an article text, a picture is never printed in the magazine unless someone from the editorial team has approved it. This person is the **picture editor** (kuvatoimittaja). Even if the creator of the picture thinks it's ready and all the editors think it's ready, the picture editor has to approve it so it can be marked ready.
+
+But wait! Even the article text is not ready after the editor-in-charge says so. The **language consultant** has to read it and correct the grammar and make sure everything is in check. The language consultant can be from outside of the editorial team and thus not one of the editors. There can be many language consultants working concurrently.
+
+The pictures for the article and the text of the article progress independent of each other. The picture editor is somewhat interested in the text status of the articles, and the editor-in-charge is also partially responsible that there are appropriate pictures coming for the article.
+
+After both the text and the pictures are ready, the layout artist can put the article together. After that it still need to be proof-read...
+
+# The application
+
+SkrolliEditor's version on 31.8.2018 supports six types of user accounts: **admin**, **editor**, **language consultant**, **picture editor** and **assistant**. Admin has all the other roles as well. Assistant accounts do not have any special previledges, and at the moment; they can only view the content in the system and not manipulate it.
+
+Only picture editor can mark pictures ready, and only language consultants can mark articles 'language checked' i.e. 'Finished'. Editor accounts have all the other priviledges to manipulate the data except to delete users, issues and articles. Only admins can delete them. Admin can make other registered users editors. At the moment, there is no way to make other users picture editors or language consultants. Newly registered users have assistant accounts.
 
 Users can access different content via the dropdown menus on the top of the page, in the navbar.
 
