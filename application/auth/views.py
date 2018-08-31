@@ -8,7 +8,7 @@ from application.articles.views_helper import update_status, delete_article
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.articles.models import Article
 from application.pictures.models import Picture
-from application.tasks_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 from application.help import getArticlesWithCondition, getPicturesWithCondition, getPictureWithId
 
 
@@ -27,7 +27,7 @@ def auth_login():
 
     login_user(user)
     next = request.form.get("next_address")
-    if next and next != "None":
+    if next and next != "None": 
         return redirect(next)
     
     return redirect(url_for("index"))
@@ -131,7 +131,7 @@ def language_consultant_page():
     articles = articles.fetchall()
 
     my_articles = None
-    if current_user.is_authenticated :
+    if current_user.is_authenticated:
         my_articles = getArticlesWithCondition(
             "(Article.editing_status = 100" + \
             " AND Article.writing_status = 100" + \
@@ -161,13 +161,13 @@ def picture_editor_page():
                 " parameter picture_id was missing or it was not an integer."
             return render_template("error500.html", message=message)
         
-        picture = getPictureWithId(id)
+        picture = Picture.query.get(id)
         if not picture:
             return redirect(url_for("error404"))
         picture.ready = True
         db.session.commit()
         alert = {"type": "success",
-            "text": "%s for article %s marked ready!" % (picture.type, picture.article) }
+            "text": "Picture marked ready!" }
         # fall trough
 
     pictures = getPicturesWithCondition(

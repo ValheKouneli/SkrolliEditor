@@ -8,7 +8,7 @@ from application.pictures.forms import PictureForm, create_picture_form, replica
 from application.pictures.models import Picture
 from application.pictures.views_helper import show_prefilled_form, update_picture
 from application.auth.models import User
-from application.kanban_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 
 @app.route('/pictures/', methods=["GET", "POST"])
 def pictures_index():

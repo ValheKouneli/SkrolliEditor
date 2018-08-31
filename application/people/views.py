@@ -7,7 +7,7 @@ from application.articles.forms import create_article_form
 from application.auth.models import User
 from application.people.models import Name
 from application.people.forms import NameForm, AliasForm
-from application.tasks_page_helper import react_to_post_request
+from application.react_to_post_request import react_to_post_request
 
 @app.route("/people/", methods=["GET", "POST"])
 def people_index():
@@ -138,7 +138,7 @@ def show_tasks(user_id):
         articles_writing = articles_writing,
         articles_editing = articles_editing,
         pictures_responsible = pictures_responsible,
-        language_checking = articles_language_checking,
+        articles_language_checking = articles_language_checking,
         posessive_form = "" + name + "'s",
         system_name = user.name,
         person_is = name + " is",

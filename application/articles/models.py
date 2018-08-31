@@ -83,14 +83,15 @@ class Article(Base):
             issuecondition = get_issue_condition(issue)
             condition = "article.editing_status = 100 AND" + \
                   " article.writing_status = 100 AND" + \
-                  " Article.ready = %s" % ("false" if os.environ.get("HEROKU") else "0") + \
+                  " Article.language_checked = %s" % ("false" if os.environ.get("HEROKU") else "0") + \
                   issuecondition
             return getArticlesWithCondition(condition)
 
       @staticmethod
       def get_all_finished_articles(issue=0):
             issuecondition = get_issue_condition(issue)
-            condition = "Article.language_checked = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
+            condition = "Article.language_checked" + \
+                  " = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
                   issuecondition
             return getArticlesWithCondition(condition)
 
