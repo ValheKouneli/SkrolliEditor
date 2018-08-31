@@ -53,7 +53,7 @@ def articles_show(article_id):
         return redirect(url_for("error404"))
 
     if request.method == "POST":
-        if not (current_user and current_user.has_role("EDITOR")):
+        if not (current_user.is_authenticated and current_user.has_role("EDITOR")):
             return redirect(url_for("error403"))
 
         if request.form.get('update_status', None):

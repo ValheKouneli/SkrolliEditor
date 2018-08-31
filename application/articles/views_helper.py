@@ -5,7 +5,7 @@ from application.articles.forms import ArticleForm, set_options, set_article_acc
 from application import db
 
 def update_status(request, article, current_user):
-      if not (current_user and
+      if not (current_user.is_authenticated and
             current_user.has_role("EDITOR")):
             
             return None
@@ -27,7 +27,7 @@ def update_status(request, article, current_user):
 
 
 def delete_article(request, article, current_user):
-      if not (current_user and
+      if not (current_user.is_authenticated and
             current_user.has_role("ADMIN")):
 
             return None
@@ -49,7 +49,7 @@ def delete_article(request, article, current_user):
 
 
 def create_article(request, current_user):
-      if not (current_user and
+      if not (current_user.is_authenticated and
             current_user.has_role("EDITOR")):
             
             return None

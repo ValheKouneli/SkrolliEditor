@@ -42,7 +42,7 @@ def react_to_post_request(request, current_user):
 
         # request is to mark article's language checked
         elif request.form.get('mark_ready', None):
-            if not (current_user and
+            if not (current_user.is_authenticated and
                 current_user.has_role("LANGUAGE_CONSULTANT") and
                 article.language_consultant == current_user.id):
 
@@ -57,7 +57,7 @@ def react_to_post_request(request, current_user):
 
         # request is to make current user article's language consultant
         elif request.form.get("grab", None):
-            if not (current_user and
+            if not (current_user.is_authenticated and
                 current_user.has_role("LANGUAGE_CONSULTANT")):
                 response["redirect"] = redirect(url_for("error403"))
                 return response

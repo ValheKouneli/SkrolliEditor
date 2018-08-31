@@ -68,7 +68,7 @@ def auth_update():
     if not form.validate():
         return render_template("auth/updateaccountform.html", form = form)
     
-    if (not current_user) or (not current_user.is_correct_password(form.oldpassword.data)):
+    if (not current_user.is_authenticated) or (not current_user.is_correct_password(form.oldpassword.data)):
         return render_template("auth/updateaccountform.html", form = form,
                                error = "Incorrect password")
 
