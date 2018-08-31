@@ -24,6 +24,8 @@ https://skrollieditor.herokuapp.com/
 
 [Todo](/documentation/Todo.md)
 
+[In Finnish, TSOHAA VARTEN](/documentation/SuomeksiTsohaaVarten.md)
+
 ## Project definition
 
 The aim of this project is to create a web application for the editorial team of Skrolli magazine that can eventually replace the current system for managing the editorial process of Skrolli.
