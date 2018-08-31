@@ -20,14 +20,14 @@ After both the text and the pictures are ready, the layout artist can put the ar
 
 SkrolliEditor's version on 31.8.2018 supports six types of user accounts: **admin**, **editor**, **language consultant**, **picture editor** and **assistant**. Admin has all the other roles as well. Assistant accounts do not have any special previledges, and at the moment; they can only view the content in the system and not manipulate it.
 
-Only picture editor can mark pictures ready, and only language consultants can mark articles 'language checked' i.e. 'Finished'. Editor accounts have all the other priviledges to manipulate the data except to delete users, issues and articles. Only admins can delete them. Admin can make other registered users editors. At the moment, there is no way to make other users picture editors or language consultants. Newly registered users have assistant accounts.
+Only picture editor can mark pictures ready, and only language consultants can mark articles 'language checked'. Editor accounts have all the other priviledges to manipulate the data except to delete users, issues and articles. Only admins can delete them. Admin can make other registered users editors. At the moment, there is no way to make other users picture editors or language consultants. Newly registered users have assistant accounts.
 
 Users can access different content via the dropdown menus on the top of the page, in the navbar.
 
 
 ## The article view
 
-The article views show the articles separated into five different categories: planned, draft, written, edited and finished. The **status** of the article determines which category the article belongs to. When the article is written, edited and 'language checked', it belongs to the 'Finished' category.
+The article views show the articles separated into five different categories: planned, draft, written, edited and language checked. The **status** of the article determines which category the article belongs to.
 
 By clicking the article title in the article view, the article card opens and shows information about the article. **JavaScript must be enabled** in the browser.
 
@@ -35,7 +35,7 @@ The article card title shows a small pill saying either "no pics" or "pics". The
 
 The two progress bars represent the **writing status** and the **editing status** of the article. Editors can change these by using the sliders under the progress bars (visible only to editors). After adjusting the sliders, editor must press the "update sliders" button to apply the change.
 
-When article is created, it belongs to the 'planned' category. When writing has been started (status is something else than 0 %), article moves into the 'draft' category. When writing status is 100 %, article is 'written'. Bringing the editing status to 100 % moves it to the 'edited' category. In this view, articles can not be moved to the 'Finished' category.
+When article is created, it belongs to the 'planned' category. When writing has been started (status is something else than 0 %), article moves into the 'draft' category. When writing status is 100 %, article is 'written'. Bringing the editing status to 100 % moves it to the 'edited' category. In this view, articles can not be moved to the 'Language checked' category.
 
 Note that the editing status can never be higher than the writing status, as content that has not been written can not be edited.
 
@@ -43,7 +43,7 @@ An **orphan article** means an article that belong to no particular issue.
 
 ## The (view as) langauge consultant page
 
-The page lists all the articles that are both written and edited but not 'language checked'. On the page, a language consultant can 'grab' articles that are written and edited (but not language checked). Grabbing means that they indicate to other language consultant they are working on that article. Once they have grabbed an article, they can mark their work as ready: the article becomes 'language checked' and in the article view, it is moved in to the 'Finished' section.
+The page lists all the articles that are both written and edited but not 'language checked'. On the page, a language consultant can 'grab' articles that are written and edited (but not language checked). Grabbing means that they indicate to other language consultant they are working on that article. Once they have grabbed an article, they can mark their work as ready: the article becomes 'language checked' and in the article view, it is moved in to the 'Language checked' section.
 
 ## The (view as) picture editor page
 
