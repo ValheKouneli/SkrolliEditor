@@ -41,7 +41,7 @@ Note that the editing status can never be higher than the writing status, as con
 
 An **orphan article** means an article that belong to no particular issue.
 
-## The (view as) langauge consultant page
+## The (view as) language consultant page
 
 The page lists all the articles that are both written and edited but not 'language checked'. On the page, a language consultant can 'grab' articles that are written and edited (but not language checked). Grabbing means that they indicate to other language consultant they are working on that article. Once they have grabbed an article, they can mark their work as ready: the article becomes 'language checked' and in the article view, it is moved in to the 'Language checked' section.
 
