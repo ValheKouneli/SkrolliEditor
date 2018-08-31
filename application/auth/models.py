@@ -10,7 +10,7 @@ class User(Base):
     __tablename__ = "account"
 
     name = db.Column(db.String(144), nullable=False)
-    username = db.Column(db.String(144), nullable=True, unique=True)
+    username = db.Column(db.String(144), nullable=True)
     password = db.Column(db.Binary(60), nullable=True)
 
     user_roles = db.relationship("UserRole", backref="account", lazy=True)
@@ -41,10 +41,15 @@ class User(Base):
 # ----
 
 # role related funtions
-# credit to anonOstrich/peliloki/
+# credit partially to anonOstrich/peliloki/
 
     def roles(self):
-        return Role.query.join(Role.user_roles).filter_by(user_id=self.id).all()
+        query = text(
+            "SELECT role.name FROM role"
+            " WHERE role.id IN"
+            " (SELECT role_id FROM userrole WHERE user_id = %d)" % self.id
+        )
+        return db.engine.execute(query).fetchall()
 
     def has_role(self, role_name):
         roles = self.roles()
@@ -54,14 +59,11 @@ class User(Base):
         return False
 
     # parameters are role objects
-    def add_roles(self, *args):
+    def add_roles(self, roles):
         def create_user_role(r):
-            result = UserRole()
-            result.user_id = self.id 
-            result.role_id = r.id 
-            return result
+            return UserRole(user_id = self.id, role_id = r.id)
         
-        user_roles = map(create_user_role, args)
+        user_roles = (lambda role: create_user_role(role), roles)
         db.session.add_all(user_roles)
         db.session.commit()
 
@@ -134,10 +136,14 @@ class UserRole(Base):
     user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable = False)
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"), nullable = False)
 
+    def __init__(self, user_id, role_id):
+        self.user_id = user_id
+        self.role_id = role_id
+
 class Role(Base):
     __tablename__ = "role"
 
-    name = db.Column(db.String(64), nullable=False)
+    name = db.Column(db.String(64), nullable=False, unique=True)
     user_roles = db.relationship("UserRole", backref="role", lazy = True)
 
     def __init__(self, name):

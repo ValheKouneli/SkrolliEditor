@@ -24,7 +24,6 @@ Bootstrap(app)
 
 # import models
 from application.people import models
-from application.auth import models
 from application.articles import models
 from application.issues import models
 from application.pictures import models
@@ -43,7 +42,7 @@ login_manager.login_view = "auth_login"
 login_manager.login_message = "Login required"
 
 from functools import wraps
-from application.auth.models import Role
+from application.auth.models import Role, UserRole
 
 # thank you for the example, anonOstrich/peliloki
 def login_required(role="ANY"):    
@@ -56,7 +55,7 @@ def login_required(role="ANY"):
             unauthorized = False
 
             if role != "ANY":
-                unauthorized = False
+                unauthorized = True
             
             unauthorized = current_user.has_role(role)
             
@@ -71,22 +70,27 @@ def login_required(role="ANY"):
 def load_user(user_id):
     return User.query.get(user_id)
 
+
 try:
     db.create_all()
-    admin_role = Role("ADMIN")
-    editor_role = Role("EDITOR")
-    language_consultant_role = Role("LANGUAGE_CONSULTANT")
-    picture_editor_role = Role("PICTURE_EDITOR")
-    layout_artist_role = Role("LAYOUT_ARTIST")
-    db.session.add_all((admin_role, language_consultant_role, picture_editor_role, layout_artist_role))
+    adminrole = Role("ADMIN")
+    editor = Role("EDITOR")
+    lang = Role("LANGUAGE_CONSULTANT")
+    pic = Role("PICTURE_EDITOR")
+    layout = Role("LAYOUT_ARTIST")
+    admin_pw = os.environ.get("ADMIN_PW")
+    if not admin_pw:
+        raise Exception("ADMIN_PW is not set")
+    admin = User(username="admin", name="Admin Admin", plaintext_password=admin_pw)
+    db.session.add(admin)
+    db.session.add_all((adminrole, editor, lang, pic, layout))
     db.session.commit()
-    if os.environ.get("ADMIN_PW"):
-        print("ADMIN_PW:", os.environ.get("ADMIN_PW"))
-        admin = User(username="admin", name="Admin Admin", plaintext_password=os.environ.get("ADMIN_PW"))
-        db.session.add(admin)
-        db.session.commit()
-        admin.add_roles(admin_role, editor_role, language_consultant_role, picture_editor_role, layout_artist_role)
-        db.session.add(admin)
+    admin_is_admin = UserRole(user_id = admin.id, role_id = adminrole.id)
+    admin_is_editor = UserRole(user_id = admin.id, role_id = editor.id)
+    admin_is_lang = UserRole(user_id = admin.id, role_id = lang.id)
+    admin_is_pic = UserRole(user_id = admin.id, role_id = pic.id)
+    admin_is_layout = UserRole(user_id = admin.id, role_id = layout.id)
+    db.session.add_all((admin_is_admin, admin_is_editor, admin_is_lang, admin_is_pic, admin_is_layout))
     db.session.commit()
 except Exception as err:
     print(err)

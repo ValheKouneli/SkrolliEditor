@@ -1,10 +1,4 @@
-INSERT INTO account (id, name, username, password) VALUES (1, 'Admin', 'admin', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, True, True, True, True);
-INSERT INTO account (id, name, username, password) VALUES (2, 'Testi Editor', 'editor', '$2b$12$0YH45mcGKYzfb1BcIQjOvextKhfbDbmRQJ2TXb2G8aM1nYxYJep5y', True, False, False, False, False);
-INSERT INTO userrole (user_id, role_id) VALUES (1, 1);
-INSERT INTO userrole (user_id, role_id) VALUES (1, 2);
-INSERT INTO userrole (user_id, role_id) VALUES (1, 3);
-INSERT INTO userrole (user_id, role_id) VALUES (1, 4);
-INSERT INTO userrole (user_id, role_id) VALUES (1, 5);
+INSERT INTO account (id, name, username) VALUES (2, 'Testi Editor', 'editor');
 INSERT INTO userrole (user_id, role_id) VALUES (2, 2);
 INSERT INTO name (name, user_id) VALUES ('Testi Editor', 2);
 INSERT INTO name (name, user_id) VALUES ('Admin', 1);
