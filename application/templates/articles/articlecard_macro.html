@@ -96,7 +96,7 @@
                                     {{ progressbar(article.writing_status) }}
                                 </td>
                             </tr>
-                            {% if current_user and current_user.editor %}
+                            {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
                                 <tr>
                                     <td>
                                         <input class="slider w-100"
@@ -127,7 +127,7 @@
                                     {{ progressbar(article.editing_status) }}
                                 </td>
                             </tr>
-                            {% if current_user and current_user.editor %}
+                            {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
                             <tr>
                                 <td class="pd-0 md-0">
                                     <input class="slider pd-0 w-100"
@@ -142,7 +142,7 @@
                             {% endif %}
                         </table>
                     </li>
-                    {% if current_user and current_user.editor %}
+                    {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
                         <li class="list-group-item text-center px-2 border-bottom border-top-0 mt-0 pt-0">
                             <input class="btn btn-primary"
                                 type="submit"
@@ -173,10 +173,10 @@
 
             {% endif %}
 
-            {% if current_user and current_user.editor %}
+            {% if current_user.is_authenticated and current_user.has_role("EDITOR") %}
                 <div class="card-footer bg-white p-0">
                     <div class="btn-group p-0 m-0" style="width:100%;">
-                        {% if current_user and current_user.admin %}
+                        {% if current_user.is_authenticated and current_user.has_role("ADMIN") %}
                             <form method="POST" name="deleteform">
                                 <input type="hidden" name="article_id" value="{{ article.id }}">
                                 <button class="btn bg-transparent text-danger p-0 m-0"

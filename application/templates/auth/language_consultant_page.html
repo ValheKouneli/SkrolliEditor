@@ -32,9 +32,12 @@
                                     <span style="width:100%">
 
                                     </span>
-            {% set user_is_editing_this = current_user.id != article.editor_in_charge %}
-            {% set user_is_writing_this = current_user.id != article.writer %}
-            {% if current_user and current_user.admin or (not user_is_editing_this and not user_is_writing_this) %}
+            {% if current_user.is_authenticated %}
+                {% set user_is_editing_this = current_user.id == article.editor_in_charge %}
+                {% set user_is_writing_this = current_user.id == article.writer %}
+            {% endif %}
+            
+            {% if current_user.is_authenticated and current_user.has_role("ADMIN") and not user_is_editing_this and not user_is_writing_this %}
                                     <button class="btn btn-group rounded-left text-right btn-info text-white"
                                         type="submit"
                                         value="submit">

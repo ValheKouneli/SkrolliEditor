@@ -11,16 +11,9 @@ def format_as_pair_id_name(options):
 
 def getPeopleOptions():
     query = text(
-        "SELECT Account.name AS name, Account.id AS id FROM Account"
-        " GROUP BY Account.name, Account.id"
-        " ORDER BY Account.name"
-    )
-    return format_as_pair_id_name(db.engine.execute(query))
-
-def getEditorOptions():
-    query = text(
-        "SELECT Account.name AS name, Account.id AS id FROM Account"
-        " WHERE Account.editor = %s" % ("true" if os.environ.get("HEROKU") else "1") + \
+        "SELECT Account.name AS name,"
+        " Account.id AS id"
+        " FROM Account"
         " GROUP BY Account.name, Account.id"
         " ORDER BY Account.name"
     )

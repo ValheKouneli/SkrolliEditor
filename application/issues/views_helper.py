@@ -10,7 +10,7 @@ from sqlalchemy.sql import text
 
 
 def create_new_issue(request, current_user):
-    if not current_user.editor:
+    if not (current_user.is_authenticated and current_user.has_role("EDITOR")):
         return redirect(url_for("error403"))
 
     form = IssueForm(request.form)
@@ -28,7 +28,7 @@ def create_new_issue(request, current_user):
 
 
 def delete_issue(request, current_user):
-    if not current_user.admin:
+    if not (current_user.is_authenticated and current_user.has_role("ADMIN")):
         return redirect(url_for("error403"))
     id = request.form["delete"]
     issue_to_delete = Issue.query.get(int(id))
@@ -47,7 +47,7 @@ def delete_issue(request, current_user):
     alert = {"type": "success",
         "text": "Issue deleted succesfully!"}
 
-    return what_to_render(form, alert)
+    return what_to_render(request.form, alert)
 
 def what_to_render(form, alert):
     query = text(

@@ -1,15 +1,15 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.articles.models import Article, Synopsis
 from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm, create_article_form, \
     set_article_according_to_form, replicate_article_form
-from application.auth.models import User
+from application.auth.models import User, getEditorOptions
 from application.pictures.views_helper import update_picture_status, delete_picture
 from application.help import getArticleWithId, getArticlesWithCondition, \
-    getPeopleOptions, getEditorOptions, getIssueOptions, getPicturesForArticle
+    getPeopleOptions, getIssueOptions, getPicturesForArticle
 from application.react_to_post_request import react_to_post_request
 
 
@@ -53,7 +53,7 @@ def articles_show(article_id):
         return redirect(url_for("error404"))
 
     if request.method == "POST":
-        if not current_user and current_user.editor:
+        if not (current_user.is_authenticated and current_user.has_role("EDITOR")):
             return redirect(url_for("error403"))
 
         if request.form.get('update_status', None):
@@ -100,11 +100,8 @@ def articles_show(article_id):
 
 
 @app.route("/articles/new/", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def articles_form():
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-    
     if request.method == "POST":
 
         # create a new article
@@ -122,10 +119,8 @@ def articles_form():
 
 
 @app.route("/article/<article_id>/update/", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def article_update(article_id):
-    if not current_user.is_editor:
-        return redirect(url_for("error403"))
 
     article = Article.query.get(int(article_id))
     if not article:

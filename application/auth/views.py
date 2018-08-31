@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, logout_user, current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegisterForm, UpdateAccountForm
 from application.articles.views_helper import update_status, delete_article
@@ -56,7 +56,7 @@ def auth_register():
     return redirect(url_for("index")) 
 
 @app.route("/auth/update/", methods = ["GET", "POST"])
-@login_required
+@login_required()
 def auth_update():
     if request.method == "GET":
         form = UpdateAccountForm()
@@ -68,7 +68,7 @@ def auth_update():
     if not form.validate():
         return render_template("auth/updateaccountform.html", form = form)
     
-    if (not current_user) or (not current_user.is_correct_password(form.oldpassword.data)):
+    if (not current_user.is_authenticated) or (not current_user.is_correct_password(form.oldpassword.data)):
         return render_template("auth/updateaccountform.html", form = form,
                                error = "Incorrect password")
 
@@ -84,7 +84,7 @@ def auth_update():
 
 
 @app.route("/auth/mypage/", methods = ["GET", "POST"])
-@login_required
+@login_required()
 def mypage():
     alert = {}
     open = 0
@@ -151,7 +151,8 @@ def picture_editor_page():
     alert = {}
 
     if request.method == "POST":
-        if not current_user.picture_editor:
+        if not (current_user.is_authenticated and
+            current_user.has_role("PICTURE_EDITOR")):
             return redirect(url_for("error403"))
 
         try:

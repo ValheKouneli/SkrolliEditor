@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.articles.models import Article
 from application.help import getPeopleOptions, getPicturesWithCondition
 from application.pictures.forms import PictureForm, create_picture_form, replicate_picture_form
@@ -32,12 +32,8 @@ def pictures_index():
         open = open)
 
 @app.route('/pictures/new_picture_commission_for/<article_id>/', methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def pictures_form(article_id):
-    print("HERE")
-    if not current_user.editor:
-        return redirect(url_for("error404"))
-    
     try:
         id = int(article_id)
     except:
@@ -72,12 +68,8 @@ def pictures_form(article_id):
             article = article) 
 
 @app.route("/pictures/<picture_id>/update", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def picture_update(picture_id):
-    # check that user is authorized
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
     # check that parameters are valid
     try:
         id = int(picture_id)

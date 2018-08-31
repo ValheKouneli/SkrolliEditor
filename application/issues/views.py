@@ -1,13 +1,14 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, logout_user, current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.articles.models import Article
 from application.articles.views_helper import update_status, delete_article, create_article
 from application.articles.forms import ArticleForm, create_article_form
-from application.help import getEditorOptions, getIssueOptions, getPeopleOptions
+from application.help import getIssueOptions, getPeopleOptions
 from application.issues.models import Issue
 from application.issues.forms import IssueForm
+from application.auth.models import getEditorOptions
 from application.issues.views_helper import create_new_issue, delete_issue
 from application.react_to_post_request import react_to_post_request
 
@@ -77,16 +78,13 @@ def issue_by_id(id):
     return redirect(url_for("articles_in_issue", issue=issue.name))
 
 @app.route("/<issue>/articles/new/", methods=["GET", "POST"])
-@login_required
+@login_required(role="EDITOR")
 def articles_form_for_issue(issue):
     try:
         issueid = Issue.query.filter_by(name=issue).first().id
     except:
         return redirect(url_for("error404"))
     
-    if not current_user.editor:
-        return redirect(url_for("error403"))
-
     if request.method == "POST":
         # create a new article
         if request.form.get('create_article', None):
