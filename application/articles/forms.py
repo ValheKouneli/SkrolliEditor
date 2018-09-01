@@ -30,6 +30,11 @@ class ArticleForm(FlaskForm):
         editorInCharge = SelectField("Editor-in-charge",
             validators=[is_not_same_as_writer],
             coerce=int)
+        beginningPicture = BooleanField("Beginning picture", default="checked")
+        illustration = BooleanField("Illustrations", default="checked")
+        photograph = BooleanField("Photograph", default="checked")
+        graph = BooleanField("Graph", default="checked")
+        screencap = BooleanField("Screencaps", default="checked")
         synopsis = StringField("Synopsis", validators=[needs_a_bigger_input_field()])
 
 
