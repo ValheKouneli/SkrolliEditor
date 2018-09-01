@@ -86,6 +86,26 @@ def create_article(request, current_user):
       db.session().add(article)
       db.session().commit()
     
+      if form.beginningPicture.data == True:
+            beg = Picture(article.id, "Beginning picture", "Beginning picture")
+            db.session.add(beg)
+            db.session.commit()
+      if form.illustration.data == True:
+            ill = Picture(article.id, "Illustration", "Illustration")
+            db.session.add(ill)
+            db.session.commit()
+      if form.graph.data == True:
+            graph = Picture(article.id, "Graph", "Graph")
+            db.session.add(graph)
+            db.session.commit()
+      if form.photograph.data == True:
+            photo = Picture(article.id, "Photograph", "Photograph")
+            db.session.add(photo)
+            db.session.commit()
+      if form.screencap.data == True:
+            screencap = Picture(article.id, "Screencap", "Screencap")
+            db.session.add(screencap)
+            db.session.commit()
       if len(form.synopsis.data) > 0:
             synopsis = Synopsis(article_id = article.id, content=form.synopsis.data)
             db.session().add(synopsis)
