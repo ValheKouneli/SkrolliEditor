@@ -15,6 +15,7 @@ def getTypes():
         "Photograph",
         "Graph",
         "Illustration",
+        "Screencap",
         "Other"]
     return types
 
