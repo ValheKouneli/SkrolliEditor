@@ -176,7 +176,14 @@ def picture_editor_page():
         " AND NOT Picture.ready)")
     pictures = pictures.fetchall()
 
+    orphan_pictures = getPicturesWithCondition(
+        "(Picture.responsible IS NULL" + \
+        " AND NOT Picture.ready)"
+    )
+    orphan_pictures = orphan_pictures.fetchall()
+
     return render_template("auth/picture_editor_page.html",
         pictures = pictures,
+        orphan_pictures = orphan_pictures,
         current_user = current_user,
         alert = alert)

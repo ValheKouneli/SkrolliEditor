@@ -3,44 +3,68 @@
 {% block body %}
 <span class="h2 text-info">
         Picture editor
-    </span>
-    <p>
-        <span class="h7 text-info">
-            Pictures waiting to be marked ready
-        </span>
-    </p>
-
+</span>
 
 <div class="row m-1">
-        {% if pictures|length > 0 %}
-            <div class="col col-md-3 col-xs-12 p-1">
-                <dl>
-                    {% for picture in pictures %}
-                        <dt>
-                            {{ picture.type }} &rarr; 
-                            <a href="{{ url_for('articles_show', article_id=picture.article_id) }}">
-                                {{ picture.article }}
-                            </a>
-                        </dt>
-                        <dd>
-                            {{ picture.description }}
-                        </dd>
 
-                        {% if current_user.is_authenticated and (current_user.has_role("PICTURE_EDITOR") or current_user.has_role("ADMIN")) %}
-                            <form method="POST">
-                                <input type="hidden" name="picture_id" value="{{ picture.id }}">
-                                <input type="submit" value="Ready" class="btn btn-success">
-                            </form>
-                        {% endif %}
+    {% if orphan_pictures|length > 0 %}
+        <div class="col col-md-3 col-xs-12 p-1">
+            <span class="h4 text-info">
+                Orphan pictures
+            </span>
+            <dl>
+                {% for picture in orphan_pictures %}
+                    <dt>
+                        {{ picture.type }} &rarr;
+                        <a href="{{ url_for('articles_show', article_id=picture.article_id) }}">
+                            {{ picture.article }}
+                        </a>
+                    </dt>
+                    <dd>
+                        {{ picture.description }}
+                    </dd>
 
-                    {% endfor %}
-                </dl>
-            </div>
-        {% endif %}
+                    {% if current_user.is_authenticated and (current_user.has_role("EDITOR") or current_user.has_role("ADMIN")) %}
+                        <a class="btn btn-success"
+                            href="{{ url_for('picture_update', picture_id=picture.id) }}">
+                            Edit
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </dl>
+        </div>
+    {% endif %}
 
-        {% if pictures|length == 0 %}
-            <div class="col m-0 p-0">
-                <span class="text-dark h4"> No pictures </span>
-            </div>
-        {% endif %}
+    {% if pictures|length > 0 %}
+        <div class="col col-md-3 col-xs-12 p-1">
+            <span class="h4 text-info">
+                Pictures waiting to be marked ready
+            </span>
+            <dl>
+                {% for picture in pictures %}
+                    <dt>
+                        {{ picture.type }} &rarr; 
+                        <a href="{{ url_for('articles_show', article_id=picture.article_id) }}">
+                            {{ picture.article }}
+                        </a>
+                    </dt>
+                    <dd>
+                        {{ picture.description }}
+                    </dd>
+
+                    {% if current_user.is_authenticated and (current_user.has_role("PICTURE_EDITOR") or current_user.has_role("ADMIN")) %}
+                        <form method="POST">
+                            <input type="hidden" name="picture_id" value="{{ picture.id }}">
+                            <input type="submit" value="Ready" class="btn btn-success">
+                        </form>
+                    {% endif %}
+
+                {% endfor %}
+            </dl>
+        </div>
+    {% elif pictures|length == 0 %}
+        <div class="col col-md-3 col-xs-12 p-1">
+            <span class="text-info h4"> No pictures waiting to be marked ready</span>
+        </div>
+    {% endif %}
 {% endblock %}
