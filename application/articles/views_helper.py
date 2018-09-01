@@ -35,9 +35,8 @@ def delete_article(request, article, current_user):
       if not (current_user.is_authenticated and
             current_user.has_role("ADMIN")):
 
-            return None
-            
-      db.session.delete(article)
+            return None  
+      
       synopsis_to_delete = Synopsis.query.filter_by(article_id = article.id).first()
       if synopsis_to_delete:
             db.session.delete(synopsis_to_delete)
@@ -46,6 +45,8 @@ def delete_article(request, article, current_user):
       for picture in pictures:
             db.session.delete(picture)
       
+      db.session.commit()
+      db.session.delete(article)
       db.session.commit()
       alert = {"type": "success",
             "text": "Article deleted!"}
